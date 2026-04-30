@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PC-Precision - Ultimate PC Build Experts</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900\&family=Exo+2:wght@300;400;600;800\&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'exo': \['Exo 2', 'sans-serif'],
+                        'orbitron': \['Orbitron', 'monospace'],
+                    },
+                    animation: {
+                        'pulse-glow': 'pulse-glow 2s ease-in-out infinite alternate',
+                        'float': 'float 6s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        'pulse-glow': {
+                            '0%, 100%': { boxShadow: '0 0 20px rgba(59,130,246,0.5),0 0 40px rgba(59,130,246,0.3)' },
+                            '50%':       { boxShadow: '0 0 40px rgba(59,130,246,0.8),0 0 80px rgba(59,130,246,0.6)' }
+                        },
+                        'float': {
+                            '0%,100%': { transform: 'translateY(0px)' },
+                            '50%':     { transform: 'translateY(-20px)' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .gradient-bg { background: linear-gradient(135deg,#0a0a0a 0%,#1a0d2e 25%,#16213e 50%,#0f0f23 100%); }
+        .neon-blue   { background: linear-gradient(45deg,#60a5fa,#93c5fd); background-clip:text; -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+        .neon-purple { background: linear-gradient(45deg,#c084fc,#a78bfa); background-clip:text; -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+        .glass-effect { background:rgba(255,255,255,0.05); backdrop-filter:blur(10px); border:1px solid rgba(255,255,255,0.1); }
+        .scanline::before {
+content:''; position:absolute; inset:0;
+background:linear-gradient(90deg,transparent 49%,rgba(0,255,255,0.03) 50%,transparent 51%);
+animation:scanline 3s linear infinite;
+}
+@keyframes scanline { 0%{transform:translateX(-100%)} 100%{transform:translateX(100%)} }
+        select option { background:#1a0d2e; color:#fff; }
+        ::placeholder  { color:rgba(255,255,255,0.4); }
+
+        .card-underline {
+            height:2px; width:100%;
+            background:linear-gradient(to right,#60a5fa,#c084fc);
+            border-radius:9999px;
+            transform:scaleX(0); transform-origin:left;
+            transition:transform 0.5s ease;
+        }
+        .group:hover .card-underline { transform:scaleX(1); }
+
+        /\* service tabs \*/
+        .svc-tab {
+            cursor:pointer; padding:10px 20px; border-radius:12px;
+            border:1px solid rgba(255,255,255,0.12);
+            background:rgba(255,255,255,0.04);
+            color:#94a3b8; font-family:'Exo 2',sans-serif; font-weight:600; font-size:14px;
+            transition:all 0.25s ease; white-space:nowrap;
+        }
+        .svc-tab:hover  { background:rgba(59,130,246,0.15); color:#93c5fd; border-color:#3b82f6; }
+        .svc-tab.active {
+            background:linear-gradient(135deg,rgba(59,130,246,0.28),rgba(139,92,246,0.28));
+            color:#e2e8f0; border-color:#6366f1;
+            box-shadow:0 0 16px rgba(99,102,241,0.35);
+        }
+        .svc-panel          { display:none; }
+        .svc-panel.active   { display:block; }
+
+        /\* popup \*/
+        #popup-overlay {
+            display:none; position:fixed; inset:0; z-index:9999;
+            background:rgba(0,0,0,0.78); backdrop-filter:blur(6px);
+            align-items:center; justify-content:center;
+        }
+        #popup-overlay.open { display:flex; }
+        #popup-box {
+            position:relative; max-width:500px; width:92%;
+            background:linear-gradient(135deg,#0f0f23,#1a0d2e);
+            border:1px solid rgba(99,102,241,0.45);
+            border-radius:24px; padding:40px 32px;
+            box-shadow:0 0 60px rgba(99,102,241,0.3);
+            animation:popIn 0.35s cubic-bezier(.175,.885,.32,1.275);
+        }
+        @keyframes popIn { from{transform:scale(0.8);opacity:0} to{transform:scale(1);opacity:1} }
+        #popup-close {
+            position:absolute; top:14px; right:18px;
+            background:none; border:none; color:#64748b;
+            font-size:26px; cursor:pointer; line-height:1; transition:color 0.2s;
+        }
+        #popup-close:hover { color:#e2e8f0; }
+        .popup-icon {
+            width:72px; height:72px; border-radius:18px; margin:0 auto 18px;
+            display:flex; align-items:center; justify-content:center; font-size:36px;
+        }
+
+        /\* scroll fade \*/
+        .fade-up { opacity:0; transform:translateY(40px); transition:opacity 0.6s ease,transform 0.6s ease; }
+        .fade-up.visible { opacity:1; transform:translateY(0); }
+    </style>
+
+</head>
+<body class="gradient-bg text-white overflow-x-hidden font-exo min-h-screen">
+<!-- ambient bg -->
+<div class="fixed inset-0 pointer-events-none z-0">
+    <div class="absolute inset-0 bg-\[radial-gradient(circle\_at\_20%\_80%,rgba(120,119,198,0.3),transparent),radial-gradient(circle\_at\_80%\_20%,rgba(120,119,198,0.3),transparent),radial-gradient(circle\_at\_40%\_40%,rgba(59,130,246,0.2),transparent)]"></div>
+</div>
+<!-- ══════ HERO ══════ -->
+<section class="relative min-h-screen flex items-center justify-center px-4 pt-20 pb-32 overflow-hidden">
+    <div class="scanline absolute inset-0 z-10"></div>
+    <div class="max-w-7xl mx-auto text-center relative z-20">
+        <div class="inline-block animate-pulse-glow mb-8 p-4 rounded-xl glass-effect">
+            <span class="text-lg md:text-2xl font-orbitron tracking-wider bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+                PC-PRECISION AI BUILD ENGINE
+            </span>
+        </div>
+        <h1 class="font-orbitron text-5xl md:text-7xl lg:text-8xl xl:text-9xl leading-tight mb-8 drop-shadow-2xl">
+            <span class="neon-blue block">Get the Ultimate</span>
+            <span class="neon-purple">PC Build Recommendation</span>
+            <span class="text-white block text-2xl md:text-4xl mt-4 font-exo font-light">from Experts</span>
+        </h1>
+        <p class="text-xl md:text-2xl lg:text-3xl max-w-4xl mx-auto mb-12 leading-relaxed text-gray-200 font-light">
+            Stop wasting money on bottlenecks. Get a custom parts list and
+            <span class="font-semibold text-blue-300">optimization from pro-builders</span>.
+        </p>
+        <a href="#contact" class="group inline-flex items-center gap-4 px-12 py-6 bg-gradient-to-r from-blue-600/90 to-purple-600/90 hover:from-blue-500 hover:to-purple-500 rounded-full text-xl font-semibold font-exo shadow-2xl transition-all duration-300 transform hover:-translate-y-2 hover:scale-105 glass-effect border border-blue-500/30 animate-pulse-glow">
+            <span>Book 15-Min Google Meet</span>
+            <svg class="w-6 h-6 group-hover:translate-x-2 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+            </svg>
+        </a>
+    </div>
+    <div class="absolute top-1/2 right-10 w-32 h-32 md:w-48 md:h-48 lg:w-64 lg:h-64 opacity-20 animate-float pointer-events-none">
+        <div class="w-full h-full bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-2xl shadow-2xl border border-blue-500/30"></div>
+    </div>
+</section>
+<!-- ══════ SERVICES ══════ -->
+<section id="services" class="py-32 px-4 relative">
+    <div class="max-w-6xl mx-auto">
+        <div class="text-center mb-24 fade-up">
+            <h2 class="font-orbitron text-5xl md:text-6xl lg:text-7xl mb-6 neon-purple">Our Services</h2>
+            <div class="w-32 h-1 bg-gradient-to-r from-blue-400 to-purple-500 mx-auto rounded-full"></div>
+        </div>
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Card 1 -->
+            <div class="group relative p-10 rounded-3xl glass-effect hover:bg-white/5 transition-all duration-500 hover:scale-105 hover:-translate-y-4 cursor-pointer border border-blue-500/20 hover:border-blue-400/40 fade-up">
+                <div class="absolute -inset-2 bg-gradient-to-r from-blue-500/20 to-transparent rounded-3xl blur opacity-75 group-hover:opacity-100 transition duration-1000"></div>
+                <div class="relative">
+                    <div class="w-20 h-20 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center mb-6 shadow-2xl">
+                        <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+                    </div>
+                    <h3 class="font-orbitron text-2xl mb-4 neon-blue">Custom Build Blueprints</h3>
+                    <p class="text-lg text-gray-200 leading-relaxed mb-6">A personalized PDF with the best parts for your budget. Zero bottlenecks guaranteed.</p>
+                    <div class="card-underline"></div>
+                </div>
+            </div>
+            <!-- Card 2 -->
+            <div class="group relative p-10 rounded-3xl glass-effect hover:bg-white/5 transition-all duration-500 hover:scale-105 hover:-translate-y-4 cursor-pointer border border-purple-500/20 hover:border-purple-400/40 fade-up">
+                <div class="absolute -inset-2 bg-gradient-to-r from-purple-500/20 to-transparent rounded-3xl blur opacity-75 group-hover:opacity-100 transition duration-1000"></div>
+                <div class="relative">
+                    <div class="w-20 h-20 bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl flex items-center justify-center mb-6 shadow-2xl">
+                        <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                    </div>
+                    <h3 class="font-orbitron text-2xl mb-4 neon-purple">1-on-1 Consultation</h3>
+                    <p class="text-lg text-gray-200 leading-relaxed mb-6">15-minute Google Meet to solve your hardware doubts with pro-builders.</p>
+                    <div class="card-underline" style="background:linear-gradient(to right,#c084fc,#60a5fa)"></div>
+                </div>
+            </div>
+            <!-- Card 3 -->
+            <div class="group relative p-10 rounded-3xl glass-effect hover:bg-white/5 transition-all duration-500 hover:scale-105 hover:-translate-y-4 cursor-pointer border border-emerald-500/20 hover:border-emerald-400/40 fade-up">
+                <div class="absolute -inset-2 bg-gradient-to-r from-emerald-500/20 to-transparent rounded-3xl blur opacity-75 group-hover:opacity-100 transition duration-1000"></div>
+                <div class="relative">
+                    <div class="w-20 h-20 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-2xl flex items-center justify-center mb-6 shadow-2xl">
+                        <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
+                    </div>
+                    <h3 class="font-orbitron text-2xl mb-4 text-emerald-300">Remote FPS Optimization</h3>
+                    <p class="text-lg text-gray-200 leading-relaxed mb-6">We tune your PC via AnyDesk for maximum gaming performance. Instant FPS gains guaranteed.</p>
+                    <div class="card-underline" style="background:linear-gradient(to right,#34d399,#60a5fa)"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- ══════ WHY US ══════ -->
+<section id="why-us" class="py-32 px-4 relative bg-black/30">
+    <div class="max-w-4xl mx-auto text-center">
+        <h2 class="font-orbitron text-5xl md:text-6xl lg:text-7xl mb-16 neon-blue drop-shadow-2xl fade-up">Why Choose Us?</h2>
+        <div class="grid md:grid-cols-3 gap-12">
+            <div class="p-10 glass-effect rounded-3xl hover:bg-blue-500/10 transition-all duration-500 hover:scale-105 fade-up">
+                <div class="w-20 h-20 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-8 shadow-2xl animate-pulse-glow">
+                    <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                </div>
+                <h3 class="font-orbitron text-2xl mb-6 neon-blue">Expert Hardware Knowledge</h3>
+                <p class="text-lg text-gray-200 leading-relaxed">10+ years building tournament-grade PCs. We know every chipset, socket, and bottleneck.</p>
+            </div>
+            <div class="p-10 glass-effect rounded-3xl hover:bg-purple-500/10 transition-all duration-500 hover:scale-105 fade-up">
+                <div class="w-20 h-20 bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-8 shadow-2xl animate-pulse-glow">
+                    <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                </div>
+                <h3 class="font-orbitron text-2xl mb-6 neon-purple">Zero Bottleneck Guarantee</h3>
+                <p class="text-lg text-gray-200 leading-relaxed">Every build is mathematically optimized. CPU, GPU, RAM — perfect balance guaranteed.</p>
+            </div>
+            <div class="p-10 glass-effect rounded-3xl hover:bg-emerald-500/10 transition-all duration-500 hover:scale-105 fade-up">
+                <div class="w-20 h-20 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-2xl flex items-center justify-center mx-auto mb-8 shadow-2xl animate-pulse-glow">
+                    <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                </div>
+                <h3 class="font-orbitron text-2xl mb-6 text-emerald-300">Remote Support</h3>
+                <p class="text-lg text-gray-200 leading-relaxed">No travel needed. We optimize remotely via AnyDesk. Works worldwide.</p>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- ══════ CONTACT ══════ -->
+<section id="contact" class="py-32 px-4 relative">
+    <div class="max-w-2xl mx-auto">
+        <div class="text-center mb-16 fade-up">
+            <h2 class="font-orbitron text-5xl md:text-6xl lg:text-7xl mb-6 neon-purple">Ready to Build?</h2>
+            <p class="text-xl md:text-2xl text-gray-200 max-w-2xl mx-auto">
+                Fill out the form below. We'll respond within 24 hours with your custom build options.
+            </p>
+        </div>
+        <form id="contactForm" class="space-y-8 glass-effect rounded-3xl p-10 md:p-12 border border-blue-500/30 backdrop-blur-xl shadow-2xl fade-up">
+            <!-- Name -->
+            <div>
+                <label class="block text-lg font-semibold mb-3 neon-blue">Full Name</label>
+                <input type="text" id="inputName" required
+                    class="w-full px-6 py-4 bg-black/50 border border-blue-500/50 rounded-2xl text-lg text-white focus:border-blue-400 focus:ring-4 focus:ring-blue-500/20 focus:outline-none transition-all hover:bg-white/5"
+                    placeholder="John Doe">
+            </div>
+
+            <!-- Email -->
+            <div>
+                <label class="block text-lg font-semibold mb-3 neon-purple">Email Address</label>
+                <input type="email" id="inputEmail" required
+                    class="w-full px-6 py-4 bg-black/50 border border-purple-500/50 rounded-2xl text-lg text-white focus:border-purple-400 focus:ring-4 focus:ring-purple-500/20 focus:outline-none transition-all hover:bg-white/5"
+                    placeholder="john@example.com">
+            </div>
+
+            <!-- Budget -->
+            <div>
+                <label class="block text-lg font-semibold mb-3 text-emerald-300">PC Budget (₹)</label>
+                <select id="inputBudget" required
+                    class="w-full px-6 py-4 bg-black/50 border border-emerald-500/50 rounded-2xl text-lg text-white focus:border-emerald-400 focus:ring-4 focus:ring-emerald-500/20 focus:outline-none transition-all cursor-pointer">
+                    <option value="">Select your budget</option>
+                    <option value="20000">₹20,000 — Entry Level</option>
+                    <option value="50000">₹50,000 — Mid Range</option>
+                    <option value="100000">₹1,00,000 — High End</option>
+                    <option value="150000">₹1,50,000+ — Enthusiast</option>
+                    <option value="custom">Custom Budget</option>
+                </select>
+            </div>
+
+            <!-- ── Service Tabs ── -->
+            <div>
+                <label class="block text-lg font-semibold mb-4 text-white">Which service do you need?</label>
+
+                <!-- Tab buttons -->
+                <div class="flex flex-wrap gap-3 mb-5" id="svcTabs">
+                    <button type="button" class="svc-tab active" data-svc="troubleshooting">🔧 PC Troubleshooting</button>
+                    <button type="button" class="svc-tab"        data-svc="building">🖥️ Build Guidance</button>
+                    <button type="button" class="svc-tab"        data-svc="errorfix">⚠️ Error Fix</button>
+                    <button type="button" class="svc-tab"        data-svc="fps">🎮 FPS Optimization</button>
+                </div>
+
+                <!-- Panel: Troubleshooting -->
+                <div class="svc-panel active" id="panel-troubleshooting">
+                    <div class="p-5 rounded-2xl border border-blue-500/25 bg-blue-900/10">
+                        <p class="text-sm text-blue-200 mb-3 leading-relaxed"><span class="font-semibold">PC Troubleshooting</span> — Diagnose \& fix hardware or software issues remotely or via step-by-step guidance.</p>
+                        <textarea id="detail-troubleshooting" rows="3"
+                            class="w-full px-4 py-3 bg-black/50 border border-blue-500/40 rounded-xl text-base text-white focus:border-blue-400 focus:outline-none transition-all resize-none"
+                            placeholder="Describe the problem (e.g. PC won't boot, random crashes, overheating…)"></textarea>
+                    </div>
+                </div>
+
+                <!-- Panel: Build Guidance -->
+                <div class="svc-panel" id="panel-building">
+                    <div class="p-5 rounded-2xl border border-purple-500/25 bg-purple-900/10">
+                        <p class="text-sm text-purple-200 mb-3 leading-relaxed"><span class="font-semibold">PC Building Guidance</span> — Custom parts list, compatibility check \& assembly walkthrough for your budget.</p>
+                        <textarea id="detail-building" rows="3"
+                            class="w-full px-4 py-3 bg-black/50 border border-purple-500/40 rounded-xl text-base text-white focus:border-purple-400 focus:outline-none transition-all resize-none"
+                            placeholder="Use case? (e.g. 1080p gaming, video editing, streaming, workstation…)"></textarea>
+                    </div>
+                </div>
+
+                <!-- Panel: Error Fix -->
+                <div class="svc-panel" id="panel-errorfix">
+                    <div class="p-5 rounded-2xl border border-rose-500/25 bg-rose-900/10">
+                        <p class="text-sm text-rose-200 mb-3 leading-relaxed"><span class="font-semibold">Error Fix</span> — BSODs, driver errors, boot failures, corrupted OS — root cause found and patched fast.</p>
+                        <textarea id="detail-errorfix" rows="3"
+                            class="w-full px-4 py-3 bg-black/50 border border-rose-500/40 rounded-xl text-base text-white focus:border-rose-400 focus:outline-none transition-all resize-none"
+                            placeholder="Error code, BSOD message, or app crash details…"></textarea>
+                    </div>
+                </div>
+
+                <!-- Panel: FPS Optimization -->
+                <div class="svc-panel" id="panel-fps">
+                    <div class="p-5 rounded-2xl border border-emerald-500/25 bg-emerald-900/10">
+                        <p class="text-sm text-emerald-200 mb-3 leading-relaxed"><span class="font-semibold">FPS Optimization</span> — Remote tuning of Windows, drivers, in-game settings \& background processes.</p>
+                        <textarea id="detail-fps" rows="3"
+                            class="w-full px-4 py-3 bg-black/50 border border-emerald-500/40 rounded-xl text-base text-white focus:border-emerald-400 focus:outline-none transition-all resize-none"
+                            placeholder="Which games? Current FPS vs target FPS? Your GPU/CPU specs?"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit"
+                class="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-xl font-semibold py-6 px-12 rounded-3xl font-exo shadow-2xl hover:shadow-blue-500/25 transition-all duration-300 transform hover:-translate-y-1 hover:scale-105 border border-blue-500/30 animate-pulse-glow uppercase tracking-wide text-white">
+                Get My Custom Build \&nbsp;→
+            </button>
+        </form>
+
+        <div class="text-center mt-16 pt-12 border-t border-white/10">
+            <p class="text-xl text-gray-400">Contact us directly:</p>
+            <a href="mailto:pcprecision.official@gmail.com"
+                class="block mt-4 text-xl md:text-2xl font-semibold neon-blue hover:neon-purple transition-all duration-300 font-orbitron tracking-wide break-all">
+                pcprecision.official@gmail.com
+            </a>
+        </div>
+    </div>
+
+</section>
+<!-- ══════ FOOTER ══════ -->
+<footer class="py-12 text-center border-t border-white/10">
+    <div class="max-w-4xl mx-auto px-4">
+        <div class="font-orbitron text-2xl neon-blue mb-4">PC-Precision</div>
+        <p class="text-gray-400">© 2025 PC-Precision. All rights reserved. Engineered for Performance.</p>
+    </div>
+</footer>
+<!-- ══════ POPUP ══════ -->
+<div id="popup-overlay">
+    <div id="popup-box">
+        <button id="popup-close" aria-label="Close">✕</button>
+        <div class="popup-icon" id="popupIcon"></div>
+<h3 class="font-orbitron text-2xl text-center mb-3 text-white" id="popupTitle"></h3>
+<p  class="text-gray-300 text-center text-base leading-relaxed mb-6" id="popupBody"></p>
+        <!-- Open Gmail button -->
+        <a id="popupEmailBtn" href="#"
+            class="flex items-center justify-center gap-3 w-full py-4 px-6 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 rounded-2xl text-white font-semibold text-lg transition-all duration-300 hover:scale-105 shadow-lg">
+            <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+            </svg>
+            Open Gmail to Contact Team
+        </a>
+
+        <p class="text-center text-gray-500 text-sm mt-5">
+            Our team will guide you through your selected issue via email.<br>
+            Expect a reply within <span class="text-blue-300 font-semibold">24 hours</span>. 📬
+        </p>
+    </div>
+
+</div>
+<script>
+/\* smooth scroll \*/
+document.querySelectorAll('a\[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+        e.preventDefault();
+        const t = document.querySelector(a.getAttribute('href'));
+        if (t) t.scrollIntoView({ behavior:'smooth', block:'start' });
+    });
+});
+
+/\* scroll fade-in \*/
+const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold:0.1, rootMargin:'0px 0px -50px 0px' });
+document.querySelectorAll('.fade-up').forEach(el => obs.observe(el));
+
+/\* service tabs \*/
+let activeService = 'troubleshooting';
+document.querySelectorAll('.svc-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+        document.querySelectorAll('.svc-tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.svc-panel').forEach(p => p.classList.remove('active'));
+        tab.classList.add('active');
+        activeService = tab.dataset.svc;
+        document.getElementById('panel-' + activeService).classList.add('active');
+    });
+});
+
+/\* service config \*/
+const svcCfg = {
+    troubleshooting: {
+        icon:'🔧', bg:'linear-gradient(135deg,#3b82f6,#1d4ed8)',
+        title:'Troubleshooting Request Sent!',
+        body:'Our engineers will diagnose your issue and reach out with a fix plan. Click below to open Gmail — we reply within 24 hours.',
+        subject:'PC Troubleshooting Request', detailId:'detail-troubleshooting'
+    },
+    building: {
+        icon:'🖥️', bg:'linear-gradient(135deg,#8b5cf6,#5b21b6)',
+        title:'Build Guidance Request Sent!',
+        body:'Our pro-builders will craft a custom parts list for your budget. Click below to connect via Gmail.',
+        subject:'PC Building Guidance Request', detailId:'detail-building'
+    },
+    errorfix: {
+        icon:'⚠️', bg:'linear-gradient(135deg,#f43f5e,#be123c)',
+        title:'Error Fix Request Sent!',
+        body:'We have your error report. Our team will identify the root cause ASAP. Open Gmail below for updates.',
+        subject:'PC Error Fix Request', detailId:'detail-errorfix'
+    },
+    fps: {
+        icon:'🎮', bg:'linear-gradient(135deg,#10b981,#065f46)',
+        title:'FPS Optimization Request Sent!',
+        body:'Time to squeeze every frame out of your rig! Our team will reach out via Gmail with remote tuning steps.',
+        subject:'FPS Optimization Request', detailId:'detail-fps'
+    }
+};
+
+/\* form submit \*/
+document.getElementById('contactForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const name   = document.getElementById('inputName').value.trim();
+    const email  = document.getElementById('inputEmail').value.trim();
+    const budget = document.getElementById('inputBudget').value;
+    const cfg    = svcCfg\[activeService];
+    const detail = document.getElementById(cfg.detailId).value.trim();
+
+    const body = \[
+        'Name: ' + name,
+        'Email: ' + email,
+        'Budget: ' + (budget || 'Not specified'),
+        'Service: ' + cfg.subject,
+        detail ? 'Details:\\n' + detail : ''
+    ].filter(Boolean).join('\\n');
+
+    const mailto = 'mailto:pcprecision.official@gmail.com'
+        + '?subject=' + encodeURIComponent(cfg.subject + ' — ' + name)
+        + '\&body='    + encodeURIComponent(body);
+
+    /\* fill popup \*/
+    const icon = document.getElementById('popupIcon');
+    icon.textContent = cfg.icon;
+    icon.style.background = cfg.bg;
+
+    document.getElementById('popupTitle').textContent = cfg.title;
+    document.getElementById('popupBody').textContent  = cfg.body;
+    document.getElementById('popupEmailBtn').href     = mailto;
+
+    document.getElementById('popup-overlay').classList.add('open');
+
+    /\* reset \*/
+    this.reset();
+    document.querySelectorAll('.svc-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.svc-panel').forEach(p => p.classList.remove('active'));
+    document.querySelector('\[data-svc="troubleshooting"]').classList.add('active');
+    document.getElementById('panel-troubleshooting').classList.add('active');
+    activeService = 'troubleshooting';
+});
+
+/\* close popup \*/
+document.getElementById('popup-close').addEventListener('click', () =>
+    document.getElementById('popup-overlay').classList.remove('open'));
+document.getElementById('popup-overlay').addEventListener('click', e => {
+    if (e.target.id === 'popup-overlay')
+        document.getElementById('popup-overlay').classList.remove('open');
+});
+document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') document.getElementById('popup-overlay').classList.remove('open');
+});
+
+</body>
+</html>
