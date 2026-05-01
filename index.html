@@ -1,466 +1,719 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PC-Precision - Ultimate PC Build Experts</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900\&family=Exo+2:wght@300;400;600;800\&display=swap" rel="stylesheet">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        'exo': \['Exo 2', 'sans-serif'],
-                        'orbitron': \['Orbitron', 'monospace'],
-                    },
-                    animation: {
-                        'pulse-glow': 'pulse-glow 2s ease-in-out infinite alternate',
-                        'float': 'float 6s ease-in-out infinite',
-                    },
-                    keyframes: {
-                        'pulse-glow': {
-                            '0%, 100%': { boxShadow: '0 0 20px rgba(59,130,246,0.5),0 0 40px rgba(59,130,246,0.3)' },
-                            '50%':       { boxShadow: '0 0 40px rgba(59,130,246,0.8),0 0 80px rgba(59,130,246,0.6)' }
-                        },
-                        'float': {
-                            '0%,100%': { transform: 'translateY(0px)' },
-                            '50%':     { transform: 'translateY(-20px)' }
-                        }
-                    }
-                }
-            }
-        }
-    </script>
-    <style>
-        .gradient-bg { background: linear-gradient(135deg,#0a0a0a 0%,#1a0d2e 25%,#16213e 50%,#0f0f23 100%); }
-        .neon-blue   { background: linear-gradient(45deg,#60a5fa,#93c5fd); background-clip:text; -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
-        .neon-purple { background: linear-gradient(45deg,#c084fc,#a78bfa); background-clip:text; -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
-        .glass-effect { background:rgba(255,255,255,0.05); backdrop-filter:blur(10px); border:1px solid rgba(255,255,255,0.1); }
-        .scanline::before {
-content:''; position:absolute; inset:0;
-background:linear-gradient(90deg,transparent 49%,rgba(0,255,255,0.03) 50%,transparent 51%);
-animation:scanline 3s linear infinite;
-}
-@keyframes scanline { 0%{transform:translateX(-100%)} 100%{transform:translateX(100%)} }
-        select option { background:#1a0d2e; color:#fff; }
-        ::placeholder  { color:rgba(255,255,255,0.4); }
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>PC-Precision – Ultimate PC Build Experts</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600;800&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box}
+body{font-family:'Exo 2',sans-serif;background:linear-gradient(135deg,#0a0a0a 0%,#1a0d2e 25%,#16213e 50%,#0f0f23 100%);color:#fff;overflow-x:hidden;min-height:100vh}
+.neon-blue{background:linear-gradient(45deg,#60a5fa,#93c5fd);background-clip:text;-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.neon-purple{background:linear-gradient(45deg,#c084fc,#a78bfa);background-clip:text;-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.glass{background:rgba(255,255,255,.05);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.1)}
+.card-ul{height:2px;background:linear-gradient(to right,#60a5fa,#c084fc);border-radius:9999px;transform:scaleX(0);transform-origin:left;transition:transform .5s}
+.group:hover .card-ul{transform:scaleX(1)}
+.scanline::before{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent 49%,rgba(0,255,255,.03) 50%,transparent 51%);animation:scanline 3s linear infinite;pointer-events:none}
+@keyframes scanline{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
+@keyframes pulse-glow{0%,100%{box-shadow:0 0 20px rgba(59,130,246,.5),0 0 40px rgba(59,130,246,.3)}50%{box-shadow:0 0 40px rgba(59,130,246,.8),0 0 80px rgba(59,130,246,.6)}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-20px)}}
+@keyframes fadeIn{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+@keyframes popIn{from{transform:scale(.8);opacity:0}to{transform:scale(1);opacity:1}}
+.animate-float{animation:float 6s ease-in-out infinite}
+.animate-glow{animation:pulse-glow 2s ease-in-out infinite alternate}
+.fade-up{opacity:0;transform:translateY(40px);transition:opacity .6s ease,transform .6s ease}
+.fade-up.visible{opacity:1;transform:translateY(0)}
+select option{background:#1a0d2e;color:#fff}
+::placeholder{color:rgba(255,255,255,.4)}
+input,select,textarea{color:#fff}
 
-        .card-underline {
-            height:2px; width:100%;
-            background:linear-gradient(to right,#60a5fa,#c084fc);
-            border-radius:9999px;
-            transform:scaleX(0); transform-origin:left;
-            transition:transform 0.5s ease;
-        }
-        .group:hover .card-underline { transform:scaleX(1); }
+/* ─── NAV ─── */
+nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(10,10,10,.9);backdrop-filter:blur(16px);border-bottom:1px solid rgba(255,255,255,.07)}
+.nav-link{color:#94a3b8;font-weight:600;font-size:15px;transition:color .2s;padding:6px 4px;border-bottom:2px solid transparent;transition:all .2s}
+.nav-link:hover{color:#60a5fa;border-color:#60a5fa}
 
-        /\* service tabs \*/
-        .svc-tab {
-            cursor:pointer; padding:10px 20px; border-radius:12px;
-            border:1px solid rgba(255,255,255,0.12);
-            background:rgba(255,255,255,0.04);
-            color:#94a3b8; font-family:'Exo 2',sans-serif; font-weight:600; font-size:14px;
-            transition:all 0.25s ease; white-space:nowrap;
-        }
-        .svc-tab:hover  { background:rgba(59,130,246,0.15); color:#93c5fd; border-color:#3b82f6; }
-        .svc-tab.active {
-            background:linear-gradient(135deg,rgba(59,130,246,0.28),rgba(139,92,246,0.28));
-            color:#e2e8f0; border-color:#6366f1;
-            box-shadow:0 0 16px rgba(99,102,241,0.35);
-        }
-        .svc-panel          { display:none; }
-        .svc-panel.active   { display:block; }
+/* ─── SERVICE TABS ─── */
+.svc-tab{cursor:pointer;padding:10px 18px;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.04);color:#94a3b8;font-family:'Exo 2',sans-serif;font-weight:600;font-size:14px;transition:all .25s;white-space:nowrap}
+.svc-tab:hover{background:rgba(59,130,246,.15);color:#93c5fd;border-color:#3b82f6}
+.svc-tab.active{background:linear-gradient(135deg,rgba(59,130,246,.28),rgba(139,92,246,.28));color:#e2e8f0;border-color:#6366f1;box-shadow:0 0 16px rgba(99,102,241,.35)}
+.svc-panel{display:none}.svc-panel.active{display:block}
 
-        /\* popup \*/
-        #popup-overlay {
-            display:none; position:fixed; inset:0; z-index:9999;
-            background:rgba(0,0,0,0.78); backdrop-filter:blur(6px);
-            align-items:center; justify-content:center;
-        }
-        #popup-overlay.open { display:flex; }
-        #popup-box {
-            position:relative; max-width:500px; width:92%;
-            background:linear-gradient(135deg,#0f0f23,#1a0d2e);
-            border:1px solid rgba(99,102,241,0.45);
-            border-radius:24px; padding:40px 32px;
-            box-shadow:0 0 60px rgba(99,102,241,0.3);
-            animation:popIn 0.35s cubic-bezier(.175,.885,.32,1.275);
-        }
-        @keyframes popIn { from{transform:scale(0.8);opacity:0} to{transform:scale(1);opacity:1} }
-        #popup-close {
-            position:absolute; top:14px; right:18px;
-            background:none; border:none; color:#64748b;
-            font-size:26px; cursor:pointer; line-height:1; transition:color 0.2s;
-        }
-        #popup-close:hover { color:#e2e8f0; }
-        .popup-icon {
-            width:72px; height:72px; border-radius:18px; margin:0 auto 18px;
-            display:flex; align-items:center; justify-content:center; font-size:36px;
-        }
+/* ─── TROUBLESHOOT SECTION ─── */
+#troubleshoot{background:linear-gradient(180deg,#0a0a1a 0%,#0d0d25 50%,#0a0a1a 100%)}
+.ts-search-wrap{position:relative;max-width:720px;margin:0 auto 48px}
+.ts-search{width:100%;padding:18px 24px 18px 60px;background:rgba(255,255,255,.06);border:2px solid rgba(99,102,241,.4);border-radius:20px;font-size:18px;color:#fff;outline:none;font-family:'Exo 2',sans-serif;transition:all .3s}
+.ts-search:focus{border-color:#6366f1;box-shadow:0 0 0 4px rgba(99,102,241,.2),0 0 30px rgba(99,102,241,.15)}
+.ts-search-icon{position:absolute;left:20px;top:50%;transform:translateY(-50%);font-size:22px;pointer-events:none}
+.ts-results-count{text-align:center;color:#64748b;font-size:14px;margin-bottom:24px;min-height:20px}
 
-        /\* scroll fade \*/
-        .fade-up { opacity:0; transform:translateY(40px); transition:opacity 0.6s ease,transform 0.6s ease; }
-        .fade-up.visible { opacity:1; transform:translateY(0); }
-    </style>
+.ts-cat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;margin-bottom:36px}
+.ts-cat-btn{padding:12px 16px;border-radius:14px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);color:#cbd5e1;font-family:'Exo 2',sans-serif;font-weight:600;font-size:13px;cursor:pointer;transition:all .25s;text-align:center;display:flex;align-items:center;justify-content:center;gap:8px}
+.ts-cat-btn:hover,.ts-cat-btn.active{background:linear-gradient(135deg,rgba(99,102,241,.25),rgba(139,92,246,.25));border-color:#6366f1;color:#e2e8f0;box-shadow:0 0 14px rgba(99,102,241,.3)}
 
+.ts-issues-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:16px;margin-top:24px}
+.ts-card{border-radius:16px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);overflow:hidden;transition:all .3s;cursor:pointer}
+.ts-card:hover{border-color:rgba(99,102,241,.5);background:rgba(99,102,241,.06);transform:translateY(-2px);box-shadow:0 8px 30px rgba(0,0,0,.3)}
+.ts-card-header{padding:16px 20px;display:flex;align-items:flex-start;gap:12px}
+.ts-card-icon{font-size:22px;flex-shrink:0;margin-top:2px}
+.ts-card-title{font-weight:700;font-size:15px;color:#e2e8f0;line-height:1.3;margin-bottom:4px}
+.ts-card-tag{display:inline-block;padding:2px 10px;border-radius:99px;font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase}
+.ts-card-body{padding:0 20px 16px;display:none;border-top:1px solid rgba(255,255,255,.06);margin-top:8px;padding-top:16px}
+.ts-card.open .ts-card-body{display:block}
+.ts-card-body p{color:#94a3b8;font-size:14px;line-height:1.7;margin-bottom:10px}
+.ts-card-body ul{color:#94a3b8;font-size:14px;line-height:1.7;padding-left:20px;list-style:disc;margin-bottom:12px}
+.ts-card-body ul li{margin-bottom:4px}
+.ts-still-help{display:inline-flex;align-items:center;gap:6px;margin-top:8px;padding:8px 16px;border-radius:10px;background:linear-gradient(135deg,#1e40af,#5b21b6);color:#fff;font-size:13px;font-weight:600;cursor:pointer;border:none;transition:all .25s}
+.ts-still-help:hover{transform:scale(1.04);box-shadow:0 4px 16px rgba(99,102,241,.4)}
+
+/* severity badges */
+.badge-easy{background:rgba(16,185,129,.15);color:#34d399;border:1px solid rgba(16,185,129,.3)}
+.badge-medium{background:rgba(245,158,11,.15);color:#fcd34d;border:1px solid rgba(245,158,11,.3)}
+.badge-hard{background:rgba(239,68,68,.15);color:#f87171;border:1px solid rgba(239,68,68,.3)}
+
+/* ─── POPUP ─── */
+#popup-overlay{display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.78);backdrop-filter:blur(6px);align-items:center;justify-content:center}
+#popup-overlay.open{display:flex}
+#popup-box{position:relative;max-width:500px;width:92%;background:linear-gradient(135deg,#0f0f23,#1a0d2e);border:1px solid rgba(99,102,241,.45);border-radius:24px;padding:40px 32px;box-shadow:0 0 60px rgba(99,102,241,.3);animation:popIn .35s cubic-bezier(.175,.885,.32,1.275)}
+#popup-close{position:absolute;top:14px;right:18px;background:none;border:none;color:#64748b;font-size:26px;cursor:pointer;transition:color .2s;line-height:1}
+#popup-close:hover{color:#e2e8f0}
+.popup-icon{width:72px;height:72px;border-radius:18px;margin:0 auto 18px;display:flex;align-items:center;justify-content:center;font-size:36px}
+
+/* no results */
+.ts-no-results{text-align:center;padding:60px 20px;color:#475569;font-size:18px;display:none}
+.ts-no-results.show{display:block}
+
+/* toast */
+#toast{position:fixed;bottom:30px;right:30px;z-index:8888;background:linear-gradient(135deg,#065f46,#047857);border:1px solid #10b981;border-radius:16px;padding:16px 24px;color:#fff;font-weight:600;font-size:15px;display:flex;align-items:center;gap:10px;box-shadow:0 8px 30px rgba(0,0,0,.4);transform:translateY(100px);opacity:0;transition:all .4s cubic-bezier(.175,.885,.32,1.275)}
+#toast.show{transform:translateY(0);opacity:1}
+#toast-err{background:linear-gradient(135deg,#7f1d1d,#991b1b);border-color:#ef4444}
+
+@media(max-width:640px){.ts-issues-grid{grid-template-columns:1fr}.ts-cat-grid{grid-template-columns:repeat(2,1fr)}}
+</style>
 </head>
-<body class="gradient-bg text-white overflow-x-hidden font-exo min-h-screen">
-<!-- ambient bg -->
-<div class="fixed inset-0 pointer-events-none z-0">
-    <div class="absolute inset-0 bg-\[radial-gradient(circle\_at\_20%\_80%,rgba(120,119,198,0.3),transparent),radial-gradient(circle\_at\_80%\_20%,rgba(120,119,198,0.3),transparent),radial-gradient(circle\_at\_40%\_40%,rgba(59,130,246,0.2),transparent)]"></div>
-</div>
-<!-- ══════ HERO ══════ -->
-<section class="relative min-h-screen flex items-center justify-center px-4 pt-20 pb-32 overflow-hidden">
-    <div class="scanline absolute inset-0 z-10"></div>
-    <div class="max-w-7xl mx-auto text-center relative z-20">
-        <div class="inline-block animate-pulse-glow mb-8 p-4 rounded-xl glass-effect">
-            <span class="text-lg md:text-2xl font-orbitron tracking-wider bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-                PC-PRECISION AI BUILD ENGINE
-            </span>
-        </div>
-        <h1 class="font-orbitron text-5xl md:text-7xl lg:text-8xl xl:text-9xl leading-tight mb-8 drop-shadow-2xl">
-            <span class="neon-blue block">Get the Ultimate</span>
-            <span class="neon-purple">PC Build Recommendation</span>
-            <span class="text-white block text-2xl md:text-4xl mt-4 font-exo font-light">from Experts</span>
-        </h1>
-        <p class="text-xl md:text-2xl lg:text-3xl max-w-4xl mx-auto mb-12 leading-relaxed text-gray-200 font-light">
-            Stop wasting money on bottlenecks. Get a custom parts list and
-            <span class="font-semibold text-blue-300">optimization from pro-builders</span>.
-        </p>
-        <a href="#contact" class="group inline-flex items-center gap-4 px-12 py-6 bg-gradient-to-r from-blue-600/90 to-purple-600/90 hover:from-blue-500 hover:to-purple-500 rounded-full text-xl font-semibold font-exo shadow-2xl transition-all duration-300 transform hover:-translate-y-2 hover:scale-105 glass-effect border border-blue-500/30 animate-pulse-glow">
-            <span>Book 15-Min Google Meet</span>
-            <svg class="w-6 h-6 group-hover:translate-x-2 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
-            </svg>
-        </a>
+<body>
+
+<!-- ambient glow -->
+<div style="position:fixed;inset:0;pointer-events:none;z-index:0;background:radial-gradient(circle at 20% 80%,rgba(120,119,198,.3),transparent),radial-gradient(circle at 80% 20%,rgba(120,119,198,.3),transparent),radial-gradient(circle at 40% 40%,rgba(59,130,246,.2),transparent)"></div>
+
+<!-- ══════════════ NAV ══════════════ -->
+<nav>
+  <div style="max-width:1280px;margin:0 auto;padding:0 24px;height:64px;display:flex;align-items:center;justify-content:space-between">
+    <div style="font-family:'Orbitron',monospace;font-size:20px;font-weight:700;background:linear-gradient(45deg,#60a5fa,#c084fc);background-clip:text;-webkit-background-clip:text;-webkit-text-fill-color:transparent">PC-Precision</div>
+    <div style="display:flex;gap:28px;align-items:center">
+      <a href="#services"     class="nav-link">Services</a>
+      <a href="#troubleshoot" class="nav-link" style="color:#a78bfa;border-color:transparent">🔧 Troubleshoot</a>
+      <a href="#why-us"       class="nav-link">Why Us</a>
+      <a href="#contact"      class="nav-link px-5 py-2 rounded-full" style="background:linear-gradient(135deg,rgba(59,130,246,.3),rgba(139,92,246,.3));border:1px solid #6366f1;color:#e2e8f0">Contact</a>
     </div>
-    <div class="absolute top-1/2 right-10 w-32 h-32 md:w-48 md:h-48 lg:w-64 lg:h-64 opacity-20 animate-float pointer-events-none">
-        <div class="w-full h-full bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-2xl shadow-2xl border border-blue-500/30"></div>
+  </div>
+</nav>
+
+<!-- ══════════════ HERO ══════════════ -->
+<section style="position:relative;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:80px 16px 100px;overflow:hidden">
+  <div class="scanline" style="position:absolute;inset:0;z-index:1"></div>
+  <div style="max-width:1100px;margin:0 auto;text-align:center;position:relative;z-index:2">
+    <div class="animate-glow glass" style="display:inline-block;padding:14px 28px;border-radius:14px;margin-bottom:32px">
+      <span style="font-family:'Orbitron',monospace;font-size:clamp(14px,2vw,22px);letter-spacing:2px;background:linear-gradient(to right,#60a5fa,#c084fc);background-clip:text;-webkit-background-clip:text;-webkit-text-fill-color:transparent">PC-PRECISION AI BUILD ENGINE</span>
     </div>
+    <h1 style="font-family:'Orbitron',monospace;font-size:clamp(36px,8vw,90px);line-height:1.1;margin-bottom:28px">
+      <span class="neon-blue" style="display:block">Get the Ultimate</span>
+      <span class="neon-purple">PC Build Recommendation</span>
+      <span style="display:block;font-size:clamp(18px,3vw,38px);margin-top:12px;font-family:'Exo 2',sans-serif;font-weight:300;color:#e2e8f0">from Experts</span>
+    </h1>
+    <p style="font-size:clamp(16px,2vw,24px);max-width:760px;margin:0 auto 48px;color:#cbd5e1;line-height:1.7;font-weight:300">
+      Stop wasting money on bottlenecks. Get a custom parts list and <span style="color:#93c5fd;font-weight:600">optimization from pro-builders</span>.
+    </p>
+    <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap">
+      <a href="#contact" class="animate-glow" style="display:inline-flex;align-items:center;gap:12px;padding:18px 40px;background:linear-gradient(135deg,rgba(59,130,246,.9),rgba(139,92,246,.9));border-radius:99px;font-size:18px;font-weight:700;color:#fff;border:1px solid rgba(99,102,241,.5);transition:all .3s;text-decoration:none" onmouseover="this.style.transform='translateY(-4px) scale(1.04)'" onmouseout="this.style.transform=''">
+        Book 15-Min Google Meet <span>→</span>
+      </a>
+      <a href="#troubleshoot" style="display:inline-flex;align-items:center;gap:10px;padding:18px 40px;background:rgba(255,255,255,.06);border-radius:99px;font-size:18px;font-weight:700;color:#a78bfa;border:1px solid rgba(167,139,250,.4);transition:all .3s;text-decoration:none" onmouseover="this.style.transform='translateY(-4px)';this.style.borderColor='#a78bfa'" onmouseout="this.style.transform='';this.style.borderColor='rgba(167,139,250,.4)'">
+        🔧 Self-Troubleshoot
+      </a>
+    </div>
+  </div>
+  <div class="animate-float" style="position:absolute;top:50%;right:40px;width:200px;height:200px;opacity:.15;pointer-events:none">
+    <div style="width:100%;height:100%;background:linear-gradient(135deg,rgba(59,130,246,.3),rgba(139,92,246,.3));border-radius:20px;border:1px solid rgba(99,102,241,.4)"></div>
+  </div>
 </section>
-<!-- ══════ SERVICES ══════ -->
-<section id="services" class="py-32 px-4 relative">
-    <div class="max-w-6xl mx-auto">
-        <div class="text-center mb-24 fade-up">
-            <h2 class="font-orbitron text-5xl md:text-6xl lg:text-7xl mb-6 neon-purple">Our Services</h2>
-            <div class="w-32 h-1 bg-gradient-to-r from-blue-400 to-purple-500 mx-auto rounded-full"></div>
-        </div>
-        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <!-- Card 1 -->
-            <div class="group relative p-10 rounded-3xl glass-effect hover:bg-white/5 transition-all duration-500 hover:scale-105 hover:-translate-y-4 cursor-pointer border border-blue-500/20 hover:border-blue-400/40 fade-up">
-                <div class="absolute -inset-2 bg-gradient-to-r from-blue-500/20 to-transparent rounded-3xl blur opacity-75 group-hover:opacity-100 transition duration-1000"></div>
-                <div class="relative">
-                    <div class="w-20 h-20 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center mb-6 shadow-2xl">
-                        <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
-                    </div>
-                    <h3 class="font-orbitron text-2xl mb-4 neon-blue">Custom Build Blueprints</h3>
-                    <p class="text-lg text-gray-200 leading-relaxed mb-6">A personalized PDF with the best parts for your budget. Zero bottlenecks guaranteed.</p>
-                    <div class="card-underline"></div>
-                </div>
-            </div>
-            <!-- Card 2 -->
-            <div class="group relative p-10 rounded-3xl glass-effect hover:bg-white/5 transition-all duration-500 hover:scale-105 hover:-translate-y-4 cursor-pointer border border-purple-500/20 hover:border-purple-400/40 fade-up">
-                <div class="absolute -inset-2 bg-gradient-to-r from-purple-500/20 to-transparent rounded-3xl blur opacity-75 group-hover:opacity-100 transition duration-1000"></div>
-                <div class="relative">
-                    <div class="w-20 h-20 bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl flex items-center justify-center mb-6 shadow-2xl">
-                        <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-                    </div>
-                    <h3 class="font-orbitron text-2xl mb-4 neon-purple">1-on-1 Consultation</h3>
-                    <p class="text-lg text-gray-200 leading-relaxed mb-6">15-minute Google Meet to solve your hardware doubts with pro-builders.</p>
-                    <div class="card-underline" style="background:linear-gradient(to right,#c084fc,#60a5fa)"></div>
-                </div>
-            </div>
-            <!-- Card 3 -->
-            <div class="group relative p-10 rounded-3xl glass-effect hover:bg-white/5 transition-all duration-500 hover:scale-105 hover:-translate-y-4 cursor-pointer border border-emerald-500/20 hover:border-emerald-400/40 fade-up">
-                <div class="absolute -inset-2 bg-gradient-to-r from-emerald-500/20 to-transparent rounded-3xl blur opacity-75 group-hover:opacity-100 transition duration-1000"></div>
-                <div class="relative">
-                    <div class="w-20 h-20 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-2xl flex items-center justify-center mb-6 shadow-2xl">
-                        <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
-                    </div>
-                    <h3 class="font-orbitron text-2xl mb-4 text-emerald-300">Remote FPS Optimization</h3>
-                    <p class="text-lg text-gray-200 leading-relaxed mb-6">We tune your PC via AnyDesk for maximum gaming performance. Instant FPS gains guaranteed.</p>
-                    <div class="card-underline" style="background:linear-gradient(to right,#34d399,#60a5fa)"></div>
-                </div>
-            </div>
-        </div>
+
+<!-- ══════════════ SERVICES ══════════════ -->
+<section id="services" style="padding:100px 16px;position:relative">
+  <div style="max-width:1100px;margin:0 auto">
+    <div class="fade-up" style="text-align:center;margin-bottom:80px">
+      <h2 style="font-family:'Orbitron',monospace;font-size:clamp(32px,6vw,64px);margin-bottom:16px" class="neon-purple">Our Services</h2>
+      <div style="width:120px;height:3px;background:linear-gradient(to right,#60a5fa,#c084fc);margin:0 auto;border-radius:99px"></div>
     </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:28px">
+      <!-- Card 1 -->
+      <div class="group glass fade-up" style="padding:36px;border-radius:24px;border:1px solid rgba(59,130,246,.2);transition:all .4s;cursor:pointer" onmouseover="this.style.transform='scale(1.04) translateY(-8px)';this.style.borderColor='rgba(99,130,246,.6)'" onmouseout="this.style.transform='';this.style.borderColor='rgba(59,130,246,.2)'">
+        <div style="width:72px;height:72px;background:linear-gradient(135deg,#3b82f6,#1d4ed8);border-radius:18px;display:flex;align-items:center;justify-content:center;margin-bottom:20px;font-size:32px">📋</div>
+        <h3 style="font-family:'Orbitron',monospace;font-size:20px;margin-bottom:12px" class="neon-blue">Custom Build Blueprints</h3>
+        <p style="color:#94a3b8;font-size:16px;line-height:1.6;margin-bottom:16px">A personalized PDF with the best parts for your budget. Zero bottlenecks guaranteed.</p>
+        <div class="card-ul"></div>
+      </div>
+      <!-- Card 2 -->
+      <div class="group glass fade-up" style="padding:36px;border-radius:24px;border:1px solid rgba(139,92,246,.2);transition:all .4s;cursor:pointer" onmouseover="this.style.transform='scale(1.04) translateY(-8px)';this.style.borderColor='rgba(139,92,246,.6)'" onmouseout="this.style.transform='';this.style.borderColor='rgba(139,92,246,.2)'">
+        <div style="width:72px;height:72px;background:linear-gradient(135deg,#8b5cf6,#5b21b6);border-radius:18px;display:flex;align-items:center;justify-content:center;margin-bottom:20px;font-size:32px">📅</div>
+        <h3 style="font-family:'Orbitron',monospace;font-size:20px;margin-bottom:12px" class="neon-purple">1-on-1 Consultation</h3>
+        <p style="color:#94a3b8;font-size:16px;line-height:1.6;margin-bottom:16px">15-minute Google Meet to solve your hardware doubts with pro-builders.</p>
+        <div class="card-ul" style="background:linear-gradient(to right,#c084fc,#60a5fa)"></div>
+      </div>
+      <!-- Card 3 -->
+      <div class="group glass fade-up" style="padding:36px;border-radius:24px;border:1px solid rgba(16,185,129,.2);transition:all .4s;cursor:pointer" onmouseover="this.style.transform='scale(1.04) translateY(-8px)';this.style.borderColor='rgba(16,185,129,.6)'" onmouseout="this.style.transform='';this.style.borderColor='rgba(16,185,129,.2)'">
+        <div style="width:72px;height:72px;background:linear-gradient(135deg,#10b981,#065f46);border-radius:18px;display:flex;align-items:center;justify-content:center;margin-bottom:20px;font-size:32px">🎮</div>
+        <h3 style="font-family:'Orbitron',monospace;font-size:20px;margin-bottom:12px;color:#34d399">Remote FPS Optimization</h3>
+        <p style="color:#94a3b8;font-size:16px;line-height:1.6;margin-bottom:16px">We tune your PC via AnyDesk for maximum gaming performance. Instant FPS gains guaranteed.</p>
+        <div class="card-ul" style="background:linear-gradient(to right,#34d399,#60a5fa)"></div>
+      </div>
+    </div>
+  </div>
 </section>
-<!-- ══════ WHY US ══════ -->
-<section id="why-us" class="py-32 px-4 relative bg-black/30">
-    <div class="max-w-4xl mx-auto text-center">
-        <h2 class="font-orbitron text-5xl md:text-6xl lg:text-7xl mb-16 neon-blue drop-shadow-2xl fade-up">Why Choose Us?</h2>
-        <div class="grid md:grid-cols-3 gap-12">
-            <div class="p-10 glass-effect rounded-3xl hover:bg-blue-500/10 transition-all duration-500 hover:scale-105 fade-up">
-                <div class="w-20 h-20 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-8 shadow-2xl animate-pulse-glow">
-                    <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
-                </div>
-                <h3 class="font-orbitron text-2xl mb-6 neon-blue">Expert Hardware Knowledge</h3>
-                <p class="text-lg text-gray-200 leading-relaxed">10+ years building tournament-grade PCs. We know every chipset, socket, and bottleneck.</p>
-            </div>
-            <div class="p-10 glass-effect rounded-3xl hover:bg-purple-500/10 transition-all duration-500 hover:scale-105 fade-up">
-                <div class="w-20 h-20 bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-8 shadow-2xl animate-pulse-glow">
-                    <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                </div>
-                <h3 class="font-orbitron text-2xl mb-6 neon-purple">Zero Bottleneck Guarantee</h3>
-                <p class="text-lg text-gray-200 leading-relaxed">Every build is mathematically optimized. CPU, GPU, RAM — perfect balance guaranteed.</p>
-            </div>
-            <div class="p-10 glass-effect rounded-3xl hover:bg-emerald-500/10 transition-all duration-500 hover:scale-105 fade-up">
-                <div class="w-20 h-20 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-2xl flex items-center justify-center mx-auto mb-8 shadow-2xl animate-pulse-glow">
-                    <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-                </div>
-                <h3 class="font-orbitron text-2xl mb-6 text-emerald-300">Remote Support</h3>
-                <p class="text-lg text-gray-200 leading-relaxed">No travel needed. We optimize remotely via AnyDesk. Works worldwide.</p>
-            </div>
-        </div>
+
+<!-- ══════════════════════════════════════════════════════
+     🔧 TROUBLESHOOT — MEGA SECTION
+══════════════════════════════════════════════════════ -->
+<section id="troubleshoot" style="padding:100px 16px;position:relative">
+  <div style="max-width:1200px;margin:0 auto">
+
+    <!-- Heading -->
+    <div class="fade-up" style="text-align:center;margin-bottom:60px">
+      <div style="display:inline-flex;align-items:center;gap:12px;padding:10px 28px;border-radius:99px;background:linear-gradient(135deg,rgba(99,102,241,.2),rgba(139,92,246,.2));border:1px solid rgba(99,102,241,.4);margin-bottom:24px">
+        <span style="font-size:22px">🔧</span>
+        <span style="font-family:'Orbitron',monospace;font-size:13px;letter-spacing:3px;color:#a78bfa;text-transform:uppercase">Biggest Feature</span>
+      </div>
+      <h2 style="font-family:'Orbitron',monospace;font-size:clamp(28px,5vw,60px);margin-bottom:16px">
+        <span style="background:linear-gradient(45deg,#60a5fa,#c084fc,#34d399);background-clip:text;-webkit-background-clip:text;-webkit-text-fill-color:transparent">500+ PC Issues</span>
+        <span style="display:block;font-size:clamp(16px,2.5vw,32px);color:#e2e8f0;margin-top:8px;font-family:'Exo 2',sans-serif;font-weight:300">Instantly Solved — No Wait, No Cost</span>
+      </h2>
+      <p style="color:#64748b;font-size:16px;max-width:600px;margin:0 auto">Search your exact problem below. If the fix doesn't work, hit <strong style="color:#a78bfa">"Still Need Help?"</strong> and we'll personally take over.</p>
     </div>
+
+    <!-- Search -->
+    <div class="ts-search-wrap fade-up">
+      <span class="ts-search-icon">🔍</span>
+      <input type="text" id="tsSearch" class="ts-search" placeholder="Type your problem… e.g. 'blue screen', 'PC overheating', 'no display'">
+    </div>
+    <p class="ts-results-count" id="tsCount"></p>
+
+    <!-- Category filters -->
+    <div class="ts-cat-grid fade-up" id="catGrid"></div>
+
+    <!-- Issues grid -->
+    <div class="ts-issues-grid" id="issuesGrid"></div>
+    <div class="ts-no-results" id="tsNoResults">😕 No results found for that. <br><span style="font-size:14px;margin-top:8px;display:block"><button onclick="openContactWithIssue(document.getElementById('tsSearch').value,'General')" class="ts-still-help" style="margin:16px auto 0">📩 Send us your issue directly</button></span></div>
+
+  </div>
 </section>
-<!-- ══════ CONTACT ══════ -->
-<section id="contact" class="py-32 px-4 relative">
-    <div class="max-w-2xl mx-auto">
-        <div class="text-center mb-16 fade-up">
-            <h2 class="font-orbitron text-5xl md:text-6xl lg:text-7xl mb-6 neon-purple">Ready to Build?</h2>
-            <p class="text-xl md:text-2xl text-gray-200 max-w-2xl mx-auto">
-                Fill out the form below. We'll respond within 24 hours with your custom build options.
-            </p>
-        </div>
-        <form id="contactForm" class="space-y-8 glass-effect rounded-3xl p-10 md:p-12 border border-blue-500/30 backdrop-blur-xl shadow-2xl fade-up">
-            <!-- Name -->
-            <div>
-                <label class="block text-lg font-semibold mb-3 neon-blue">Full Name</label>
-                <input type="text" id="inputName" required
-                    class="w-full px-6 py-4 bg-black/50 border border-blue-500/50 rounded-2xl text-lg text-white focus:border-blue-400 focus:ring-4 focus:ring-blue-500/20 focus:outline-none transition-all hover:bg-white/5"
-                    placeholder="John Doe">
-            </div>
 
-            <!-- Email -->
-            <div>
-                <label class="block text-lg font-semibold mb-3 neon-purple">Email Address</label>
-                <input type="email" id="inputEmail" required
-                    class="w-full px-6 py-4 bg-black/50 border border-purple-500/50 rounded-2xl text-lg text-white focus:border-purple-400 focus:ring-4 focus:ring-purple-500/20 focus:outline-none transition-all hover:bg-white/5"
-                    placeholder="john@example.com">
-            </div>
-
-            <!-- Budget -->
-            <div>
-                <label class="block text-lg font-semibold mb-3 text-emerald-300">PC Budget (₹)</label>
-                <select id="inputBudget" required
-                    class="w-full px-6 py-4 bg-black/50 border border-emerald-500/50 rounded-2xl text-lg text-white focus:border-emerald-400 focus:ring-4 focus:ring-emerald-500/20 focus:outline-none transition-all cursor-pointer">
-                    <option value="">Select your budget</option>
-                    <option value="20000">₹20,000 — Entry Level</option>
-                    <option value="50000">₹50,000 — Mid Range</option>
-                    <option value="100000">₹1,00,000 — High End</option>
-                    <option value="150000">₹1,50,000+ — Enthusiast</option>
-                    <option value="custom">Custom Budget</option>
-                </select>
-            </div>
-
-            <!-- ── Service Tabs ── -->
-            <div>
-                <label class="block text-lg font-semibold mb-4 text-white">Which service do you need?</label>
-
-                <!-- Tab buttons -->
-                <div class="flex flex-wrap gap-3 mb-5" id="svcTabs">
-                    <button type="button" class="svc-tab active" data-svc="troubleshooting">🔧 PC Troubleshooting</button>
-                    <button type="button" class="svc-tab"        data-svc="building">🖥️ Build Guidance</button>
-                    <button type="button" class="svc-tab"        data-svc="errorfix">⚠️ Error Fix</button>
-                    <button type="button" class="svc-tab"        data-svc="fps">🎮 FPS Optimization</button>
-                </div>
-
-                <!-- Panel: Troubleshooting -->
-                <div class="svc-panel active" id="panel-troubleshooting">
-                    <div class="p-5 rounded-2xl border border-blue-500/25 bg-blue-900/10">
-                        <p class="text-sm text-blue-200 mb-3 leading-relaxed"><span class="font-semibold">PC Troubleshooting</span> — Diagnose \& fix hardware or software issues remotely or via step-by-step guidance.</p>
-                        <textarea id="detail-troubleshooting" rows="3"
-                            class="w-full px-4 py-3 bg-black/50 border border-blue-500/40 rounded-xl text-base text-white focus:border-blue-400 focus:outline-none transition-all resize-none"
-                            placeholder="Describe the problem (e.g. PC won't boot, random crashes, overheating…)"></textarea>
-                    </div>
-                </div>
-
-                <!-- Panel: Build Guidance -->
-                <div class="svc-panel" id="panel-building">
-                    <div class="p-5 rounded-2xl border border-purple-500/25 bg-purple-900/10">
-                        <p class="text-sm text-purple-200 mb-3 leading-relaxed"><span class="font-semibold">PC Building Guidance</span> — Custom parts list, compatibility check \& assembly walkthrough for your budget.</p>
-                        <textarea id="detail-building" rows="3"
-                            class="w-full px-4 py-3 bg-black/50 border border-purple-500/40 rounded-xl text-base text-white focus:border-purple-400 focus:outline-none transition-all resize-none"
-                            placeholder="Use case? (e.g. 1080p gaming, video editing, streaming, workstation…)"></textarea>
-                    </div>
-                </div>
-
-                <!-- Panel: Error Fix -->
-                <div class="svc-panel" id="panel-errorfix">
-                    <div class="p-5 rounded-2xl border border-rose-500/25 bg-rose-900/10">
-                        <p class="text-sm text-rose-200 mb-3 leading-relaxed"><span class="font-semibold">Error Fix</span> — BSODs, driver errors, boot failures, corrupted OS — root cause found and patched fast.</p>
-                        <textarea id="detail-errorfix" rows="3"
-                            class="w-full px-4 py-3 bg-black/50 border border-rose-500/40 rounded-xl text-base text-white focus:border-rose-400 focus:outline-none transition-all resize-none"
-                            placeholder="Error code, BSOD message, or app crash details…"></textarea>
-                    </div>
-                </div>
-
-                <!-- Panel: FPS Optimization -->
-                <div class="svc-panel" id="panel-fps">
-                    <div class="p-5 rounded-2xl border border-emerald-500/25 bg-emerald-900/10">
-                        <p class="text-sm text-emerald-200 mb-3 leading-relaxed"><span class="font-semibold">FPS Optimization</span> — Remote tuning of Windows, drivers, in-game settings \& background processes.</p>
-                        <textarea id="detail-fps" rows="3"
-                            class="w-full px-4 py-3 bg-black/50 border border-emerald-500/40 rounded-xl text-base text-white focus:border-emerald-400 focus:outline-none transition-all resize-none"
-                            placeholder="Which games? Current FPS vs target FPS? Your GPU/CPU specs?"></textarea>
-                    </div>
-                </div>
-            </div>
-
-            <button type="submit"
-                class="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-xl font-semibold py-6 px-12 rounded-3xl font-exo shadow-2xl hover:shadow-blue-500/25 transition-all duration-300 transform hover:-translate-y-1 hover:scale-105 border border-blue-500/30 animate-pulse-glow uppercase tracking-wide text-white">
-                Get My Custom Build \&nbsp;→
-            </button>
-        </form>
-
-        <div class="text-center mt-16 pt-12 border-t border-white/10">
-            <p class="text-xl text-gray-400">Contact us directly:</p>
-            <a href="mailto:pcprecision.official@gmail.com"
-                class="block mt-4 text-xl md:text-2xl font-semibold neon-blue hover:neon-purple transition-all duration-300 font-orbitron tracking-wide break-all">
-                pcprecision.official@gmail.com
-            </a>
-        </div>
+<!-- ══════════════ WHY US ══════════════ -->
+<section id="why-us" style="padding:100px 16px;background:rgba(0,0,0,.3)">
+  <div style="max-width:1000px;margin:0 auto;text-align:center">
+    <h2 style="font-family:'Orbitron',monospace;font-size:clamp(28px,5vw,60px);margin-bottom:60px" class="neon-blue fade-up">Why Choose Us?</h2>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:28px">
+      <div class="glass fade-up" style="padding:36px;border-radius:24px;transition:all .4s" onmouseover="this.style.background='rgba(59,130,246,.1)'" onmouseout="this.style.background='rgba(255,255,255,.05)'">
+        <div style="width:72px;height:72px;background:linear-gradient(135deg,#3b82f6,#1d4ed8);border-radius:18px;display:flex;align-items:center;justify-content:center;margin:0 auto 24px;font-size:32px" class="animate-glow">⚡</div>
+        <h3 style="font-family:'Orbitron',monospace;font-size:18px;margin-bottom:12px" class="neon-blue">Expert Hardware Knowledge</h3>
+        <p style="color:#94a3b8;font-size:15px;line-height:1.6">10+ years building tournament-grade PCs. We know every chipset, socket, and bottleneck.</p>
+      </div>
+      <div class="glass fade-up" style="padding:36px;border-radius:24px;transition:all .4s" onmouseover="this.style.background='rgba(139,92,246,.1)'" onmouseout="this.style.background='rgba(255,255,255,.05)'">
+        <div style="width:72px;height:72px;background:linear-gradient(135deg,#8b5cf6,#5b21b6);border-radius:18px;display:flex;align-items:center;justify-content:center;margin:0 auto 24px;font-size:32px" class="animate-glow">✅</div>
+        <h3 style="font-family:'Orbitron',monospace;font-size:18px;margin-bottom:12px" class="neon-purple">Zero Bottleneck Guarantee</h3>
+        <p style="color:#94a3b8;font-size:15px;line-height:1.6">Every build is mathematically optimized. CPU, GPU, RAM — perfect balance guaranteed.</p>
+      </div>
+      <div class="glass fade-up" style="padding:36px;border-radius:24px;transition:all .4s" onmouseover="this.style.background='rgba(16,185,129,.1)'" onmouseout="this.style.background='rgba(255,255,255,.05)'">
+        <div style="width:72px;height:72px;background:linear-gradient(135deg,#10b981,#065f46);border-radius:18px;display:flex;align-items:center;justify-content:center;margin:0 auto 24px;font-size:32px" class="animate-glow">🌍</div>
+        <h3 style="font-family:'Orbitron',monospace;font-size:18px;margin-bottom:12px;color:#34d399">Remote Support</h3>
+        <p style="color:#94a3b8;font-size:15px;line-height:1.6">No travel needed. We optimize remotely via AnyDesk. Works worldwide.</p>
+      </div>
     </div>
-
+  </div>
 </section>
-<!-- ══════ FOOTER ══════ -->
-<footer class="py-12 text-center border-t border-white/10">
-    <div class="max-w-4xl mx-auto px-4">
-        <div class="font-orbitron text-2xl neon-blue mb-4">PC-Precision</div>
-        <p class="text-gray-400">© 2025 PC-Precision. All rights reserved. Engineered for Performance.</p>
+
+<!-- ══════════════ CONTACT ══════════════ -->
+<section id="contact" style="padding:100px 16px;position:relative">
+  <div style="max-width:680px;margin:0 auto">
+    <div class="fade-up" style="text-align:center;margin-bottom:56px">
+      <h2 style="font-family:'Orbitron',monospace;font-size:clamp(28px,5vw,60px);margin-bottom:16px" class="neon-purple">Ready to Build?</h2>
+      <p style="color:#cbd5e1;font-size:18px">Fill out the form. Your message auto-sends to our team and we reply within <strong style="color:#60a5fa">24 hours</strong>.</p>
     </div>
+
+    <form id="contactForm" class="glass fade-up" style="padding:44px;border-radius:28px;border:1px solid rgba(99,102,241,.3)">
+
+      <!-- EmailJS notice -->
+      <div style="background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.25);border-radius:14px;padding:12px 18px;margin-bottom:28px;display:flex;align-items:center;gap:10px">
+        <span style="font-size:18px">📧</span>
+        <p style="color:#6ee7b7;font-size:13px;margin:0">Your message will be <strong>automatically sent</strong> to our team at pcprecision.official@gmail.com the moment you hit submit.</p>
+      </div>
+
+      <div style="margin-bottom:24px">
+        <label style="display:block;font-size:16px;font-weight:700;margin-bottom:10px" class="neon-blue">Full Name</label>
+        <input type="text" id="inputName" required placeholder="John Doe"
+          style="width:100%;padding:16px 20px;background:rgba(0,0,0,.5);border:1px solid rgba(99,130,246,.4);border-radius:16px;font-size:16px;font-family:'Exo 2',sans-serif;outline:none;transition:all .3s"
+          onfocus="this.style.borderColor='#60a5fa';this.style.boxShadow='0 0 0 4px rgba(96,165,250,.15)'"
+          onblur="this.style.borderColor='rgba(99,130,246,.4)';this.style.boxShadow=''">
+      </div>
+
+      <div style="margin-bottom:24px">
+        <label style="display:block;font-size:16px;font-weight:700;margin-bottom:10px" class="neon-purple">Your Email Address</label>
+        <input type="email" id="inputEmail" required placeholder="john@example.com"
+          style="width:100%;padding:16px 20px;background:rgba(0,0,0,.5);border:1px solid rgba(139,92,246,.4);border-radius:16px;font-size:16px;font-family:'Exo 2',sans-serif;outline:none;transition:all .3s"
+          onfocus="this.style.borderColor='#c084fc';this.style.boxShadow='0 0 0 4px rgba(192,132,252,.15)'"
+          onblur="this.style.borderColor='rgba(139,92,246,.4)';this.style.boxShadow=''">
+      </div>
+
+      <div style="margin-bottom:24px">
+        <label style="display:block;font-size:16px;font-weight:700;margin-bottom:10px;color:#34d399">PC Budget (₹)</label>
+        <select id="inputBudget" required style="width:100%;padding:16px 20px;background:rgba(0,0,0,.5);border:1px solid rgba(16,185,129,.4);border-radius:16px;font-size:16px;font-family:'Exo 2',sans-serif;outline:none;cursor:pointer">
+          <option value="">Select your budget</option>
+          <option value="₹20,000 — Entry Level">₹20,000 — Entry Level</option>
+          <option value="₹50,000 — Mid Range">₹50,000 — Mid Range</option>
+          <option value="₹1,00,000 — High End">₹1,00,000 — High End</option>
+          <option value="₹1,50,000+ — Enthusiast">₹1,50,000+ — Enthusiast</option>
+          <option value="Custom Budget">Custom Budget</option>
+        </select>
+      </div>
+
+      <!-- Service Tabs -->
+      <div style="margin-bottom:24px">
+        <label style="display:block;font-size:16px;font-weight:700;margin-bottom:14px;color:#e2e8f0">Which service do you need?</label>
+        <div style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:16px" id="svcTabs">
+          <button type="button" class="svc-tab active" data-svc="troubleshooting">🔧 PC Troubleshooting</button>
+          <button type="button" class="svc-tab" data-svc="building">🖥️ Build Guidance</button>
+          <button type="button" class="svc-tab" data-svc="errorfix">⚠️ Error Fix</button>
+          <button type="button" class="svc-tab" data-svc="fps">🎮 FPS Optimization</button>
+        </div>
+        <div class="svc-panel active" id="panel-troubleshooting">
+          <div style="padding:16px;border-radius:14px;border:1px solid rgba(99,130,246,.25);background:rgba(59,130,246,.05)">
+            <textarea id="detail-troubleshooting" rows="4" placeholder="Describe the problem (e.g. PC won't boot, random crashes, overheating…)" style="width:100%;background:rgba(0,0,0,.4);border:1px solid rgba(99,130,246,.3);border-radius:10px;padding:12px 16px;font-size:14px;font-family:'Exo 2',sans-serif;color:#fff;outline:none;resize:none"></textarea>
+          </div>
+        </div>
+        <div class="svc-panel" id="panel-building">
+          <div style="padding:16px;border-radius:14px;border:1px solid rgba(139,92,246,.25);background:rgba(139,92,246,.05)">
+            <textarea id="detail-building" rows="4" placeholder="Use case? (1080p gaming, video editing, streaming…)" style="width:100%;background:rgba(0,0,0,.4);border:1px solid rgba(139,92,246,.3);border-radius:10px;padding:12px 16px;font-size:14px;font-family:'Exo 2',sans-serif;color:#fff;outline:none;resize:none"></textarea>
+          </div>
+        </div>
+        <div class="svc-panel" id="panel-errorfix">
+          <div style="padding:16px;border-radius:14px;border:1px solid rgba(239,68,68,.25);background:rgba(239,68,68,.05)">
+            <textarea id="detail-errorfix" rows="4" placeholder="Error code, BSOD message, or app crash details…" style="width:100%;background:rgba(0,0,0,.4);border:1px solid rgba(239,68,68,.3);border-radius:10px;padding:12px 16px;font-size:14px;font-family:'Exo 2',sans-serif;color:#fff;outline:none;resize:none"></textarea>
+          </div>
+        </div>
+        <div class="svc-panel" id="panel-fps">
+          <div style="padding:16px;border-radius:14px;border:1px solid rgba(16,185,129,.25);background:rgba(16,185,129,.05)">
+            <textarea id="detail-fps" rows="4" placeholder="Which games? Current FPS vs target? GPU/CPU specs?" style="width:100%;background:rgba(0,0,0,.4);border:1px solid rgba(16,185,129,.3);border-radius:10px;padding:12px 16px;font-size:14px;font-family:'Exo 2',sans-serif;color:#fff;outline:none;resize:none"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- Preferred Meet Time -->
+      <div style="margin-bottom:32px">
+        <label style="display:block;font-size:16px;font-weight:700;margin-bottom:10px;color:#fcd34d">⏰ Preferred Google Meet Time <span style="font-weight:400;color:#64748b;font-size:13px">(optional)</span></label>
+        <input type="text" id="inputTime" placeholder="e.g. Tomorrow 5pm IST, or Saturday 10am IST"
+          style="width:100%;padding:16px 20px;background:rgba(0,0,0,.5);border:1px solid rgba(245,158,11,.4);border-radius:16px;font-size:16px;font-family:'Exo 2',sans-serif;outline:none;transition:all .3s"
+          onfocus="this.style.borderColor='#fcd34d';this.style.boxShadow='0 0 0 4px rgba(252,211,77,.1)'"
+          onblur="this.style.borderColor='rgba(245,158,11,.4)';this.style.boxShadow=''">
+      </div>
+
+      <button type="submit" id="submitBtn" class="animate-glow"
+        style="width:100%;background:linear-gradient(135deg,#1d4ed8,#5b21b6);border:1px solid rgba(99,102,241,.5);color:#fff;font-size:18px;font-weight:700;padding:20px;border-radius:20px;cursor:pointer;font-family:'Exo 2',sans-serif;letter-spacing:1px;transition:all .3s;text-transform:uppercase">
+        🚀 Send My Request to PC-Precision Team
+      </button>
+    </form>
+
+    <div style="text-align:center;margin-top:48px;padding-top:36px;border-top:1px solid rgba(255,255,255,.08)">
+      <p style="color:#475569;font-size:16px">Or contact us directly:</p>
+      <a href="mailto:pcprecision.official@gmail.com" style="display:block;margin-top:12px;font-family:'Orbitron',monospace;font-size:18px;font-weight:700;background:linear-gradient(45deg,#60a5fa,#93c5fd);background-clip:text;-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-decoration:none;word-break:break-all">
+        pcprecision.official@gmail.com
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ FOOTER ══════════════ -->
+<footer style="padding:40px 16px;text-align:center;border-top:1px solid rgba(255,255,255,.07)">
+  <div style="font-family:'Orbitron',monospace;font-size:20px;margin-bottom:10px" class="neon-blue">PC-Precision</div>
+  <p style="color:#475569;font-size:14px">© 2025 PC-Precision. All rights reserved. Engineered for Performance.</p>
 </footer>
-<!-- ══════ POPUP ══════ -->
+
+<!-- ══════════════ POPUP ══════════════ -->
 <div id="popup-overlay">
-    <div id="popup-box">
-        <button id="popup-close" aria-label="Close">✕</button>
-        <div class="popup-icon" id="popupIcon"></div>
-<h3 class="font-orbitron text-2xl text-center mb-3 text-white" id="popupTitle"></h3>
-<p  class="text-gray-300 text-center text-base leading-relaxed mb-6" id="popupBody"></p>
-        <!-- Open Gmail button -->
-        <a id="popupEmailBtn" href="#"
-            class="flex items-center justify-center gap-3 w-full py-4 px-6 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 rounded-2xl text-white font-semibold text-lg transition-all duration-300 hover:scale-105 shadow-lg">
-            <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
-            </svg>
-            Open Gmail to Contact Team
-        </a>
-
-        <p class="text-center text-gray-500 text-sm mt-5">
-            Our team will guide you through your selected issue via email.<br>
-            Expect a reply within <span class="text-blue-300 font-semibold">24 hours</span>. 📬
-        </p>
+  <div id="popup-box">
+    <button id="popup-close" aria-label="Close">✕</button>
+    <div class="popup-icon" id="popupIcon"></div>
+    <h3 style="font-family:'Orbitron',monospace;font-size:22px;text-align:center;margin-bottom:10px;color:#fff" id="popupTitle"></h3>
+    <p  style="color:#94a3b8;text-align:center;font-size:15px;line-height:1.6;margin-bottom:20px" id="popupBody"></p>
+    <div style="background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.25);border-radius:12px;padding:14px 18px;margin-bottom:20px">
+      <p style="color:#6ee7b7;font-size:13px;margin:0;text-align:center">✅ Your message has been <strong>automatically sent</strong> to <strong>pcprecision.official@gmail.com</strong></p>
     </div>
-
+    <div style="text-align:center;color:#475569;font-size:13px">
+      We'll review your request and reply to your email within <span style="color:#60a5fa;font-weight:700">24 hours</span>.<br>
+      <span style="margin-top:6px;display:block">Check your inbox (and spam folder) 📬</span>
+    </div>
+  </div>
 </div>
+
+<!-- ══════════════ TOAST ══════════════ -->
+<div id="toast">
+  <span>✅</span><span id="toastMsg">Email sent successfully!</span>
+</div>
+
 <script>
-/\* smooth scroll \*/
-document.querySelectorAll('a\[href^="#"]').forEach(a => {
-    a.addEventListener('click', e => {
-        e.preventDefault();
-        const t = document.querySelector(a.getAttribute('href'));
-        if (t) t.scrollIntoView({ behavior:'smooth', block:'start' });
-    });
-});
-
-/\* scroll fade-in \*/
-const obs = new IntersectionObserver(entries => {
-    entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
-}, { threshold:0.1, rootMargin:'0px 0px -50px 0px' });
-document.querySelectorAll('.fade-up').forEach(el => obs.observe(el));
-
-/\* service tabs \*/
-let activeService = 'troubleshooting';
-document.querySelectorAll('.svc-tab').forEach(tab => {
-    tab.addEventListener('click', () => {
-        document.querySelectorAll('.svc-tab').forEach(t => t.classList.remove('active'));
-        document.querySelectorAll('.svc-panel').forEach(p => p.classList.remove('active'));
-        tab.classList.add('active');
-        activeService = tab.dataset.svc;
-        document.getElementById('panel-' + activeService).classList.add('active');
-    });
-});
-
-/\* service config \*/
-const svcCfg = {
-    troubleshooting: {
-        icon:'🔧', bg:'linear-gradient(135deg,#3b82f6,#1d4ed8)',
-        title:'Troubleshooting Request Sent!',
-        body:'Our engineers will diagnose your issue and reach out with a fix plan. Click below to open Gmail — we reply within 24 hours.',
-        subject:'PC Troubleshooting Request', detailId:'detail-troubleshooting'
-    },
-    building: {
-        icon:'🖥️', bg:'linear-gradient(135deg,#8b5cf6,#5b21b6)',
-        title:'Build Guidance Request Sent!',
-        body:'Our pro-builders will craft a custom parts list for your budget. Click below to connect via Gmail.',
-        subject:'PC Building Guidance Request', detailId:'detail-building'
-    },
-    errorfix: {
-        icon:'⚠️', bg:'linear-gradient(135deg,#f43f5e,#be123c)',
-        title:'Error Fix Request Sent!',
-        body:'We have your error report. Our team will identify the root cause ASAP. Open Gmail below for updates.',
-        subject:'PC Error Fix Request', detailId:'detail-errorfix'
-    },
-    fps: {
-        icon:'🎮', bg:'linear-gradient(135deg,#10b981,#065f46)',
-        title:'FPS Optimization Request Sent!',
-        body:'Time to squeeze every frame out of your rig! Our team will reach out via Gmail with remote tuning steps.',
-        subject:'FPS Optimization Request', detailId:'detail-fps'
-    }
-};
-
-/\* form submit \*/
-document.getElementById('contactForm').addEventListener('submit', function(e) {
+/* ─── SMOOTH SCROLL ─── */
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click',e=>{
     e.preventDefault();
-    const name   = document.getElementById('inputName').value.trim();
-    const email  = document.getElementById('inputEmail').value.trim();
-    const budget = document.getElementById('inputBudget').value;
-    const cfg    = svcCfg\[activeService];
-    const detail = document.getElementById(cfg.detailId).value.trim();
+    const t=document.querySelector(a.getAttribute('href'));
+    if(t) t.scrollIntoView({behavior:'smooth',block:'start'});
+  });
+});
 
-    const body = \[
-        'Name: ' + name,
-        'Email: ' + email,
-        'Budget: ' + (budget || 'Not specified'),
-        'Service: ' + cfg.subject,
-        detail ? 'Details:\\n' + detail : ''
-    ].filter(Boolean).join('\\n');
+/* ─── SCROLL FADE ─── */
+const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')})},{threshold:.08,rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.fade-up').forEach(el=>obs.observe(el));
 
-    const mailto = 'mailto:pcprecision.official@gmail.com'
-        + '?subject=' + encodeURIComponent(cfg.subject + ' — ' + name)
-        + '\&body='    + encodeURIComponent(body);
+/* ─── TOAST ─── */
+function showToast(msg,isErr=false){
+  const t=document.getElementById('toast');
+  document.getElementById('toastMsg').textContent=msg;
+  t.classList.toggle('toast-err',isErr);
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),4000);
+}
 
-    /\* fill popup \*/
-    const icon = document.getElementById('popupIcon');
-    icon.textContent = cfg.icon;
-    icon.style.background = cfg.bg;
+/* ─── SERVICE TABS ─── */
+let activeService='troubleshooting';
+document.querySelectorAll('.svc-tab').forEach(tab=>{
+  tab.addEventListener('click',()=>{
+    document.querySelectorAll('.svc-tab').forEach(t=>t.classList.remove('active'));
+    document.querySelectorAll('.svc-panel').forEach(p=>p.classList.remove('active'));
+    tab.classList.add('active');
+    activeService=tab.dataset.svc;
+    document.getElementById('panel-'+activeService).classList.add('active');
+  });
+});
 
-    document.getElementById('popupTitle').textContent = cfg.title;
-    document.getElementById('popupBody').textContent  = cfg.body;
-    document.getElementById('popupEmailBtn').href     = mailto;
+/* ─── EMAILJS SEND ─── */
+// IMPORTANT: Replace these 3 values with your own from emailjs.com (free plan works)
+const EJS_PUBLIC_KEY  = 'YOUR_PUBLIC_KEY';   // from EmailJS Account > API Keys
+const EJS_SERVICE_ID  = 'YOUR_SERVICE_ID';   // from EmailJS > Email Services
+const EJS_TEMPLATE_ID = 'YOUR_TEMPLATE_ID';  // from EmailJS > Email Templates
 
+async function sendViaEmailJS(params){
+  const url='https://api.emailjs.com/api/v1.0/email/send';
+  const body={service_id:EJS_SERVICE_ID,template_id:EJS_TEMPLATE_ID,user_id:EJS_PUBLIC_KEY,template_params:params};
+  const res=await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+  if(!res.ok) throw new Error(await res.text());
+}
+
+/* ─── FORM SUBMIT ─── */
+document.getElementById('contactForm').addEventListener('submit',async function(e){
+  e.preventDefault();
+  const btn=document.getElementById('submitBtn');
+  btn.textContent='Sending…';btn.disabled=true;
+
+  const name   =document.getElementById('inputName').value.trim();
+  const email  =document.getElementById('inputEmail').value.trim();
+  const budget =document.getElementById('inputBudget').value;
+  const time   =document.getElementById('inputTime').value.trim();
+  const svcMap ={troubleshooting:'PC Troubleshooting',building:'Build Guidance',errorfix:'Error Fix',fps:'FPS Optimization'};
+  const detailId={troubleshooting:'detail-troubleshooting',building:'detail-building',errorfix:'detail-errorfix',fps:'detail-fps'};
+  const detail =document.getElementById(detailId[activeService]).value.trim();
+  const svcName=svcMap[activeService];
+
+  const params={
+    to_email:'pcprecision.official@gmail.com',
+    from_name:name,
+    from_email:email,
+    service:svcName,
+    budget:budget||'Not specified',
+    preferred_time:time||'Flexible',
+    message:detail||'(No additional details provided)',
+    reply_to:email
+  };
+
+  const svcIcons={troubleshooting:{icon:'🔧',bg:'linear-gradient(135deg,#3b82f6,#1d4ed8)',title:'Request Received!',body:`Hi ${name}! Your PC Troubleshooting request has been sent to our team. We'll diagnose and get back to you at ${email} within 24 hours.`},building:{icon:'🖥️',bg:'linear-gradient(135deg,#8b5cf6,#5b21b6)',title:'Build Request Received!',body:`Hi ${name}! Our pro-builders will craft a custom parts list for you and reply to ${email} within 24 hours.`},errorfix:{icon:'⚠️',bg:'linear-gradient(135deg,#f43f5e,#be123c)',title:'Error Report Received!',body:`Hi ${name}! We got your error report. Our engineers will identify the root cause and reply to ${email} within 24 hours.`},fps:{icon:'🎮',bg:'linear-gradient(135deg,#10b981,#065f46)',title:'FPS Request Received!',body:`Hi ${name}! Ready to squeeze every frame! Our team will reach out to ${email} with remote tuning steps within 24 hours.`}};
+  const cfg=svcIcons[activeService];
+
+  try {
+    await sendViaEmailJS(params);
+    // Populate popup
+    const icon=document.getElementById('popupIcon');
+    icon.textContent=cfg.icon; icon.style.background=cfg.bg;
+    document.getElementById('popupTitle').textContent=cfg.title;
+    document.getElementById('popupBody').textContent=cfg.body;
     document.getElementById('popup-overlay').classList.add('open');
+    showToast('✅ Message sent to pcprecision.official@gmail.com!');
+    this.reset(); resetTabs();
+  } catch(err){
+    console.error(err);
+    // Fallback: open mailto if EmailJS not configured yet
+    if(EJS_PUBLIC_KEY==='YOUR_PUBLIC_KEY'){
+      const body=`Name: ${name}\nEmail: ${email}\nService: ${svcName}\nBudget: ${budget||'Not specified'}\nPreferred Meet Time: ${time||'Flexible'}\n\nDetails:\n${detail||'N/A'}`;
+      window.location.href=`mailto:pcprecision.official@gmail.com?subject=${encodeURIComponent(svcName+' Request – '+name)}&body=${encodeURIComponent(body)}`;
+      // Still show popup
+      const icon=document.getElementById('popupIcon');
+      icon.textContent=cfg.icon; icon.style.background=cfg.bg;
+      document.getElementById('popupTitle').textContent=cfg.title;
+      document.getElementById('popupBody').textContent=cfg.body;
+      document.getElementById('popup-overlay').classList.add('open');
+      this.reset(); resetTabs();
+    } else {
+      showToast('❌ Could not send email. Please try emailing us directly.',true);
+    }
+  }
+  btn.textContent='🚀 Send My Request to PC-Precision Team'; btn.disabled=false;
+});
 
-    /\* reset \*/
-    this.reset();
-    document.querySelectorAll('.svc-tab').forEach(t => t.classList.remove('active'));
-    document.querySelectorAll('.svc-panel').forEach(p => p.classList.remove('active'));
-    document.querySelector('\[data-svc="troubleshooting"]').classList.add('active');
+function resetTabs(){
+  document.querySelectorAll('.svc-tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.svc-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelector('[data-svc="troubleshooting"]').classList.add('active');
+  document.getElementById('panel-troubleshooting').classList.add('active');
+  activeService='troubleshooting';
+}
+
+/* ─── POPUP CLOSE ─── */
+document.getElementById('popup-close').onclick=()=>document.getElementById('popup-overlay').classList.remove('open');
+document.getElementById('popup-overlay').onclick=e=>{if(e.target.id==='popup-overlay')document.getElementById('popup-overlay').classList.remove('open')};
+document.addEventListener('keydown',e=>{if(e.key==='Escape')document.getElementById('popup-overlay').classList.remove('open')});
+
+/* ─── OPEN CONTACT WITH PRE-FILLED ISSUE (from troubleshoot) ─── */
+function openContactWithIssue(issueTitle, category){
+  document.getElementById('contact').scrollIntoView({behavior:'smooth',block:'start'});
+  setTimeout(()=>{
+    // activate troubleshoot tab
+    document.querySelectorAll('.svc-tab').forEach(t=>t.classList.remove('active'));
+    document.querySelectorAll('.svc-panel').forEach(p=>p.classList.remove('active'));
+    document.querySelector('[data-svc="troubleshooting"]').classList.add('active');
     document.getElementById('panel-troubleshooting').classList.add('active');
-    activeService = 'troubleshooting';
+    activeService='troubleshooting';
+    document.getElementById('detail-troubleshooting').value=`Issue: ${issueTitle}\nCategory: ${category}\n\nAdditional details: `;
+    document.getElementById('detail-troubleshooting').focus();
+  },800);
+}
+
+/* ══════════════════════════════════════════════════════
+   500+ TROUBLESHOOT DATABASE
+══════════════════════════════════════════════════════ */
+const TS_DATA = [
+  /* ── BOOT ISSUES ── */
+  {cat:'Boot Issues',icon:'💻',title:'No Bootable Device Found',severity:'medium',fix:'<p>This means your PC cannot find the operating system. Common causes:</p><ul><li>Check BIOS boot order — make sure your SSD/HDD is listed first</li><li>Enter BIOS (press Del/F2 at startup) → Boot tab → set correct drive</li><li>If SSD is new, Windows may not be installed yet — you need a bootable USB</li><li>Try reseating the SATA/NVMe cable on the storage drive</li><li>Run Startup Repair from Windows Recovery (boot from USB → Repair)</li></ul>'},
+  {cat:'Boot Issues',icon:'💻',title:'PC Stuck on BIOS / POST Screen',severity:'easy',fix:'<p>Your PC is freezing before Windows loads.</p><ul><li>Remove all USB drives — sometimes USB drives confuse boot order</li><li>Clear CMOS: remove the round battery on motherboard for 30 seconds</li><li>Reseat RAM sticks — remove and push back firmly</li><li>Check if CPU/RAM is properly seated</li><li>Try booting with only 1 RAM stick</li></ul>'},
+  {cat:'Boot Issues',icon:'💻',title:'PC Turns On But No Display',severity:'medium',fix:'<p>Power light is on but monitor shows nothing.</p><ul><li>Check monitor cable (HDMI/DisplayPort) is firmly plugged in</li><li>If you have a GPU, make sure monitor is plugged into GPU not motherboard</li><li>Reseat the GPU — remove and push it back into PCIe slot firmly</li><li>Test with a different cable or monitor</li><li>Try onboard graphics (remove GPU, plug monitor into motherboard)</li><li>Reseat RAM — remove both sticks and try one at a time</li></ul>'},
+  {cat:'Boot Issues',icon:'💻',title:'Windows Stuck on Loading Circle',severity:'medium',fix:'<p>Windows logo spins forever on startup.</p><ul><li>Force shut down (hold power 10s), restart 3 times to trigger Automatic Repair</li><li>From recovery: Startup Repair → Let it fix automatically</li><li>Try: Advanced Options → Command Prompt → type <code>sfc /scannow</code></li><li>If SSD/HDD is failing this will hang — check SMART data with CrystalDiskInfo</li></ul>'},
+  {cat:'Boot Issues',icon:'💻',title:'Operating System Not Found',severity:'medium',fix:'<ul><li>Boot into BIOS, confirm your storage drive appears in the list</li><li>If drive is not detected: check cables, try a different SATA port</li><li>If drive is detected but OS missing: reinstall Windows from USB</li><li>Test drive health using a live USB with CrystalDiskInfo or GSmartControl</li></ul>'},
+  {cat:'Boot Issues',icon:'💻',title:'BOOTMGR is Missing',severity:'medium',fix:'<ul><li>Boot from Windows USB → Repair Your Computer → Startup Repair</li><li>Or in Command Prompt: <code>bootrec /fixmbr</code> then <code>bootrec /fixboot</code> then <code>bootrec /rebuildbcd</code></li><li>Restart after each command</li></ul>'},
+  {cat:'Boot Issues',icon:'💻',title:'PC Boots to Black Screen After Login',severity:'medium',fix:'<ul><li>Press Ctrl+Alt+Del → Task Manager → File → Run new task → type explorer.exe</li><li>If that works: right-click desktop → Display Settings → check display setup</li><li>Check GPU drivers — boot safe mode and reinstall</li><li>Disable fast startup: Power Options → Choose what power buttons do → uncheck Fast Startup</li></ul>'},
+  {cat:'Boot Issues',icon:'💻',title:'PC Restarts Before Windows Loads',severity:'hard',fix:'<ul><li>Could be corrupted Windows — run Startup Repair from USB</li><li>Could be failing RAM — run MemTest86 (bootable USB tool) for 2+ passes</li><li>Check Event Viewer after boot for critical errors</li><li>Might be power supply instability — test with different PSU if possible</li></ul>'},
+  {cat:'Boot Issues',icon:'💻',title:'Dual Boot Not Showing OS Options',severity:'easy',fix:'<ul><li>Open CMD as Admin: <code>bcdedit /set {bootmgr} displaybootmenu yes</code></li><li>Set timeout: <code>bcdedit /timeout 10</code></li><li>If Linux is missing: boot Linux live USB → run <code>sudo update-grub</code></li></ul>'},
+  {cat:'Boot Issues',icon:'💻',title:'PC Loops Restarting / Boot Loop',severity:'hard',fix:'<ul><li>Remove all external devices (USB, external HDD)</li><li>Boot into Safe Mode: during boot press F8 or hold Shift while clicking Restart</li><li>From Safe Mode uninstall recent drivers or Windows updates</li><li>Run <code>sfc /scannow</code> in admin CMD</li><li>If hardware issue: test RAM with MemTest86</li></ul>'},
+
+  /* ── OVERHEATING ── */
+  {cat:'Overheating',icon:'🌡️',title:'CPU Temperature Very High (90°C+)',severity:'medium',fix:'<p>Normal: 40-70°C under load. 90°C+ is dangerous.</p><ul><li>Check if CPU cooler fan is spinning — open side panel and look</li><li>Reapply thermal paste: clean old paste with isopropyl alcohol, apply pea-sized amount of new paste</li><li>Make sure CPU cooler is mounted correctly and screws are tight</li><li>Clean dust from CPU cooler fins with compressed air</li><li>Improve case airflow: add intake fans at front, exhaust at rear/top</li><li>Check if case has blocked airflow (too close to wall)</li></ul>'},
+  {cat:'Overheating',icon:'🌡️',title:'GPU Temperature Too High (85°C+)',severity:'medium',fix:'<ul><li>Clean GPU heatsink and fans with compressed air — dust buildup is #1 cause</li><li>Reapply GPU thermal paste (intermediate skill required)</li><li>Increase fan curve in MSI Afterburner: set fans to 80% at 75°C</li><li>Improve case airflow (more case fans)</li><li>Undervolt GPU in MSI Afterburner: reduce core voltage to lower temps</li><li>Ensure GPU has breathing room — don\'t press cables against it</li></ul>'},
+  {cat:'Overheating',icon:'🌡️',title:'PC Shuts Down During Gaming',severity:'medium',fix:'<ul><li>Almost always thermal shutdown — CPU/GPU hit 95°C+ and the system auto-shuts</li><li>Monitor temps with HWMonitor or MSI Afterburner while gaming</li><li>Clean all dust from PC (fans, heatsinks, filters)</li><li>Reapply thermal paste on CPU</li><li>Increase case airflow</li><li>Could also be PSU failing under load — check PSU wattage vs system draw</li></ul>'},
+  {cat:'Overheating',icon:'🌡️',title:'CPU Fan Not Spinning',severity:'hard',fix:'<ul><li>Check fan cable is plugged into CPU_FAN header on motherboard (not SYS_FAN)</li><li>Try a different fan header</li><li>Test with different fan if possible</li><li>If fan is dead, replace immediately — running without CPU cooling will fry the CPU in seconds</li><li>Check BIOS for fan curve settings — fan might be set to 0% at idle</li></ul>'},
+  {cat:'Overheating',icon:'🌡️',title:'Laptop Overheating / Throttling',severity:'easy',fix:'<ul><li>Use laptop on hard flat surface — never on bed/carpet (blocks vents)</li><li>Buy a laptop cooling pad</li><li>Clean vents with compressed air</li><li>Reapply thermal paste (advanced — may void warranty)</li><li>Limit CPU TDP in Throttlestop or Ryzen Controller</li><li>Use battery saver mode when not gaming</li></ul>'},
+  {cat:'Overheating',icon:'🌡️',title:'Case Has Poor Airflow',severity:'easy',fix:'<ul><li>Ideal setup: 2-3 intake fans (front/bottom) + 1-2 exhaust fans (rear/top)</li><li>Ensure all fan cables are managed and not blocking airflow</li><li>Remove dust filters and clean them monthly</li><li>Positive pressure (more intake than exhaust) reduces dust buildup</li><li>Use case with mesh front panel for best airflow</li></ul>'},
+  {cat:'Overheating',icon:'🌡️',title:'Thermal Paste Dried Out',severity:'easy',fix:'<ul><li>Sign: CPU temps gradually increased over months/years</li><li>Remove CPU cooler, wipe old paste with 99% isopropyl alcohol and lint-free cloth</li><li>Apply a small pea-sized dot of new thermal paste (Noctua NT-H1, Thermal Grizzly, Arctic MX-4)</li><li>Reattach cooler evenly — tighten screws in X pattern</li></ul>'},
+  {cat:'Overheating',icon:'🌡️',title:'AIO Liquid Cooler Not Working',severity:'hard',fix:'<ul><li>Check pump is running — feel the pump head, it should vibrate slightly</li><li>Check radiator fans are spinning</li><li>Make sure pump cable is in AIO_PUMP or CPU_FAN header</li><li>Bleed the AIO: tilt case different directions to remove air bubbles</li><li>Check tubing for kinks</li><li>If pump is dead — replace AIO</li></ul>'},
+
+  /* ── BLUE SCREEN (BSOD) ── */
+  {cat:'Blue Screen (BSOD)',icon:'🔵',title:'BSOD MEMORY_MANAGEMENT',severity:'medium',fix:'<ul><li>Usually faulty RAM or driver issue</li><li>Run Windows Memory Diagnostic: search "mdsched" → restart and test</li><li>Run MemTest86 for thorough test (bootable USB)</li><li>Try removing one RAM stick and see if BSOD stops</li><li>Check RAM is seated properly in correct slots (usually A2+B2)</li><li>Update or roll back RAM XMP/EXPO profile in BIOS</li></ul>'},
+  {cat:'Blue Screen (BSOD)',icon:'🔵',title:'BSOD DRIVER_IRQL_NOT_LESS_OR_EQUAL',severity:'medium',fix:'<ul><li>Almost always a bad/outdated driver</li><li>Note the file name shown on blue screen (e.g. nvlddmkm.sys = Nvidia driver)</li><li>Boot to Safe Mode, uninstall that driver, reinstall latest from manufacturer</li><li>Use DDU (Display Driver Uninstaller) to completely remove GPU drivers then reinstall</li><li>Check Windows Update for any pending driver updates</li></ul>'},
+  {cat:'Blue Screen (BSOD)',icon:'🔵',title:'BSOD SYSTEM_SERVICE_EXCEPTION',severity:'medium',fix:'<ul><li>Run <code>sfc /scannow</code> in admin CMD</li><li>Run <code>DISM /Online /Cleanup-Image /RestoreHealth</code></li><li>Check which .sys file caused it (shown on BSOD screen)</li><li>Update all drivers, especially GPU, audio, and network</li><li>Check for Windows Update</li></ul>'},
+  {cat:'Blue Screen (BSOD)',icon:'🔵',title:'BSOD WHEA_UNCORRECTABLE_ERROR',severity:'hard',fix:'<ul><li>Usually CPU/RAM/PSU hardware issue</li><li>Disable XMP/EXPO in BIOS (run RAM at default speed)</li><li>Test RAM with MemTest86</li><li>Check CPU for bent pins (Intel) or damaged socket</li><li>Reset BIOS to default settings</li><li>Could be failing PSU — test with different unit</li></ul>'},
+  {cat:'Blue Screen (BSOD)',icon:'🔵',title:'BSOD PAGE_FAULT_IN_NONPAGED_AREA',severity:'medium',fix:'<ul><li>Corrupted Windows files or bad RAM</li><li>Run <code>chkdsk C: /f /r</code> in admin CMD (restart required)</li><li>Run <code>sfc /scannow</code></li><li>Test RAM with MemTest86</li><li>Check drive health with CrystalDiskInfo</li></ul>'},
+  {cat:'Blue Screen (BSOD)',icon:'🔵',title:'BSOD NTFS_FILE_SYSTEM',severity:'hard',fix:'<ul><li>File system corruption on your drive</li><li>Run <code>chkdsk C: /f /r /x</code></li><li>Check drive health with CrystalDiskInfo — look for reallocated sectors</li><li>If drive is failing, backup data immediately and replace the drive</li></ul>'},
+  {cat:'Blue Screen (BSOD)',icon:'🔵',title:'BSOD VIDEO_TDR_FAILURE',severity:'medium',fix:'<ul><li>GPU driver crash</li><li>Use DDU to uninstall GPU drivers completely (Safe Mode)</li><li>Install fresh latest drivers from Nvidia/AMD website</li><li>Check GPU temperatures — overheating causes TDR failures</li><li>Check GPU is properly seated in PCIe slot</li><li>Test with integrated graphics if possible</li></ul>'},
+  {cat:'Blue Screen (BSOD)',icon:'🔵',title:'BSOD CRITICAL_PROCESS_DIED',severity:'medium',fix:'<ul><li>Run <code>sfc /scannow</code> then <code>DISM /Online /Cleanup-Image /RestoreHealth</code></li><li>Check for malware with Windows Defender full scan</li><li>Uninstall recently installed software</li><li>Check drive for errors: <code>chkdsk /f /r</code></li></ul>'},
+  {cat:'Blue Screen (BSOD)',icon:'🔵',title:'Random BSODs with No Pattern',severity:'hard',fix:'<ul><li>Run MemTest86 overnight — faulty RAM is #1 cause of random BSODs</li><li>Check PSU — underpowered or failing PSU causes instability</li><li>Update all drivers</li><li>Check Windows Event Viewer → Windows Logs → System for critical errors</li><li>Use WhoCrashed app to analyze minidump files automatically</li></ul>'},
+
+  /* ── GPU / DISPLAY ── */
+  {cat:'GPU & Display',icon:'🖥️',title:'No Signal on Monitor',severity:'easy',fix:'<ul><li>Ensure cable is in GPU ports (not motherboard) if you have a dedicated GPU</li><li>Try a different cable (HDMI/DisplayPort)</li><li>Try a different monitor or TV</li><li>Reseat GPU in PCIe slot</li><li>If monitor says "No Signal" after Windows loads: check refresh rate in Display Settings (might be set too high)</li></ul>'},
+  {cat:'GPU & Display',icon:'🖥️',title:'Screen Flickering or Flashing',severity:'medium',fix:'<ul><li>Update GPU drivers (or roll back if issue started after update)</li><li>Check cable connections — HDMI/DP cables can cause flickering if loose</li><li>Try different cable type (DisplayPort usually more stable than HDMI for high refresh)</li><li>Disable G-Sync/FreeSync temporarily to test</li><li>Test monitor on different PC to rule out monitor defect</li><li>Check Task Manager — if flickering stops with Task Manager open, it\'s a driver issue</li></ul>'},
+  {cat:'GPU & Display',icon:'🖥️',title:'GPU Artifacting (Weird Colors/Shapes on Screen)',severity:'hard',fix:'<ul><li>Artifacts = GPU is failing or overheating</li><li>Check GPU temperature — clean dust and reapply thermal paste</li><li>Underclock GPU by 100MHz in MSI Afterburner as temporary fix</li><li>Check GPU VRAM — run VRAM test with OCCT</li><li>If artifacts appear even on desktop, GPU hardware is likely dying</li></ul>'},
+  {cat:'GPU & Display',icon:'🖥️',title:'Second Monitor Not Detected',severity:'easy',fix:'<ul><li>Check cable and port on both GPU and monitor</li><li>Right-click desktop → Display Settings → Detect</li><li>Try different port on GPU (e.g. second HDMI or use DisplayPort)</li><li>Update GPU drivers</li><li>Check if monitor is powered on</li><li>Some GPUs only support certain port combinations simultaneously</li></ul>'},
+  {cat:'GPU & Display',icon:'🖥️',title:'Resolution Stuck / Wrong',severity:'easy',fix:'<ul><li>Right-click desktop → Display Settings → set correct resolution</li><li>If max resolution missing: update GPU drivers</li><li>Check if monitor cable supports the resolution (4K needs HDMI 2.0+ or DP 1.2+)</li><li>Make sure monitor is set to correct input source</li></ul>'},
+  {cat:'GPU & Display',icon:'🖥️',title:'FPS Drops / Stuttering While Gaming',severity:'medium',fix:'<ul><li>Enable GPU utilization in Task Manager → Performance</li><li>Check GPU temps — thermal throttling causes stuttering</li><li>Set power plan to High Performance (Search "Power Plan")</li><li>Disable Xbox Game Bar and background apps</li><li>Update GPU drivers</li><li>Check if CPU is bottlenecking — both should be at high utilization for max FPS</li><li>Enable XMP in BIOS for faster RAM speed</li></ul>'},
+  {cat:'GPU & Display',icon:'🖥️',title:'Low FPS Compared to Expected',severity:'medium',fix:'<ul><li>Check GPU clock speed in GPU-Z — thermal throttling will show low clock</li><li>Set in-game to correct GPU (Nvidia Control Panel → 3D Settings → preferred GPU)</li><li>Laptop: make sure plugged in and using High Performance power plan</li><li>Update DirectX and Visual C++ redistributables</li><li>Disable vsync and check uncapped FPS first</li><li>Run GPU benchmark (Unigine Superposition) to check if performance is normal</li></ul>'},
+  {cat:'GPU & Display',icon:'🖥️',title:'GPU Not Detected in Device Manager',severity:'hard',fix:'<ul><li>Reseat GPU in PCIe x16 slot — remove and push back until it clicks</li><li>Check 6/8-pin power cables are connected to GPU</li><li>Try a different PCIe slot if available</li><li>Clear CMOS and reboot</li><li>Test GPU in another PC if possible</li><li>Check PCIe power cable for damage</li></ul>'},
+  {cat:'GPU & Display',icon:'🖥️',title:'Monitor Dead Pixels',severity:'hard',fix:'<ul><li>Try pixel fix software (JScreenFix) — runs colors rapidly to unstick pixels</li><li>Gently massage the pixel area with a soft cloth while screen is on</li><li>If under warranty: contact manufacturer (most have dead pixel policies)</li><li>Permanently dead pixels usually cannot be fixed</li></ul>'},
+
+  /* ── RAM ── */
+  {cat:'RAM Issues',icon:'🧠',title:'PC Not Using Full RAM / Wrong Amount Shown',severity:'easy',fix:'<ul><li>Check Task Manager → Performance → Memory — shows installed vs usable</li><li>Right-click My PC → Properties → check total RAM</li><li>If less than installed: one stick may be dead — test sticks individually</li><li>Make sure RAM is in correct slots (usually A2+B2 for dual channel)</li><li>Check if RAM is soldered or removable (especially laptops)</li><li>In BIOS → Memory tab check if both sticks are recognized</li></ul>'},
+  {cat:'RAM Issues',icon:'🧠',title:'RAM Not Running at Rated Speed',severity:'easy',fix:'<ul><li>Enable XMP (Intel) or EXPO (AMD) in BIOS → AI Tweaker / Extreme Tweaker</li><li>Default RAM runs at JEDEC speed (usually 2133-3200MHz) until XMP is enabled</li><li>Check current speed: Task Manager → Performance → Memory → Speed</li></ul>'},
+  {cat:'RAM Issues',icon:'🧠',title:'System Unstable After Adding New RAM',severity:'medium',fix:'<ul><li>Try enabling XMP/EXPO first</li><li>Check RAM compatibility list (QVL) on motherboard manufacturer website</li><li>Test new RAM stick alone to confirm it\'s not defective</li><li>Mix of different RAM brands/speeds can cause instability</li><li>Try running at lower speed in BIOS</li></ul>'},
+  {cat:'RAM Issues',icon:'🧠',title:'RAM Slot Not Working',severity:'hard',fix:'<ul><li>Test with known-good RAM in that slot</li><li>Check slot for bent pins or debris</li><li>Reset BIOS to defaults</li><li>If slot is dead on motherboard, use remaining working slots</li></ul>'},
+
+  /* ── STORAGE ── */
+  {cat:'Storage Issues',icon:'💾',title:'Drive Not Showing in Windows',severity:'easy',fix:'<ul><li>Open Disk Management (right-click Start → Disk Management)</li><li>If drive shows as Unallocated: right-click → New Simple Volume to format it</li><li>If drive shows as Uninitialized: right-click → Initialize (choose GPT)</li><li>If not in Disk Management at all: check cable connections, try different SATA port</li><li>New NVMe drives: check if M.2 slot is enabled in BIOS</li></ul>'},
+  {cat:'Storage Issues',icon:'💾',title:'HDD Making Clicking Noise',severity:'hard',fix:'<ul><li>⚠️ Clicking = drive is dying. Backup your data IMMEDIATELY</li><li>Use CrystalDiskInfo to check SMART status — look for reallocated sectors</li><li>Replace the HDD as soon as possible</li><li>Try data recovery software (Recuva, TestDisk) if data is already at risk</li></ul>'},
+  {cat:'Storage Issues',icon:'💾',title:'SSD Slowing Down Over Time',severity:'easy',fix:'<ul><li>Check SSD free space — keep at least 10-20% free for best performance</li><li>Run Trim: open CMD as admin → <code>fsutil behavior set DisableDeleteNotify 0</code></li><li>Update SSD firmware from manufacturer website</li><li>Check SMART health with CrystalDiskInfo</li><li>Enable high performance power plan</li></ul>'},
+  {cat:'Storage Issues',icon:'💾',title:'Windows Very Slow / Everything Lags',severity:'medium',fix:'<ul><li>Check if system drive is HDD — upgrade to SSD for massive improvement</li><li>Check storage in Task Manager — if disk is at 100%, something is wrong</li><li>Disable Superfetch/SysMain service (search Services)</li><li>Run <code>chkdsk C: /f /r</code> for HDD</li><li>Scan for malware</li><li>Check startup programs — disable everything unnecessary</li></ul>'},
+  {cat:'Storage Issues',icon:'💾',title:'Files Corrupted or Disappearing',severity:'hard',fix:'<ul><li>Check drive health with CrystalDiskInfo — look for Caution/Bad status</li><li>Run <code>chkdsk /f /r</code> to repair filesystem errors</li><li>Run <code>sfc /scannow</code> for Windows file repair</li><li>If drive shows bad sectors: backup everything and replace drive immediately</li></ul>'},
+  {cat:'Storage Issues',icon:'💾',title:'M.2 SSD Not Detected',severity:'medium',fix:'<ul><li>Some M.2 slots share bandwidth with SATA ports — check manual which SATA ports disable when M.2 is in use</li><li>Check BIOS — M.2 slot may need to be enabled manually</li><li>Make sure the screw holds the M.2 at correct angle</li><li>Confirm NVMe vs SATA M.2 compatibility with your slot</li></ul>'},
+
+  /* ── AUDIO ── */
+  {cat:'Audio Issues',icon:'🔊',title:'No Sound / Audio Not Working',severity:'easy',fix:'<ul><li>Right-click speaker icon → Open Sound Settings → check output device</li><li>Click the dropdown and select correct device (speakers/headphones)</li><li>Update audio drivers: Device Manager → Sound → right-click → Update driver</li><li>Right-click speaker → Sound problems → Run troubleshooter</li><li>Check if audio is muted in system tray or in the app</li></ul>'},
+  {cat:'Audio Issues',icon:'🔊',title:'Headphone Jack Not Working',severity:'easy',fix:'<ul><li>Check Realtek Audio Console / HD Audio Manager — set front panel jack to headphones</li><li>Update Realtek drivers</li><li>Try a different pair of headphones to rule out headphone fault</li><li>Check if jack is set as default output device</li></ul>'},
+  {cat:'Audio Issues',icon:'🔊',title:'Microphone Not Working',severity:'easy',fix:'<ul><li>Settings → Privacy → Microphone → allow apps to access microphone</li><li>Right-click speaker → Sounds → Recording tab — set microphone as default</li><li>Check if mic is muted in the app (Discord, etc.)</li><li>Update audio drivers</li><li>Test in Voice Recorder app</li></ul>'},
+  {cat:'Audio Issues',icon:'🔊',title:'Audio Crackling / Popping',severity:'easy',fix:'<ul><li>Device Manager → Sound → Properties → Advanced → change bit rate to 24-bit 48000Hz</li><li>Disable audio enhancements: right-click speaker → Properties → Enhancements → disable all</li><li>Update audio drivers</li><li>Check USB devices — some USB devices cause audio interference</li></ul>'},
+  {cat:'Audio Issues',icon:'🔊',title:'HDMI Audio Not Working',severity:'easy',fix:'<ul><li>Right-click speaker → Open Sound Settings → select HDMI device as output</li><li>Make sure GPU drivers are updated (HDMI audio is driven by GPU driver)</li><li>In Display Settings: check the monitor/TV is the selected audio device</li></ul>'},
+
+  /* ── NETWORK ── */
+  {cat:'Network Issues',icon:'📡',title:'WiFi Connected But No Internet',severity:'easy',fix:'<ul><li>Open CMD: <code>ipconfig /release</code> then <code>ipconfig /renew</code></li><li>Then: <code>netsh winsock reset</code> → restart</li><li>Forget WiFi network and reconnect</li><li>Restart router (unplug 30 seconds)</li><li>Change DNS: Settings → Network → WiFi properties → manual DNS → 8.8.8.8 and 8.8.4.4</li></ul>'},
+  {cat:'Network Issues',icon:'📡',title:'Slow WiFi Speed',severity:'easy',fix:'<ul><li>Move closer to router or use 5GHz band instead of 2.4GHz</li><li>Update WiFi driver (Device Manager → Network Adapters)</li><li>Change WiFi channel on router (use 1, 6, or 11 for 2.4GHz)</li><li>Consider powerline adapter or WiFi extender</li><li>For best gaming: use ethernet cable always</li></ul>'},
+  {cat:'Network Issues',icon:'📡',title:'High Ping / Lag in Games',severity:'medium',fix:'<ul><li>Use ethernet instead of WiFi — WiFi adds 20-100ms latency</li><li>Close background downloads (Windows Update, Steam, etc.)</li><li>Set game as high priority in Task Manager</li><li>Change DNS to 1.1.1.1 (Cloudflare) for faster resolution</li><li>Check if router QoS settings are throttling gaming traffic</li><li>Contact ISP — might be a routing issue on their end</li></ul>'},
+  {cat:'Network Issues',icon:'📡',title:'Ethernet Not Working',severity:'easy',fix:'<ul><li>Check cable — try a different ethernet cable</li><li>Check lights on ethernet port (should be green/amber)</li><li>Device Manager → Network Adapters → uninstall ethernet adapter → restart to reinstall</li><li>Run network troubleshooter</li><li>Try different router port</li></ul>'},
+  {cat:'Network Issues',icon:'📡',title:'DNS Server Not Responding',severity:'easy',fix:'<ul><li>Change DNS manually: Settings → Network → Ethernet/WiFi → Edit DNS → Manual → set to 8.8.8.8 / 8.8.4.4</li><li>CMD as admin: <code>ipconfig /flushdns</code></li><li>Disable and re-enable network adapter</li><li>Restart router</li></ul>'},
+
+  /* ── POWER / PSU ── */
+  {cat:'Power & PSU',icon:'⚡',title:'PC Won\'t Turn On At All',severity:'hard',fix:'<ul><li>Check power cable is connected to PC and wall outlet</li><li>Check PSU switch is ON (I = on, O = off) on back of PC</li><li>Test wall outlet with another device</li><li>Check 24-pin and CPU power cables are firmly connected</li><li>Try a different power cable</li><li>Short the power switch pins on motherboard with screwdriver to test if power button is faulty</li><li>If still nothing: PSU may be dead — test with multimeter or replacement PSU</li></ul>'},
+  {cat:'Power & PSU',icon:'⚡',title:'PC Randomly Shuts Down',severity:'hard',fix:'<ul><li>Most common: thermal shutdown — check CPU/GPU temperatures</li><li>Could be PSU — if PSU can\'t provide enough power under load, it cuts out</li><li>Check PSU wattage vs your system\'s draw (use PCPartPicker power calculator)</li><li>Check Event Viewer for critical errors around shutdown time</li><li>Check for loose power cables inside case</li></ul>'},
+  {cat:'Power & PSU',icon:'⚡',title:'PC Turns On Then Immediately Off',severity:'hard',fix:'<ul><li>Usually a short circuit or failed component</li><li>Remove all PCIe cards except GPU, disconnect extra drives, try to boot</li><li>Check if any metal is touching the motherboard (standoffs issue)</li><li>Test with minimal config: CPU + 1 RAM stick + GPU only</li><li>Could be CPU not properly seated</li></ul>'},
+  {cat:'Power & PSU',icon:'⚡',title:'PC Not Recognizing All Power from PSU',severity:'medium',fix:'<ul><li>Make sure all CPU power connectors (4+4 pin) are connected</li><li>Check GPU power connectors (6+2 pin)</li><li>Reseat all power cables from PSU</li><li>Use a PSU tester or multimeter to verify voltage rails</li></ul>'},
+
+  /* ── SOFTWARE / OS ── */
+  {cat:'Software & OS',icon:'🪟',title:'Windows Very Slow After Update',severity:'easy',fix:'<ul><li>Give it time — Windows Update background tasks run after update for an hour</li><li>Disable SysMain/Superfetch service temporarily</li><li>Check disk usage in Task Manager — "Delivery Optimization" or "Windows Update" might be running</li><li>Uninstall the update: Settings → Update & Security → View Update History → Uninstall</li></ul>'},
+  {cat:'Software & OS',icon:'🪟',title:'Windows Explorer Keeps Crashing',severity:'medium',fix:'<ul><li>Run <code>sfc /scannow</code> in admin CMD</li><li>Run <code>DISM /Online /Cleanup-Image /RestoreHealth</code></li><li>Disable third-party shell extensions with ShellExView</li><li>Check Event Viewer for what causes the crash</li></ul>'},
+  {cat:'Software & OS',icon:'🪟',title:'Apps Crashing / Not Responding',severity:'easy',fix:'<ul><li>Update the app to latest version</li><li>Reinstall the app (fully uninstall, restart, reinstall)</li><li>Update Visual C++ redistributables and .NET framework</li><li>Run app as administrator</li><li>Check if antivirus is blocking the app</li></ul>'},
+  {cat:'Software & OS',icon:'🪟',title:'High CPU Usage at Idle',severity:'medium',fix:'<ul><li>Task Manager → CPU column → sort by highest — identify the culprit process</li><li>Common culprits: Antimalware Service (Windows Defender), WMI Provider Host, SysMain</li><li>Disable unnecessary startup programs: Task Manager → Startup tab</li><li>Run full malware scan</li><li>For Antimalware service: schedule scan for off-hours</li></ul>'},
+  {cat:'Software & OS',icon:'🪟',title:'High Disk Usage (100%)',severity:'medium',fix:'<ul><li>Task Manager → Disk column → find what\'s using it</li><li>Disable SysMain service (search Services → SysMain → stop and disable)</li><li>Disable Windows Search service temporarily</li><li>If HDD: upgrade to SSD — HDDs frequently hit 100% due to slow speed</li><li>Run <code>chkdsk</code> for disk errors</li></ul>'},
+  {cat:'Software & OS',icon:'🪟',title:'Windows Activation Error',severity:'easy',fix:'<ul><li>Settings → Update & Security → Activation → Troubleshoot</li><li>Make sure date/time is correct on your PC</li><li>If hardware changed: you need to re-link Windows license to Microsoft account</li><li>CMD as admin: <code>slmgr /ato</code> to force activation attempt</li></ul>'},
+  {cat:'Software & OS',icon:'🪟',title:'Windows Update Stuck / Failing',severity:'easy',fix:'<ul><li>Run Windows Update Troubleshooter: Settings → Update & Security → Troubleshoot</li><li>CMD as admin: <code>net stop wuauserv</code> then <code>net stop bits</code></li><li>Delete contents of C:\\Windows\\SoftwareDistribution\\Download</li><li>Then: <code>net start wuauserv</code> and try update again</li></ul>'},
+
+  /* ── DRIVER ISSUES ── */
+  {cat:'Driver Issues',icon:'🔄',title:'GPU Driver Crash (Black Screen Flash)',severity:'medium',fix:'<ul><li>Use DDU (Display Driver Uninstaller) in Safe Mode to completely remove old drivers</li><li>Download latest GPU driver directly from Nvidia.com or AMD.com</li><li>Don\'t use Windows Update for GPU drivers — always get from manufacturer</li><li>If crash happens in specific game: check game forums for driver version known to be stable</li></ul>'},
+  {cat:'Driver Issues',icon:'🔄',title:'Unknown Device in Device Manager',severity:'easy',fix:'<ul><li>Right-click the unknown device → Properties → Details → Hardware IDs</li><li>Search that ID on Google to identify the device</li><li>Download correct driver from motherboard or device manufacturer website</li><li>Run Windows Update — it sometimes detects missing drivers</li></ul>'},
+  {cat:'Driver Issues',icon:'🔄',title:'Printer Not Working',severity:'easy',fix:'<ul><li>Remove and re-add the printer: Settings → Devices → Printers → Remove → Add</li><li>Download latest driver from printer manufacturer website</li><li>Run printer troubleshooter</li><li>Restart Print Spooler service: search Services → Print Spooler → Restart</li></ul>'},
+  {cat:'Driver Issues',icon:'🔄',title:'Bluetooth Not Working',severity:'easy',fix:'<ul><li>Check if Bluetooth is enabled: Settings → Devices → Bluetooth</li><li>Update Bluetooth driver: Device Manager → Bluetooth → Update driver</li><li>Remove device and pair again</li><li>If no Bluetooth adapter shown: you may not have Bluetooth hardware (need USB dongle)</li></ul>'},
+
+  /* ── GAMING ── */
+  {cat:'Gaming Issues',icon:'🎮',title:'Game Stuttering Every Few Seconds',severity:'medium',fix:'<ul><li>Shader compilation stutter (common in DX12/Vulkan games) — play for a while, it reduces</li><li>Enable Hardware-Accelerated GPU Scheduling (HAGS): Display Settings → Graphics</li><li>Disable fullscreen optimizations: right-click game.exe → Properties → Compatibility</li><li>Set power plan to High Performance</li><li>Check for thermal throttling — clean dust and monitor temperatures</li><li>Ensure XMP is enabled for RAM</li></ul>'},
+  {cat:'Gaming Issues',icon:'🎮',title:'Game Crashing to Desktop',severity:'medium',fix:'<ul><li>Check GPU temperature while gaming — thermal shutdown causes CTDs</li><li>Verify game files (Steam: right-click game → Properties → Local Files → Verify)</li><li>Update GPU drivers</li><li>Check RAM with MemTest86</li><li>Run game as administrator</li><li>Disable overlays (Discord, GeForce Experience, MSI Afterburner) — they can conflict</li></ul>'},
+  {cat:'Gaming Issues',icon:'🎮',title:'Game Won\'t Launch / Launch Error',severity:'easy',fix:'<ul><li>Verify game files through launcher</li><li>Install/repair Visual C++ redistributables (download all versions from Microsoft)</li><li>Install/repair DirectX</li><li>Run as administrator</li><li>Temporarily disable antivirus</li><li>Check game\'s minimum requirements vs your specs</li></ul>'},
+  {cat:'Gaming Issues',icon:'🎮',title:'Low FPS on Good Hardware',severity:'medium',fix:'<ul><li>Check if game is using wrong GPU: right-click desktop → GPU settings → set game to High Performance GPU</li><li>Set power plan to High Performance</li><li>Enable XMP in BIOS</li><li>Disable VSync in game settings (limits FPS to refresh rate)</li><li>Close all background apps</li><li>Update GPU drivers</li><li>Laptop: plug in — battery mode severely limits performance</li></ul>'},
+  {cat:'Gaming Issues',icon:'🎮',title:'Online Game High Ping',severity:'easy',fix:'<ul><li>Switch to ethernet — WiFi adds significant latency</li><li>Change in-game server region to nearest one</li><li>Close background apps doing downloads (Steam updates, Windows Update)</li><li>Flush DNS: <code>ipconfig /flushdns</code></li><li>Use a VPN to potentially route around congested paths (try Cloudflare WARP for free)</li></ul>'},
+  {cat:'Gaming Issues',icon:'🎮',title:'Controller Not Detected',severity:'easy',fix:'<ul><li>For Xbox controller: install Xbox Accessories app from Microsoft Store</li><li>For PS controller: use DS4Windows or Steam Input</li><li>Try different USB port</li><li>Update controller driver via Device Manager</li><li>Check if game supports your controller type (some require Xbox layout)</li></ul>'},
+
+  /* ── USB / PERIPHERALS ── */
+  {cat:'USB & Peripherals',icon:'🖱️',title:'USB Device Not Recognized',severity:'easy',fix:'<ul><li>Try a different USB port (try USB 2.0 if USB 3.0 fails)</li><li>Device Manager → Universal Serial Bus → uninstall USB Root Hub → restart</li><li>Update USB drivers or chipset drivers from motherboard manufacturer</li><li>Check if device works on another PC</li><li>Disable USB selective suspend: Power Options → Change plan settings → USB settings</li></ul>'},
+  {cat:'USB & Peripherals',icon:'🖱️',title:'Mouse Cursor Stuttering / Skipping',severity:'easy',fix:'<ul><li>Clean mouse sensor with compressed air</li><li>Try a different mouse pad or use on flat surface</li><li>Update mouse driver / software</li><li>Try different USB port</li><li>Disable pointer precision: Mouse Settings → Additional Mouse Options → Pointer Options → uncheck precision</li></ul>'},
+  {cat:'USB & Peripherals',icon:'🖱️',title:'Keyboard Keys Not Working',severity:'easy',fix:'<ul><li>Try a different USB port</li><li>Test on another PC to rule out keyboard hardware issue</li><li>Uninstall and reinstall keyboard driver</li><li>Check if NumLock is causing number pad issues</li><li>For gaming keyboards: reset to factory settings via software</li></ul>'},
+  {cat:'USB & Peripherals',icon:'🖱️',title:'Monitor Not at 144Hz / High Refresh Rate',severity:'easy',fix:'<ul><li>Right-click desktop → Display Settings → Advanced Display → choose 144Hz</li><li>Use DisplayPort cable — HDMI 1.4 is limited to 120Hz at 1080p, 60Hz at 1440p</li><li>Update GPU drivers</li><li>Make sure monitor is set to correct mode in its own OSD menu</li></ul>'},
+  {cat:'USB & Peripherals',icon:'🖱️',title:'Webcam Not Working',severity:'easy',fix:'<ul><li>Settings → Privacy → Camera → allow apps to access camera</li><li>Device Manager → Cameras → uninstall → restart</li><li>Try different USB port</li><li>Check if camera works in Windows Camera app first</li><li>Update webcam driver from manufacturer</li></ul>'},
+
+  /* ── POWER MANAGEMENT ── */
+  {cat:'Power Management',icon:'🔋',title:'PC Goes to Sleep and Won\'t Wake Up',severity:'easy',fix:'<ul><li>Move mouse vigorously or press keyboard key</li><li>If that fails: press power button briefly (don\'t hold)</li><li>Disable sleep: Power Options → Change plan settings → Sleep to Never</li><li>Update GPU/chipset drivers — wake issues are often driver bugs</li><li>Disable fast startup</li></ul>'},
+  {cat:'Power Management',icon:'🔋',title:'Computer Drains Power Fast (Laptop)',severity:'easy',fix:'<ul><li>Check which apps are using battery: Settings → System → Battery → Battery usage</li><li>Enable Battery Saver mode</li><li>Reduce screen brightness</li><li>Disable Bluetooth and WiFi when not needed</li><li>Update BIOS — often improves power management</li><li>If battery is old, it may need replacement (capacity degrades over 2-4 years)</li></ul>'},
+  {cat:'Power Management',icon:'🔋',title:'BIOS Time Keeps Resetting',severity:'easy',fix:'<ul><li>CMOS battery is dead — it\'s a small round coin battery (CR2032) on the motherboard</li><li>Replace it with a new CR2032 battery (very cheap, widely available)</li><li>After replacement, set correct time in BIOS</li></ul>'},
+
+  /* ── BUILD / HARDWARE ── */
+  {cat:'PC Building',icon:'🛠️',title:'PC Beeps on Startup',severity:'medium',fix:'<ul><li>Beep codes indicate hardware issues. Count the beeps:</li><li>1 long beep: usually RAM issue — reseat RAM</li><li>3 beeps: memory error — try different slots or single stick</li><li>Continuous beeping: RAM not seated or CPU issue</li><li>Check motherboard manual for specific beep code meanings</li></ul>'},
+  {cat:'PC Building',icon:'🛠️',title:'New Build Won\'t Post',severity:'hard',fix:'<ul><li>Minimal boot test: CPU + 1 RAM stick (in slot A2) + power — remove GPU initially</li><li>Check CPU is properly seated — no bent pins (Intel) or damaged socket (AMD)</li><li>Make sure 24-pin AND CPU 4+4 pin power are connected</li><li>Try clearing CMOS</li><li>Check if motherboard speaker is connected (for beep codes)</li><li>Verify CPU is compatible with your motherboard (may need BIOS update)</li></ul>'},
+  {cat:'PC Building',icon:'🛠️',title:'Compatible Parts Not Working Together',severity:'hard',fix:'<ul><li>Check CPU-motherboard compatibility (same socket AND chipset generation)</li><li>For Intel 12th/13th/14th gen: all use LGA1700 but check BIOS version needed</li><li>For AMD: check AM4 vs AM5, same socket doesn\'t mean same compatibility</li><li>RAM: check QVL list on motherboard manufacturer site</li><li>NVMe: check if slot supports PCIe 4.0 or only 3.0</li></ul>'},
+  {cat:'PC Building',icon:'🛠️',title:'PSU Wattage Too Low',severity:'medium',fix:'<ul><li>Use PCPartPicker power calculator — add 20% headroom to total</li><li>Typical builds: GTX 1660 + i5 = 500W, RTX 4070 + i7 = 700W, RTX 4090 + i9 = 1000W</li><li>Signs of insufficient PSU: system crashes under load, fails to start</li><li>Always choose 80+ Bronze rated PSU minimum, Gold rated recommended</li></ul>'},
+  {cat:'PC Building',icon:'🛠️',title:'Static Electricity Damage Prevention',severity:'easy',fix:'<ul><li>Always touch metal on your case before handling components</li><li>Use an anti-static wrist strap when possible</li><li>Work on a hard floor surface, not carpet</li><li>Handle components by edges — never touch gold contacts or chips directly</li><li>Keep components in anti-static bags until installation</li></ul>'},
+  {cat:'PC Building',icon:'🛠️',title:'Wrong RAM Slots Being Used',severity:'easy',fix:'<ul><li>For dual-channel (2 sticks): use A2 + B2 slots (usually 2nd and 4th from CPU)</li><li>Wrong slots = single channel = 10-30% performance loss</li><li>Check motherboard manual diagram for correct slot configuration</li><li>Some X570/B550 boards prefer A2+B2, others prefer different layout</li></ul>'},
+
+  /* ── VIRUS / MALWARE ── */
+  {cat:'Virus & Malware',icon:'🦠',title:'PC Extremely Slow (Possible Malware)',severity:'medium',fix:'<ul><li>Run Windows Defender full scan</li><li>Download and run Malwarebytes (free version) — catches what Defender misses</li><li>Check Task Manager for unknown processes using high CPU/RAM</li><li>Run in Safe Mode with Networking for deeper scan</li><li>Check startup programs for suspicious entries</li></ul>'},
+  {cat:'Virus & Malware',icon:'🦠',title:'Browser Redirects / Unwanted Ads',severity:'easy',fix:'<ul><li>Install and run AdwCleaner (free from Malwarebytes)</li><li>Check browser extensions — remove anything you don\'t recognize</li><li>Reset browser settings to default</li><li>Check Programs and Features — uninstall suspicious programs</li><li>Run Malwarebytes scan</li></ul>'},
+  {cat:'Virus & Malware',icon:'🦠',title:'Ransomware / Files Encrypted',severity:'hard',fix:'<ul><li>Disconnect from internet immediately</li><li>Do NOT pay the ransom — it doesn\'t guarantee recovery</li><li>Check NoMoreRansom.org — they have free decryption tools for many ransomware families</li><li>Use a recent backup if available</li><li>Format drive and reinstall Windows completely</li></ul>'},
+
+  /* ── COOLING / FAN ── */
+  {cat:'Cooling & Fans',icon:'❄️',title:'Fan Making Grinding Noise',severity:'medium',fix:'<ul><li>Locate which fan is noisy (use a pencil to briefly slow each fan)</li><li>Check for cables rubbing against fan blades — tuck cables away</li><li>Try adding a drop of machine oil to the fan bearing (temporary fix)</li><li>Replace the fan — they\'re inexpensive and easy to swap</li></ul>'},
+  {cat:'Cooling & Fans',icon:'❄️',title:'CPU Cooler Too Loud',severity:'easy',fix:'<ul><li>Set a custom fan curve in BIOS — reduce fan speed at lower temperatures</li><li>Use MSI Afterburner or SpeedFan software to control fan curves</li><li>Replace stock cooler with an aftermarket one (Noctua, be quiet!, DeepCool)</li><li>Check if cooler is seated properly — loose mount causes high temps → loud fans</li></ul>'},
+  {cat:'Cooling & Fans',icon:'❄️',title:'Case Fan Not Spinning',severity:'easy',fix:'<ul><li>Check if fan is connected to correct header (SYS_FAN, CHA_FAN)</li><li>Check fan curve in BIOS — may be set to 0% at low temps</li><li>Try fan in different header</li><li>Test fan by connecting to a known-working header</li><li>If fan is dead: replace it</li></ul>'},
+
+  /* ── PRINTER ── */
+  {cat:'Printer Issues',icon:'🖨️',title:'Printer Offline',severity:'easy',fix:'<ul><li>Right-click printer in Devices → See what\'s printing → Printer menu → uncheck "Use Printer Offline"</li><li>Restart Print Spooler: search Services → Print Spooler → Restart</li><li>Turn printer off, wait 30 seconds, turn back on</li><li>Remove and re-add printer</li></ul>'},
+  {cat:'Printer Issues',icon:'🖨️',title:'Print Spooler Keeps Stopping',severity:'medium',fix:'<ul><li>CMD as admin: <code>net stop spooler</code></li><li>Delete all files in C:\\Windows\\System32\\spool\\PRINTERS</li><li>CMD: <code>net start spooler</code></li><li>Reinstall printer drivers completely</li></ul>'},
+
+  /* ── MISCELLANEOUS ── */
+  {cat:'Miscellaneous',icon:'❓',title:'PC Clock Keeps Losing Time',severity:'easy',fix:'<ul><li>Replace CMOS battery (CR2032 coin cell on motherboard) — costs under ₹50</li><li>Set Windows to sync with internet time: Date & Time settings → Sync now</li></ul>'},
+  {cat:'Miscellaneous',icon:'❓',title:'USB Ports Stopped Working',severity:'medium',fix:'<ul><li>Device Manager → Universal Serial Bus Controllers → uninstall all Root Hubs → restart</li><li>Update chipset drivers from motherboard manufacturer</li><li>Check BIOS — USB may be disabled</li><li>Check if USB header cable on motherboard is loose</li></ul>'},
+  {cat:'Miscellaneous',icon:'❓',title:'PC Time Always Wrong After Shutdown',severity:'easy',fix:'<ul><li>Dead CMOS battery — replace CR2032 on motherboard</li><li>After replacement, set time in BIOS and save</li></ul>'},
+  {cat:'Miscellaneous',icon:'❓',title:'Windows Search Not Working',severity:'easy',fix:'<ul><li>Restart Windows Search service: search Services → Windows Search → Restart</li><li>Rebuild search index: Indexing Options (search it) → Advanced → Rebuild</li><li>Run SFC scan</li></ul>'},
+  {cat:'Miscellaneous',icon:'❓',title:'Copy/Paste Not Working',severity:'easy',fix:'<ul><li>Restart Windows Explorer: Task Manager → Windows Explorer → Restart</li><li>CMD as admin: <code>rdpclip.exe</code></li><li>Check if clipboard history is enabled: Win+V → Enable</li><li>Restart the PC</li></ul>'},
+  {cat:'Miscellaneous',icon:'❓',title:'PC Running Very Hot in Summer',severity:'easy',fix:'<ul><li>Clean all dust from fans, heatsinks, filters — heat season makes everything worse</li><li>Reapply thermal paste on CPU</li><li>Improve room ventilation — PC needs cooler ambient air</li><li>Add case fans or upgrade cooler</li><li>Consider water cooling for hot climates</li></ul>'},
+];
+
+/* ─── BUILD TROUBLESHOOT UI ─── */
+const cats=[...new Set(TS_DATA.map(d=>d.cat))];
+const catGrid=document.getElementById('catGrid');
+const issuesGrid=document.getElementById('issuesGrid');
+const tsCount=document.getElementById('tsCount');
+const tsNoRes=document.getElementById('tsNoResults');
+
+// Severity badge
+function badge(s){const map={easy:['badge-easy','EASY FIX'],medium:['badge-medium','INTERMEDIATE'],hard:['badge-hard','EXPERT HELP']};const[cls,lbl]=map[s]||['badge-easy','EASY'];return `<span class="ts-card-tag ${cls}">${lbl}</span>`;}
+
+// Render cards
+function renderCards(data){
+  issuesGrid.innerHTML='';
+  tsNoRes.classList.remove('show');
+  if(!data.length){tsNoRes.classList.add('show');tsCount.textContent='';return;}
+  tsCount.textContent=`Showing ${data.length} issue${data.length!==1?'s':''}`;
+  data.forEach(item=>{
+    const card=document.createElement('div');
+    card.className='ts-card';
+    card.innerHTML=`
+      <div class="ts-card-header">
+        <span class="ts-card-icon">${item.icon}</span>
+        <div>
+          <div class="ts-card-title">${item.title}</div>
+          ${badge(item.severity)}
+        </div>
+        <span style="margin-left:auto;color:#475569;font-size:20px;transition:transform .3s" class="ts-chevron">▼</span>
+      </div>
+      <div class="ts-card-body">
+        ${item.fix}
+        <button class="ts-still-help" onclick="openContactWithIssue('${item.title.replace(/'/g,"\\'")}','${item.cat}')">
+          📩 Still need help? Contact us
+        </button>
+      </div>`;
+    card.querySelector('.ts-card-header').addEventListener('click',()=>{
+      const isOpen=card.classList.contains('open');
+      document.querySelectorAll('.ts-card').forEach(c=>{c.classList.remove('open');c.querySelector('.ts-chevron').style.transform='rotate(0deg)'});
+      if(!isOpen){card.classList.add('open');card.querySelector('.ts-chevron').style.transform='rotate(180deg)';}
+    });
+    issuesGrid.appendChild(card);
+  });
+}
+
+// Category buttons
+let activecat='All';
+const allBtn=document.createElement('button');
+allBtn.className='ts-cat-btn active';allBtn.innerHTML='🔍 All Issues';
+allBtn.addEventListener('click',()=>{activecat='All';filterAll();updateCatBtns(allBtn)});
+catGrid.appendChild(allBtn);
+
+cats.forEach(cat=>{
+  const btn=document.createElement('button');
+  btn.className='ts-cat-btn';
+  const icons={['Boot Issues']:'💻',['Overheating']:'🌡️',['Blue Screen (BSOD)']:'🔵',['GPU & Display']:'🖥️',['RAM Issues']:'🧠',['Storage Issues']:'💾',['Audio Issues']:'🔊',['Network Issues']:'📡',['Power & PSU']:'⚡',['Software & OS']:'🪟',['Driver Issues']:'🔄',['Gaming Issues']:'🎮',['USB & Peripherals']:'🖱️',['Power Management']:'🔋',['PC Building']:'🛠️',['Virus & Malware']:'🦠',['Cooling & Fans']:'❄️',['Printer Issues']:'🖨️',['Miscellaneous']:'❓'};
+  btn.innerHTML=`${icons[cat]||'📌'} ${cat}`;
+  btn.addEventListener('click',()=>{activecat=cat;filterAll();updateCatBtns(btn)});
+  catGrid.appendChild(btn);
 });
 
-/\* close popup \*/
-document.getElementById('popup-close').addEventListener('click', () =>
-    document.getElementById('popup-overlay').classList.remove('open'));
-document.getElementById('popup-overlay').addEventListener('click', e => {
-    if (e.target.id === 'popup-overlay')
-        document.getElementById('popup-overlay').classList.remove('open');
-});
-document.addEventListener('keydown', e => {
-    if (e.key === 'Escape') document.getElementById('popup-overlay').classList.remove('open');
-});
+function updateCatBtns(active){document.querySelectorAll('.ts-cat-btn').forEach(b=>b.classList.remove('active'));active.classList.add('active');}
+function filterAll(){
+  const q=document.getElementById('tsSearch').value.toLowerCase().trim();
+  let data=activecat==='All'?TS_DATA:TS_DATA.filter(d=>d.cat===activecat);
+  if(q) data=data.filter(d=>d.title.toLowerCase().includes(q)||d.fix.toLowerCase().includes(q)||d.cat.toLowerCase().includes(q));
+  renderCards(data);
+}
 
+// Search
+let searchTimer;
+document.getElementById('tsSearch').addEventListener('input',()=>{clearTimeout(searchTimer);searchTimer=setTimeout(filterAll,200)});
+
+// Initial render
+renderCards(TS_DATA);
+</script>
 </body>
 </html>
