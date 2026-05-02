@@ -2,637 +2,663 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
     <title>PC-Precision — Ultimate PC Build & Bottleneck Experts</title>
-    <script src="https://cdn.tailwindcss.com">
-    </script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg: #06060c;
             --surface: #0d0d18;
             --surface2: #111122;
             --border: #1e1e35;
-            --accent-blue: #4dabf7;
-            --accent-purple: #a78bfa;
-            --accent-teal: #22d3ee;
-            --accent-pink: #f472b6;
-            --accent-green: #34d399;
+            --accent: #4dabf7;
+            --accent2: #a78bfa;
+            --teal: #22d3ee;
+            --green: #34d399;
+            --pink: #f472b6;
             --text: #e2e8f0;
-            --text-muted: #8892a4;
-            --glow-blue: rgba(77, 171, 247, .25);
-            --glow-purple: rgba(167, 139, 250, .25);
+            --muted: #8892a4;
+            --radius: 14px;
+            --radius-sm: 10px;
         }
         * {
             box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        html {
             scroll-behavior: smooth;
+            font-size: 15px;
         }
         body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-family: 'Segoe UI', 'Inter', system-ui, -apple-system, sans-serif;
             background: var(--bg);
             color: var(--text);
             min-height: 100vh;
-            overflow-x: hidden;
-            line-height: 1.6;
+            line-height: 1.55;
+            -webkit-tap-highlight-color: transparent;
         }
-        /* Grid texture overlay */
-        .grid-bg {
+        /* Grid texture */
+        body::before {
+            content: '';
             position: fixed;
             inset: 0;
             pointer-events: none;
             z-index: 0;
-            background-image: linear-gradient(rgba(30, 30, 53, .35) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(30, 30, 53, .35) 1px, transparent 1px);
-            background-size: 44px 44px;
-            mask-image: radial-gradient(ellipse at center, black 40%, transparent 70%);
-            -webkit-mask-image: radial-gradient(ellipse at center, black 40%, transparent 70%);
+            background-image: linear-gradient(rgba(30, 30, 53, .25) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(30, 30, 53, .25) 1px, transparent 1px);
+            background-size: 36px 36px;
+            mask-image: radial-gradient(ellipse at center, black 30%, transparent 70%);
+            -webkit-mask-image: radial-gradient(ellipse at center, black 30%, transparent 70%);
         }
-        .glow-orb {
+        .glow {
             position: fixed;
             border-radius: 50%;
-            filter: blur(120px);
+            filter: blur(100px);
             pointer-events: none;
             z-index: 0;
-            opacity: .45;
+            opacity: .35;
         }
-        .section-wrap {
+        section {
             position: relative;
             z-index: 1;
-            max-width: 1300px;
+            padding: 48px 14px;
+            max-width: 1200px;
             margin: 0 auto;
-            padding: 80px 24px;
         }
-        .glass-panel {
+        @media(min-width:768px) {
+            section {
+                padding: 70px 24px;
+            }
+        }
+        .panel {
             background: var(--surface);
             border: 1px solid var(--border);
-            border-radius: 20px;
-            backdrop-filter: blur(8px);
-            transition: all .35s;
-        }
-        .glass-panel:hover {
-            border-color: rgba(77, 171, 247, .35);
-            box-shadow: 0 0 40px var(--glow-blue);
-        }
-        .btn-primary {
-            background: linear-gradient(135deg, #3b82f6, #6366f1);
-            border: 1px solid rgba(99, 102, 241, .6);
-            color: #fff;
-            padding: 14px 32px;
-            border-radius: 14px;
-            font-weight: 700;
-            font-size: 15px;
-            cursor: pointer;
+            border-radius: var(--radius);
+            padding: 20px 16px;
+            margin-bottom: 16px;
             transition: all .3s;
-            letter-spacing: .3px;
+        }
+        @media(min-width:768px) {
+            .panel {
+                padding: 28px 24px;
+                border-radius: 18px;
+            }
+        }
+        .panel:hover {
+            border-color: rgba(77, 171, 247, .3);
+        }
+        .btn {
             display: inline-flex;
             align-items: center;
-            gap: 8px;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-        }
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 12px 36px rgba(59, 130, 246, .45);
-            border-color: #818cf8;
-        }
-        .btn-outline {
-            background: transparent;
-            border: 1.5px solid var(--border);
-            color: var(--text);
-            padding: 14px 32px;
-            border-radius: 14px;
+            gap: 7px;
+            padding: 12px 22px;
+            border-radius: 99px;
             font-weight: 600;
-            font-size: 15px;
+            font-size: 14px;
             cursor: pointer;
-            transition: all .3s;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            font-family: 'Plus Jakarta Sans', sans-serif;
+            border: 1.5px solid transparent;
+            transition: all .25s;
+            white-space: nowrap;
+            text-decoration: none;
+            letter-spacing: .2px;
+            font-family: inherit;
         }
-        .btn-outline:hover {
-            border-color: var(--accent-purple);
+        .btn-pri {
+            background: linear-gradient(135deg, #3b82f6, #6366f1);
+            border-color: rgba(99, 102, 241, .5);
+            color: #fff;
+        }
+        .btn-pri:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(59, 130, 246, .4);
+        }
+        .btn-out {
+            background: transparent;
+            border-color: var(--border);
+            color: var(--text);
+        }
+        .btn-out:hover {
+            border-color: var(--accent2);
             color: #c4b5fd;
-            box-shadow: 0 8px 28px var(--glow-purple);
         }
-        .section-title {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: clamp(26px, 4vw, 48px);
+        .btn-sm {
+            padding: 8px 14px;
+            font-size: 12px;
+            border-radius: 8px;
+        }
+        .badge {
+            display: inline-block;
+            padding: 3px 9px;
+            border-radius: 99px;
+            font-size: 10px;
             font-weight: 700;
-            letter-spacing: -1px;
-            margin-bottom: 12px;
+            letter-spacing: .5px;
+            text-transform: uppercase;
         }
-        .gradient-text {
-            background: linear-gradient(135deg, #4dabf7, #a78bfa, #22d3ee);
-            background-clip: text;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+        .badge-g {
+            background: rgba(52, 211, 153, .12);
+            color: #34d399;
+            border: 1px solid rgba(52, 211, 153, .25);
         }
-        .gradient-text2 {
-            background: linear-gradient(135deg, #a78bfa, #f472b6);
-            background-clip: text;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+        .badge-y {
+            background: rgba(251, 191, 36, .12);
+            color: #fcd34d;
+            border: 1px solid rgba(251, 191, 36, .25);
+        }
+        .badge-r {
+            background: rgba(248, 113, 113, .12);
+            color: #f87171;
+            border: 1px solid rgba(248, 113, 113, .25);
+        }
+        .badge-b {
+            background: rgba(77, 171, 247, .12);
+            color: #4dabf7;
+            border: 1px solid rgba(77, 171, 247, .25);
         }
         input,
         select,
         textarea {
             background: var(--surface2);
             border: 1.5px solid var(--border);
-            border-radius: 12px;
-            padding: 13px 16px;
+            border-radius: var(--radius-sm);
+            padding: 12px 14px;
             color: var(--text);
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            font-size: 15px;
+            font-size: 14px;
             width: 100%;
             outline: none;
             transition: all .25s;
+            font-family: inherit;
         }
         input:focus,
         select:focus,
         textarea:focus {
-            border-color: var(--accent-blue);
-            box-shadow: 0 0 0 4px var(--glow-blue);
+            border-color: var(--accent);
+            box-shadow: 0 0 0 4px rgba(77, 171, 247, .12);
         }
         select {
             cursor: pointer;
             appearance: none;
             -webkit-appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%238892a4' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'%3E%3C/path%3E%3C/svg%3E");
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%238892a4' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'%3E%3C/path%3E%3C/svg%3E");
             background-repeat: no-repeat;
-            background-position: right 14px center;
-            padding-right: 44px;
+            background-position: right 12px center;
+            padding-right: 38px;
         }
         select option {
-            background: var(--surface2);
-            color: var(--text);
+            background: #111122;
+            color: #e2e8f0;
         }
         label {
             display: block;
             font-weight: 600;
-            font-size: 14px;
-            margin-bottom: 6px;
+            font-size: 13px;
+            margin-bottom: 5px;
             color: #cbd5e1;
-            letter-spacing: .2px;
         }
-        ::placeholder {
-            color: #555;
+        h2 {
+            font-size: clamp(24px, 4.5vw, 40px);
+            font-weight: 800;
+            letter-spacing: -.6px;
+            margin-bottom: 6px;
+            line-height: 1.2;
         }
-        /* Nav */
+        h3 {
+            font-size: clamp(16px, 2.5vw, 22px);
+            font-weight: 700;
+            letter-spacing: -.3px;
+        }
+        .grad-text {
+            background: linear-gradient(135deg, #4dabf7, #a78bfa, #22d3ee);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .grad-text2 {
+            background: linear-gradient(135deg, #a78bfa, #f472b6);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        /* NAV */
         nav {
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
             z-index: 200;
-            background: rgba(6, 6, 12, .88);
-            backdrop-filter: blur(20px);
+            background: rgba(6, 6, 12, .9);
+            backdrop-filter: blur(16px);
             border-bottom: 1px solid var(--border);
-            padding: 0 24px;
-            height: 60px;
+            padding: 0 14px;
+            height: 54px;
             display: flex;
             align-items: center;
             justify-content: space-between;
         }
-        .nav-link {
-            color: var(--text-muted);
-            font-weight: 500;
-            font-size: 14px;
-            padding: 8px 16px;
-            border-radius: 10px;
-            transition: all .2s;
-            text-decoration: none;
-            letter-spacing: .2px;
+        .nav-brand {
+            font-weight: 800;
+            font-size: 16px;
+            letter-spacing: -.4px;
+            background: linear-gradient(135deg, #4dabf7, #a78bfa);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            white-space: nowrap;
         }
-        .nav-link:hover {
+        .nav-links {
+            display: none;
+            gap: 4px;
+            align-items: center;
+        }
+        @media(min-width:768px) {
+            .nav-links {
+                display: flex;
+            }
+        }
+        .nav-links a {
+            color: var(--muted);
+            font-size: 13px;
+            font-weight: 500;
+            padding: 7px 12px;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: all .2s;
+            white-space: nowrap;
+        }
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: #fff;
+            background: rgba(255, 255, 255, .05);
+        }
+        .hamburger {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            padding: 8px;
+            z-index: 201;
+            background: none;
+            border: none;
+        }
+        .hamburger span {
+            width: 22px;
+            height: 2px;
+            background: #e2e8f0;
+            border-radius: 2px;
+            transition: all .3s;
+        }
+        @media(min-width:768px) {
+            .hamburger {
+                display: none;
+            }
+        }
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            top: 54px;
+            left: 0;
+            right: 0;
+            background: rgba(6, 6, 12, .96);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            z-index: 199;
+            padding: 12px;
+            flex-direction: column;
+            gap: 2px;
+        }
+        .mobile-menu.open {
+            display: flex;
+        }
+        .mobile-menu a {
+            color: var(--muted);
+            font-size: 14px;
+            font-weight: 500;
+            padding: 12px 14px;
+            border-radius: 10px;
+            text-decoration: none;
+            transition: all .2s;
+            display: block;
+        }
+        .mobile-menu a:hover {
             color: #fff;
             background: rgba(255, 255, 255, .04);
         }
-        .nav-link.active {
-            color: var(--accent-blue);
-            background: rgba(77, 171, 247, .08);
-        }
-        .badge {
-            display: inline-block;
-            padding: 4px 10px;
-            border-radius: 99px;
-            font-size: 11px;
-            font-weight: 700;
-            letter-spacing: .4px;
-            text-transform: uppercase;
-        }
-        .badge-green {
-            background: rgba(52, 211, 153, .12);
-            color: #34d399;
-            border: 1px solid rgba(52, 211, 153, .25);
-        }
-        .badge-yellow {
-            background: rgba(251, 191, 36, .12);
-            color: #fcd34d;
-            border: 1px solid rgba(251, 191, 36, .25);
-        }
-        .badge-red {
-            background: rgba(248, 113, 113, .12);
-            color: #f87171;
-            border: 1px solid rgba(248, 113, 113, .25);
-        }
-        .badge-blue {
-            background: rgba(77, 171, 247, .12);
-            color: #4dabf7;
-            border: 1px solid rgba(77, 171, 247, .25);
-        }
-        /* Animation */
-        @keyframes fadeUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        .fade-up {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: opacity .6s, transform .6s;
-        }
-        .fade-up.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        @keyframes pulse-ring {
-            0%,
-            100% {
-                box-shadow: 0 0 0 0 rgba(77, 171, 247, .4);
-            }
-            50% {
-                box-shadow: 0 0 0 18px rgba(77, 171, 247, 0);
-            }
-        }
-        .pulse-ring {
-            animation: pulse-ring 2.5s infinite;
-        }
-        /* Troubleshoot cards */
-        .ts-card {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            overflow: hidden;
-            cursor: pointer;
-            transition: all .3s;
-        }
-        .ts-card:hover {
-            border-color: rgba(77, 171, 247, .4);
-            box-shadow: 0 6px 24px rgba(0, 0, 0, .3);
-            transform: translateY(-2px);
-        }
-        .ts-card-header {
-            padding: 16px 18px;
+        /* Component card */
+        .comp-card {
             display: flex;
-            align-items: flex-start;
-            gap: 12px;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 12px;
+            border-radius: var(--radius-sm);
+            border: 1.5px solid var(--border);
+            cursor: pointer;
+            transition: all .2s;
+            background: var(--surface2);
+            font-size: 13px;
+            min-width: 140px;
+            flex-shrink: 0;
         }
-        .ts-card-body {
-            padding: 0 18px 16px;
+        .comp-card:hover {
+            border-color: var(--accent);
+            background: rgba(77, 171, 247, .06);
+        }
+        .comp-card.selected {
+            border-color: var(--accent);
+            background: rgba(77, 171, 247, .1);
+            box-shadow: 0 0 16px rgba(77, 171, 247, .2);
+        }
+        .comp-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            flex-shrink: 0;
+            background: rgba(255, 255, 255, .04);
+        }
+        .comp-price {
+            font-weight: 700;
+            color: var(--green);
+            font-size: 12px;
+            white-space: nowrap;
+        }
+        /* Collapsible */
+        .collapsible-header {
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 14px;
+            border-radius: var(--radius-sm);
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            font-weight: 600;
+            font-size: 14px;
+            transition: all .2s;
+            user-select: none;
+        }
+        .collapsible-header:hover {
+            border-color: var(--accent);
+        }
+        .collapsible-body {
             display: none;
-            border-top: 1px solid var(--border);
-            margin-top: 8px;
-            padding-top: 14px;
+            padding: 10px 0;
         }
-        .ts-card.open .ts-card-body {
+        .collapsible-body.open {
             display: block;
         }
-        .ts-card-body ul {
-            list-style: disc;
-            padding-left: 20px;
-            color: #94a3b8;
-            font-size: 14px;
-            line-height: 1.7;
-        }
-        .ts-card-body ul li {
-            margin-bottom: 6px;
-        }
-        .ts-card-body p {
-            color: #94a3b8;
-            font-size: 14px;
-            line-height: 1.7;
-            margin-bottom: 8px;
-        }
-        .ts-chevron {
-            margin-left: auto;
-            color: #475569;
-            font-size: 18px;
-            transition: transform .3s;
+        .comp-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            padding: 4px 0;
         }
         /* Toast */
         #toast {
             position: fixed;
-            bottom: 24px;
-            right: 24px;
+            bottom: 18px;
+            right: 14px;
             z-index: 9999;
             background: #065f46;
             border: 1px solid #10b981;
-            border-radius: 14px;
-            padding: 14px 22px;
+            border-radius: 12px;
+            padding: 12px 18px;
             color: #fff;
             font-weight: 600;
-            font-size: 14px;
+            font-size: 13px;
             display: flex;
             align-items: center;
-            gap: 10px;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, .5);
+            gap: 8px;
+            box-shadow: 0 8px 28px rgba(0, 0, 0, .5);
             transform: translateY(120px);
             opacity: 0;
             transition: all .4s cubic-bezier(.175, .885, .32, 1.275);
             pointer-events: none;
+            max-width: calc(100vw - 28px);
         }
         #toast.show {
             transform: translateY(0);
             opacity: 1;
         }
-        /* Popup */
-        #popup-overlay {
-            display: none;
-            position: fixed;
-            inset: 0;
-            z-index: 9998;
-            background: rgba(0, 0, 0, .78);
-            backdrop-filter: blur(6px);
-            align-items: center;
-            justify-content: center;
+        /* Section title */
+        .sec-title {
+            text-align: center;
+            margin-bottom: 32px;
         }
-        #popup-overlay.open {
-            display: flex;
+        .sec-title .badge {
+            margin-bottom: 10px;
+            display: inline-block;
         }
-        #popup-box {
-            position: relative;
-            max-width: 480px;
-            width: 92%;
-            background: var(--surface);
-            border: 1px solid rgba(99, 102, 241, .5);
-            border-radius: 24px;
-            padding: 36px 28px;
-            box-shadow: 0 0 60px rgba(99, 102, 241, .35);
-            animation: popIn .35s cubic-bezier(.175, .885, .32, 1.275);
-        }
-        @keyframes popIn {
-            from {
-                transform: scale(.8);
-                opacity: 0;
-            }
-            to {
-                transform: scale(1);
-                opacity: 1;
-            }
-        }
-        #popup-close {
-            position: absolute;
-            top: 14px;
-            right: 18px;
-            background: none;
-            border: none;
-            color: #64748b;
-            font-size: 24px;
-            cursor: pointer;
-            transition: color .2s;
-        }
-        #popup-close:hover {
-            color: #fff;
-        }
-        /* Scrollbar */
+        /* Scroll */
         ::-webkit-scrollbar {
-            width: 6px;
+            width: 4px;
+            height: 4px;
         }
         ::-webkit-scrollbar-track {
-            background: var(--bg);
+            background: transparent;
         }
         ::-webkit-scrollbar-thumb {
             background: #2a2a44;
             border-radius: 99px;
         }
-        @media (max-width: 768px) {
-            nav {
-                overflow-x: auto;
-                gap: 4px;
-                padding: 0 12px;
-            }
-            .nav-link {
-                font-size: 12px;
-                padding: 6px 10px;
-                white-space: nowrap;
-            }
-            .section-wrap {
-                padding: 50px 14px;
-            }
+        .horiz-scroll {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding-bottom: 6px;
+            -webkit-overflow-scrolling: touch;
+            scroll-snap-type: x proximity;
+        }
+        .horiz-scroll>* {
+            scroll-snap-align: start;
         }
         code {
             background: rgba(255, 255, 255, .06);
-            padding: 2px 7px;
-            border-radius: 5px;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 13px;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 12px;
             color: #22d3ee;
+        }
+        @media(max-width:400px) {
+            .comp-card {
+                font-size: 11px;
+                padding: 8px 10px;
+                gap: 6px;
+            }
+            .comp-icon {
+                width: 28px;
+                height: 28px;
+                font-size: 14px;
+                border-radius: 6px;
+            }
+            .btn {
+                padding: 10px 16px;
+                font-size: 12px;
+            }
         }
     </style>
 </head>
 <body>
 
-    <!-- Ambient glow orbs -->
-    <div style="position:fixed;inset:0;pointer-events:none;z-index:0">
-        <div class="glow-orb" style="width:500px;height:500px;background:rgba(77,171,247,.22);top:10%;left:-15%"></div>
-        <div class="glow-orb" style="width:400px;height:400px;background:rgba(167,139,250,.20);bottom:5%;right:-10%"></div>
-        <div class="glow-orb" style="width:350px;height:350px;background:rgba(34,211,238,.16);top:50%;left:55%"></div>
-    </div>
-    <div class="grid-bg"></div>
+    <!-- Ambient glow -->
+    <div class="glow" style="width:350px;height:350px;background:rgba(77,171,247,.18);top:8%;left:-12%"></div>
+    <div class="glow" style="width:300px;height:300px;background:rgba(167,139,250,.16);bottom:5%;right:-8%"></div>
 
     <!-- ═══════ NAV ═══════ -->
     <nav>
-        <div style="font-family:'JetBrains Mono',monospace;font-weight:700;font-size:18px;letter-spacing:-.5px">
-            <span style="background:linear-gradient(135deg,#4dabf7,#a78bfa);background-clip:text;-webkit-background-clip:text;-webkit-text-fill-color:transparent">PC-Precision</span>
+        <span class="nav-brand">⚡ PC-Precision</span>
+        <div class="nav-links">
+            <a href="#bottleneck">🔗 Bottleneck</a>
+            <a href="#autoBuild">🖥️ Auto Build</a>
+            <a href="#customBuild">🛠️ Custom Build</a>
+            <a href="#troubleshoot">🔧 Fix Issues</a>
+            <a href="#meet">📹 Meet Us</a>
+            <a href="#contact">📧 Contact</a>
         </div>
-        <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
-            <a href="#bottleneck" class="nav-link">🔗 Bottleneck</a>
-            <a href="#builder" class="nav-link">🖥️ Builder</a>
-            <a href="#troubleshoot" class="nav-link active">🔧 Troubleshoot</a>
-            <a href="#services" class="nav-link">Services</a>
-            <a href="#contact" class="nav-link">Contact</a>
-            <a href="#meet" class="nav-link pulse-ring" style="background:linear-gradient(135deg,rgba(59,130,246,.25),rgba(139,92,246,.25));border:1px solid #6366f1;color:#e2e8f0;border-radius:12px">📹 Meet Now</a>
-        </div>
+        <button class="hamburger" id="hamburger" aria-label="Menu" onclick="toggleMenu()">
+            <span></span><span></span><span></span>
+        </button>
     </nav>
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="#bottleneck" onclick="toggleMenu()">🔗 Bottleneck Calculator</a>
+        <a href="#autoBuild" onclick="toggleMenu()">🖥️ Auto PC Builder</a>
+        <a href="#customBuild" onclick="toggleMenu()">🛠️ Custom PC Builder</a>
+        <a href="#troubleshoot" onclick="toggleMenu()">🔧 Troubleshoot (5000+)</a>
+        <a href="#meet" onclick="toggleMenu()">📹 Google Meet</a>
+        <a href="#contact" onclick="toggleMenu()">📧 Contact</a>
+    </div>
 
     <!-- ═══════ HERO ═══════ -->
-    <section style="position:relative;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:100px 24px 80px;z-index:1">
-        <div style="text-align:center;max-width:900px">
-            <div class="badge badge-blue pulse-ring" style="font-size:13px;padding:8px 18px;margin-bottom:28px;display:inline-block">🚀 INDIA'S #1 PC BUILD PLATFORM</div>
-            <h1 style="font-family:'JetBrains Mono',monospace;font-size:clamp(34px,7vw,76px);line-height:1.08;font-weight:800;letter-spacing:-2px;margin-bottom:20px">
-                <span class="gradient-text">Build Smarter.</span><br>
-                <span style="color:#e2e8f0">Zero Bottlenecks.</span>
-            </h1>
-            <p style="color:var(--text-muted);font-size:clamp(15px,2vw,20px);max-width:600px;margin:0 auto 40px;line-height:1.7">
-                Advanced <strong style="color:#4dabf7">bottleneck calculator</strong> • Auto PC builder by budget • 5000+ instant fixes • Direct Google Meet with experts.
-            </p>
-            <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap">
-                <a href="#bottleneck" class="btn-primary">🔗 Check Bottleneck</a>
-                <a href="#builder" class="btn-outline">🖥️ Auto Build PC</a>
-                <a href="#meet" class="btn-outline" style="border-color:rgba(167,139,250,.5);color:#c4b5fd">📹 15-Min Meet</a>
-            </div>
-            <div style="display:flex;gap:40px;justify-content:center;margin-top:48px;flex-wrap:wrap">
-                <div><span style="font-family:'JetBrains Mono',monospace;font-size:32px;font-weight:700;color:#4dabf7">10+</span><br><span style="color:var(--text-muted);font-size:13px">Years Exp</span></div>
-                <div><span style="font-family:'JetBrains Mono',monospace;font-size:32px;font-weight:700;color:#a78bfa">5000+</span><br><span style="color:var(--text-muted);font-size:13px">Issues Solved</span></div>
-                <div><span style="font-family:'JetBrains Mono',monospace;font-size:32px;font-weight:700;color:#22d3ee">₹20K–₹5L</span><br><span style="color:var(--text-muted);font-size:13px">Budget Range</span></div>
-                <div><span style="font-family:'JetBrains Mono',monospace;font-size:32px;font-weight:700;color:#f472b6">24hr</span><br><span style="color:var(--text-muted);font-size:13px">Response</span></div>
-            </div>
+    <section style="padding-top:80px;text-align:center">
+        <span class="badge badge-b" style="margin-bottom:14px;display:inline-block;padding:6px 14px;font-size:11px">🚀 INDIA'S #1 PC BUILD PLATFORM</span>
+        <h2 style="font-size:clamp(28px,6vw,56px);line-height:1.08;margin-bottom:12px"><span class="grad-text">Build Smarter.</span><br>Zero Bottlenecks.</h2>
+        <p style="color:var(--muted);font-size:clamp(13px,1.8vw,16px);max-width:500px;margin:0 auto 24px">Advanced bottleneck calculator • Auto & Custom PC builder • 5000+ instant fixes • Expert Google Meet support</p>
+        <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
+            <a href="#bottleneck" class="btn btn-pri">🔗 Check Bottleneck</a>
+            <a href="#autoBuild" class="btn btn-out">🖥️ Auto Build</a>
+            <a href="#customBuild" class="btn btn-out">🛠️ Custom Build</a>
+            <a href="#meet" class="btn btn-out" style="border-color:rgba(167,139,250,.45);color:#c4b5fd">📹 15-Min Meet</a>
+        </div>
+        <div style="display:flex;gap:20px;justify-content:center;margin-top:32px;flex-wrap:wrap;font-size:12px;color:var(--muted)">
+            <div><strong style="color:#4dabf7;font-size:20px">10+</strong><br>Years Exp</div>
+            <div><strong style="color:#a78bfa;font-size:20px">5000+</strong><br>Issues Solved</div>
+            <div><strong style="color:#22d3ee;font-size:20px">₹20K–5L</strong><br>Budget Range</div>
+            <div><strong style="color:#f472b6;font-size:20px">24hr</strong><br>Response</div>
         </div>
     </section>
 
     <!-- ═══════ BOTTLENECK CALCULATOR ═══════ -->
-    <section id="bottleneck" style="position:relative;z-index:1;padding:60px 24px 100px">
-        <div class="section-wrap" style="padding-top:0">
-            <div style="text-align:center;margin-bottom:50px">
-                <div class="badge badge-blue" style="margin-bottom:16px">🔗 NEW FEATURE</div>
-                <h2 class="section-title gradient-text">Bottleneck Calculator</h2>
-                <p style="color:var(--text-muted);font-size:16px;max-width:550px;margin:0 auto">Select any CPU & GPU combo from our comprehensive database — oldest to newest. Instantly see bottleneck percentage.</p>
+    <section id="bottleneck">
+        <div class="sec-title">
+            <span class="badge badge-b">🔗 STANDALONE TOOL</span>
+            <h2 class="grad-text">Bottleneck Calculator</h2>
+            <p style="color:var(--muted);font-size:13px;max-width:450px;margin:0 auto">Select any CPU & GPU combo — oldest to newest. Instant bottleneck percentage.</p>
+        </div>
+        <div class="panel" style="max-width:700px;margin:0 auto">
+            <div style="display:grid;grid-template-columns:1fr;gap:12px;margin-bottom:16px">
+                <div><label>🧠 Processor (CPU)</label><select id="cpuSelect"><option value="">-- Select CPU --</option></select></div>
+                <div><label>🎮 Graphics Card (GPU)</label><select id="gpuSelect"><option value="">-- Select GPU --</option></select></div>
             </div>
-            <div class="glass-panel" style="padding:40px 32px;max-width:850px;margin:0 auto">
-                <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:24px">
-                    <div>
-                        <label>🧠 Processor (CPU)</label>
-                        <select id="cpuSelect"><option value="">-- Select CPU --</option></select>
-                    </div>
-                    <div>
-                        <label>🎮 Graphics Card (GPU)</label>
-                        <select id="gpuSelect"><option value="">-- Select GPU --</option></select>
-                    </div>
-                </div>
-                <div style="text-align:center;margin-bottom:24px">
-                    <button onclick="calcBottleneck()" class="btn-primary" style="font-size:16px;padding:16px 48px">⚡ Calculate Bottleneck</button>
-                </div>
-                <div id="bottleneckResult" style="text-align:center;padding:24px;border-radius:16px;background:var(--surface2);border:1px solid var(--border);display:none">
-                    <div id="bottleneckIcon" style="font-size:48px;margin-bottom:8px"></div>
-                    <div id="bottleneckText" style="font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:700"></div>
-                    <div id="bottleneckDetail" style="color:var(--text-muted);font-size:14px;margin-top:6px"></div>
-                </div>
+            <button onclick="calcBottleneck()" class="btn btn-pri" style="width:100%;justify-content:center;font-size:15px">⚡ Calculate Bottleneck</button>
+            <div id="bottleneckResult" style="text-align:center;padding:18px;border-radius:12px;background:var(--surface2);border:1px solid var(--border);margin-top:14px;display:none">
+                <div id="bottleneckIcon" style="font-size:40px;margin-bottom:6px"></div>
+                <div id="bottleneckText" style="font-weight:700;font-size:18px"></div>
+                <div id="bottleneckDetail" style="color:var(--muted);font-size:12px;margin-top:4px"></div>
             </div>
         </div>
     </section>
 
     <!-- ═══════ AUTO PC BUILDER ═══════ -->
-    <section id="builder" style="position:relative;z-index:1;padding:60px 24px 100px;background:rgba(0,0,0,.25)">
-        <div class="section-wrap" style="padding-top:0">
-            <div style="text-align:center;margin-bottom:50px">
-                <div class="badge badge-green" style="margin-bottom:16px">🖥️ SMART BUILDER</div>
-                <h2 class="section-title gradient-text2">Auto PC Builder</h2>
-                <p style="color:var(--text-muted);font-size:16px;max-width:550px;margin:0 auto">Select your budget. We instantly pick the absolute best performing parts — zero guesswork.</p>
+    <section id="autoBuild" style="background:rgba(0,0,0,.2)">
+        <div class="sec-title">
+            <span class="badge badge-g">🖥️ SMART BUILDER</span>
+            <h2 class="grad-text2">Auto PC Builder</h2>
+            <p style="color:var(--muted);font-size:13px;max-width:450px;margin:0 auto">Choose budget → Get best-performing parts instantly. Zero guesswork.</p>
+        </div>
+        <div style="max-width:700px;margin:0 auto">
+            <div class="panel">
+                <label style="font-size:15px;margin-bottom:10px">💰 Your Budget (INR)</label>
+                <select id="budgetSelect" onchange="autoBuild()" style="font-size:15px;padding:14px">
+                    <option value="">-- Choose Budget --</option>
+                    <option value="25k">₹25,000 — Entry (Office + Light Gaming)</option>
+                    <option value="40k">₹40,000 — Budget Gaming (1080p Medium)</option>
+                    <option value="60k">₹60,000 — Mid-Range (1080p High)</option>
+                    <option value="85k">₹85,000 — Enthusiast (1440p)</option>
+                    <option value="120k">₹1,20,000 — High-End (1440p Ultra)</option>
+                    <option value="180k">₹1,80,000 — Premium 4K Gaming</option>
+                    <option value="250k">₹2,50,000+ — Ultimate 4K Beast</option>
+                </select>
             </div>
-            <div style="max-width:750px;margin:0 auto">
-                <div class="glass-panel" style="padding:32px;margin-bottom:24px">
-                    <label style="font-size:16px;margin-bottom:14px">💰 Your Budget (INR)</label>
-                    <select id="budgetSelect" onchange="autoBuild()" style="font-size:16px;padding:16px">
-                        <option value="">-- Choose Budget --</option>
-                        <option value="25k">₹25,000 — Entry Level (Office + Light Gaming)</option>
-                        <option value="40k">₹40,000 — Budget Gaming (1080p Medium)</option>
-                        <option value="60k">₹60,000 — Mid-Range Gaming (1080p High)</option>
-                        <option value="85k">₹85,000 — Enthusiast Gaming (1440p)</option>
-                        <option value="120k">₹1,20,000 — High-End (1440p Ultra / 4K)</option>
-                        <option value="180k">₹1,80,000 — Premium 4K Gaming</option>
-                        <option value="250k">₹2,50,000+ — Ultimate Creator + 4K Beast</option>
-                    </select>
-                </div>
-                <div id="buildResult" class="glass-panel" style="padding:32px;display:none">
-                    <h3 style="font-family:'JetBrains Mono',monospace;font-size:20px;margin-bottom:20px;color:#4dabf7">🔧 Recommended Build</h3>
-                    <div id="buildParts" style="display:grid;gap:10px"></div>
-                    <div id="buildTotal" style="font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:700;margin-top:16px;padding-top:16px;border-top:1px solid var(--border);color:#34d399"></div>
-                    <p style="color:var(--text-muted);font-size:13px;margin-top:8px">* Prices are approximate market rates. All parts are bottleneck-optimized.</p>
-                </div>
+            <div id="buildResult" class="panel" style="display:none">
+                <h3 style="color:#4dabf7;margin-bottom:14px">🔧 Recommended Build</h3>
+                <div id="buildParts" style="display:grid;gap:8px"></div>
+                <div id="buildTotal" style="font-weight:700;font-size:16px;margin-top:14px;padding-top:14px;border-top:1px solid var(--border);color:#34d399"></div>
             </div>
         </div>
     </section>
 
-    <!-- ═══════ TROUBLESHOOT (5000+ expanded) ═══════ -->
-    <section id="troubleshoot" style="position:relative;z-index:1;padding:60px 24px 100px">
-        <div class="section-wrap" style="padding-top:0">
-            <div style="text-align:center;margin-bottom:50px">
-                <div class="badge badge-yellow" style="margin-bottom:16px">🔧 5000+ SOLUTIONS</div>
-                <h2 class="section-title gradient-text">Self-Troubleshoot Instantly</h2>
-                <p style="color:var(--text-muted);font-size:16px;max-width:600px;margin:0 auto">Search your exact problem. If the fix doesn't work, <strong style="color:#fcd34d">book a Google Meet</strong> right from the card.</p>
+    <!-- ═══════ CUSTOM PC BUILDER ═══════ -->
+    <section id="customBuild">
+        <div class="sec-title">
+            <span class="badge badge-y">🛠️ INTERACTIVE BUILDER</span>
+            <h2 class="grad-text">Custom PC Builder</h2>
+            <p style="color:var(--muted);font-size:13px;max-width:500px;margin:0 auto">Pick every part yourself — oldest to newest. Real-time bottleneck check & price tracking.</p>
+        </div>
+        <div class="panel" style="max-width:900px;margin:0 auto">
+            <div id="customSummary" style="text-align:center;padding:14px;border-radius:12px;background:var(--surface2);border:1px solid var(--border);margin-bottom:16px;font-size:13px;color:var(--muted)">
+                🛒 <strong style="color:#e2e8f0">Total: <span id="customTotal" style="color:#34d399">₹0</span></strong> &nbsp;|&nbsp;
+                🔗 <span id="customBottleneck">Select CPU + GPU to check</span>
             </div>
-            <div style="max-width:700px;margin:0 auto 36px;position:relative">
-                <span style="position:absolute;left:16px;top:50%;transform:translateY(-50%);font-size:20px">🔍</span>
-                <input type="text" id="tsSearch" placeholder="Search 5000+ issues... e.g. 'blue screen', 'FPS drops', 'no display', 'overheating'" style="padding-left:48px;font-size:16px;padding:15px 16px 15px 48px;border-radius:16px">
-            </div>
-            <div style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:28px" id="catFilters"></div>
-            <p style="text-align:center;color:var(--text-muted);font-size:13px;margin-bottom:24px;min-height:20px" id="tsCount"></p>
-            <div id="issuesGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:14px"></div>
-            <div id="tsNoResults" style="text-align:center;padding:50px;color:#475569;font-size:17px;display:none">
-                😕 No results. <button onclick="document.getElementById('tsSearch').value='';filterTS();" class="btn-outline" style="margin:12px auto;display:inline-flex">Clear Search</button>
-                <br><span style="font-size:13px">or <a href="#meet" style="color:#4dabf7">book a Google Meet</a> for personal help</span>
-            </div>
+            <div id="customCategories" style="display:grid;gap:8px"></div>
+            <button onclick="resetCustomBuild()" class="btn btn-out btn-sm" style="margin-top:12px">🔄 Reset All</button>
+            <p style="font-size:10px;color:var(--muted);margin-top:8px;text-align:center">✅ Bottleneck is auto-checked when both CPU & GPU are selected</p>
         </div>
     </section>
 
-    <!-- ═══════ DIRECT GOOGLE MEET ═══════ -->
-    <section id="meet" style="position:relative;z-index:1;padding:60px 24px 100px;background:rgba(0,0,0,.3)">
-        <div class="section-wrap" style="padding-top:0;text-align:center">
-            <div class="badge badge-blue pulse-ring" style="margin-bottom:16px;display:inline-block">📹 INSTANT CONNECT</div>
-            <h2 class="section-title gradient-text">Book a Google Meet — 15 Minutes</h2>
-            <p style="color:var(--text-muted);font-size:16px;max-width:500px;margin:0 auto 28px">Speak directly with our PC experts. Troubleshooting, build advice, or FPS optimization — we're live.</p>
-            <div class="glass-panel" style="padding:36px;max-width:600px;margin:0 auto;display:inline-block;width:100%">
-                <p style="font-weight:700;font-size:17px;margin-bottom:8px">📧 pcprecision.official@gmail.com</p>
-                <p style="color:var(--text-muted);font-size:14px;margin-bottom:20px">Email us with your preferred time slot. We'll send a Google Meet link within <strong style="color:#4dabf7">2 hours</strong>.</p>
-                <a href="mailto:pcprecision.official@gmail.com?subject=Google%20Meet%20Request%20–%20PC%20Help&body=Hi%20PC-Precision%20Team,%0A%0AI'd%20like%20to%20book%20a%2015-minute%20Google%20Meet.%0A%0AMy%20preferred%20time:%20[mention%20date%20&%20time]%0A%0AIssue/Build%20details:%20[describe%20briefly]%0A%0AThanks!" class="btn-primary" style="width:100%;justify-content:center;font-size:16px">📹 Request Google Meet Now</a>
-                <p style="color:var(--text-muted);font-size:12px;margin-top:12px">⏰ Typical response: within 2 hours • Absolutely FREE consultation</p>
-            </div>
+    <!-- ═══════ TROUBLESHOOT ═══════ -->
+    <section id="troubleshoot" style="background:rgba(0,0,0,.2)">
+        <div class="sec-title">
+            <span class="badge badge-y">🔧 5000+ SOLUTIONS</span>
+            <h2 class="grad-text">Self-Troubleshoot Instantly</h2>
+            <p style="color:var(--muted);font-size:13px;max-width:450px;margin:0 auto">Search your problem. Still stuck? Book a Google Meet from any card.</p>
         </div>
+        <div style="max-width:700px;margin:0 auto 20px;position:relative">
+            <span style="position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:18px">🔍</span>
+            <input type="text" id="tsSearch" placeholder="Search 5000+ issues... e.g. 'blue screen', 'FPS drops', 'overheating'" style="padding-left:40px;font-size:14px;padding-top:13px;padding-bottom:13px;border-radius:99px">
+        </div>
+        <div class="horiz-scroll" id="catFilters" style="justify-content:center;margin-bottom:16px"></div>
+        <p style="text-align:center;color:var(--muted);font-size:12px;margin-bottom:16px;min-height:18px" id="tsCount"></p>
+        <div id="issuesGrid" style="display:grid;grid-template-columns:1fr;gap:10px;max-width:800px;margin:0 auto"></div>
+        <div id="tsNoResults" style="text-align:center;padding:40px;color:#475569;font-size:15px;display:none">😕 No results. <button onclick="document.getElementById('tsSearch').value='';filterTS()" class="btn btn-out btn-sm" style="margin:10px auto;display:inline-flex">Clear</button></div>
+        @media(min-width:600px){#issuesGrid{grid-template-columns:1fr 1fr}}
     </section>
 
-    <!-- ═══════ SERVICES ═══════ -->
-    <section id="services" style="position:relative;z-index:1;padding:60px 24px 100px">
-        <div class="section-wrap" style="padding-top:0">
-            <div style="text-align:center;margin-bottom:50px">
-                <h2 class="section-title gradient-text">Our Services</h2>
-                <div style="width:80px;height:3px;background:linear-gradient(to right,#4dabf7,#a78bfa);margin:12px auto 0;border-radius:99px"></div>
-            </div>
-            <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px">
-                <div class="glass-panel" style="padding:28px"><div style="font-size:36px;margin-bottom:14px">📋</div><h3 style="font-weight:700;font-size:18px;margin-bottom:8px;color:#4dabf7">Custom Build Blueprint</h3><p style="color:var(--text-muted);font-size:14px">Personalized PDF with best parts for your budget. Zero bottlenecks guaranteed.</p></div>
-                <div class="glass-panel" style="padding:28px"><div style="font-size:36px;margin-bottom:14px">📅</div><h3 style="font-weight:700;font-size:18px;margin-bottom:8px;color:#a78bfa">1-on-1 Google Meet</h3><p style="color:var(--text-muted);font-size:14px">15-minute live consultation to solve hardware doubts with pro-builders.</p></div>
-                <div class="glass-panel" style="padding:28px"><div style="font-size:36px;margin-bottom:14px">🎮</div><h3 style="font-weight:700;font-size:18px;margin-bottom:8px;color:#34d399">Remote FPS Tuning</h3><p style="color:var(--text-muted);font-size:14px">We optimize your PC via AnyDesk. Instant FPS gains in your favorite games.</p></div>
-                <div class="glass-panel" style="padding:28px"><div style="font-size:36px;margin-bottom:14px">⚠️</div><h3 style="font-weight:700;font-size:18px;margin-bottom:8px;color:#f472b6">Error Diagnosis</h3><p style="color:var(--text-muted);font-size:14px">BSOD, crashes, freezes — we identify root cause and fix it remotely.</p></div>
-            </div>
+    <!-- ═══════ GOOGLE MEET ═══════ -->
+    <section id="meet" style="text-align:center">
+        <div class="sec-title">
+            <span class="badge badge-b">📹 INSTANT CONNECT</span>
+            <h2 class="grad-text2">Book a Google Meet — 15 Minutes</h2>
+            <p style="color:var(--muted);font-size:13px;max-width:450px;margin:0 auto">Speak directly with our PC experts. First consultation is <strong style="color:#4dabf7">FREE</strong>. Complex issues may be chargeable.</p>
+        </div>
+        <div class="panel" style="max-width:500px;margin:0 auto;display:inline-block;width:100%;text-align:center">
+            <p style="font-weight:700;font-size:15px">📧 pcprecision.official@gmail.com</p>
+            <p style="color:var(--muted);font-size:12px;margin:8px 0 16px">Email us your preferred time. We'll send a Google Meet link within <strong style="color:#4dabf7">2 hours</strong>.</p>
+            <a href="mailto:pcprecision.official@gmail.com?subject=Google%20Meet%20Request%20–%20PC%20Help&body=Hi%20PC-Precision%20Team,%0A%0AI'd%20like%20to%20book%20a%2015-minute%20Google%20Meet.%0A%0AMy%20preferred%20time:%20[mention%20date%20&%20time]%0A%0AIssue/Build%20details:%20[describe%20briefly]%0A%0AThanks!" class="btn btn-pri" style="width:100%;justify-content:center">📹 Request Google Meet Now</a>
+            <p style="color:var(--muted);font-size:11px;margin-top:10px">🆓 Initial 15-min FREE • Complex diagnosis may be chargeable</p>
         </div>
     </section>
 
     <!-- ═══════ CONTACT ═══════ -->
-    <section id="contact" style="position:relative;z-index:1;padding:60px 24px 100px;background:rgba(0,0,0,.25)">
-        <div class="section-wrap" style="padding-top:0;max-width:650px">
-            <div style="text-align:center;margin-bottom:44px">
-                <h2 class="section-title gradient-text2">Get In Touch</h2>
-                <p style="color:var(--text-muted)">Your message goes directly to <strong>pcprecision.official@gmail.com</strong></p>
-            </div>
-            <form id="contactForm" class="glass-panel" style="padding:36px">
-                <div style="margin-bottom:18px"><label>Full Name</label><input type="text" id="inputName" required placeholder="John Doe"></div>
-                <div style="margin-bottom:18px"><label>Email</label><input type="email" id="inputEmail" required placeholder="john@example.com"></div>
-                <div style="margin-bottom:18px"><label>Budget</label><select id="inputBudget"><option value="">Select</option><option>₹25K – Entry</option><option>₹50K – Mid</option><option>₹1L – High</option><option>₹1.5L+ – Enthusiast</option><option>Custom</option></select></div>
-                <div style="margin-bottom:18px"><label>Service Needed</label><select id="inputService"><option value="PC Troubleshooting">🔧 Troubleshooting</option><option value="Build Guidance">🖥️ Build Guidance</option><option value="Error Fix">⚠️ Error Fix</option><option value="FPS Optimization">🎮 FPS Optimization</option></select></div>
-                <div style="margin-bottom:20px"><label>Details</label><textarea id="inputDetail" rows="4" placeholder="Describe your issue or build request..."></textarea></div>
-                <button type="submit" class="btn-primary" style="width:100%;justify-content:center;font-size:16px">🚀 Send to PC-Precision Team</button>
-            </form>
+    <section id="contact" style="background:rgba(0,0,0,.2)">
+        <div class="sec-title">
+            <h2 class="grad-text">Get In Touch</h2>
+            <p style="color:var(--muted);font-size:13px">Directly to <strong>pcprecision.official@gmail.com</strong></p>
         </div>
+        <form id="contactForm" class="panel" style="max-width:550px;margin:0 auto">
+            <div style="margin-bottom:12px"><label>Full Name</label><input type="text" id="inputName" required placeholder="John Doe"></div>
+            <div style="margin-bottom:12px"><label>Email</label><input type="email" id="inputEmail" required placeholder="john@example.com"></div>
+            <div style="margin-bottom:12px"><label>Budget</label><select id="inputBudget"><option value="">Select</option><option>₹25K – Entry</option><option>₹50K – Mid</option><option>₹1L – High</option><option>₹1.5L+ – Enthusiast</option><option>Custom</option></select></div>
+            <div style="margin-bottom:12px"><label>Service Needed</label><select id="inputService"><option>🔧 Troubleshooting</option><option>🖥️ Build Guidance</option><option>⚠️ Error Fix</option><option>🎮 FPS Optimization</option></select></div>
+            <div style="margin-bottom:14px"><label>Details</label><textarea id="inputDetail" rows="3" placeholder="Describe your issue..."></textarea></div>
+            <button type="submit" class="btn btn-pri" style="width:100%;justify-content:center">🚀 Send to Team</button>
+        </form>
     </section>
 
     <!-- ═══════ FOOTER ═══════ -->
-    <footer style="position:relative;z-index:1;text-align:center;padding:36px;border-top:1px solid var(--border);color:var(--text-muted);font-size:13px">
-        <span style="font-family:'JetBrains Mono',monospace;font-weight:700;background:linear-gradient(135deg,#4dabf7,#a78bfa);background-clip:text;-webkit-background-clip:text;-webkit-text-fill-color:transparent">PC-Precision</span> © 2025 • Engineered for Performance • pcprecision.official@gmail.com
+    <footer style="text-align:center;padding:28px 14px;border-top:1px solid var(--border);color:var(--muted);font-size:12px;position:relative;z-index:1">
+        <strong style="background:linear-gradient(135deg,#4dabf7,#a78bfa);background-clip:text;-webkit-background-clip:text;-webkit-text-fill-color:transparent">PC-Precision</strong> © 2025 • Engineered for Performance • pcprecision.official@gmail.com
     </footer>
 
-    <!-- ═══════ POPUP ═══════ -->
-    <div id="popup-overlay"><div id="popup-box"><button id="popup-close">✕</button><div id="popupIcon" style="font-size:44px;text-align:center;margin-bottom:12px"></div><h3 id="popupTitle" style="text-align:center;font-weight:700;font-size:20px;margin-bottom:8px"></h3><p id="popupBody" style="text-align:center;color:var(--text-muted);font-size:14px;line-height:1.6"></p><div style="background:rgba(52,211,153,.08);border:1px solid rgba(52,211,153,.2);border-radius:12px;padding:12px;margin-top:14px;text-align:center"><p style="color:#6ee7b7;font-size:13px;margin:0">✅ Sent to <strong>pcprecision.official@gmail.com</strong></p></div></div></div>
+    <!-- ═══════ TOAST ═══════ -->
     <div id="toast"><span>✅</span><span id="toastMsg"></span></div>
 
     <script>
-        // ═══════════════ SCROLL FADE ═══════════════
-        const obs = new IntersectionObserver(entries => { entries.forEach(e => { if (e.isIntersecting) e.target.classList.add(
-                'visible') }) }, { threshold: .06, rootMargin: '0px 0px -30px 0px' });
-        document.querySelectorAll('.fade-up').forEach(el => obs.observe(el));
+        // ═══════════════ MOBILE MENU ═══════════════
+        function toggleMenu() { document.getElementById('mobileMenu').classList.toggle('open'); }
+        document.querySelectorAll('#mobileMenu a').forEach(a => a.addEventListener('click', () => document.getElementById(
+            'mobileMenu').classList.remove('open')));
 
         // ═══════════════ TOAST ═══════════════
         function showToast(msg, err = false) {
@@ -641,22 +667,8 @@
             t.style.background = err ? '#7f1d1d' : '#065f46';
             t.style.borderColor = err ? '#ef4444' : '#10b981';
             t.classList.add('show');
-            setTimeout(() => t.classList.remove('show'), 3800);
+            setTimeout(() => t.classList.remove('show'), 3500);
         }
-
-        // ═══════════════ POPUP ═══════════════
-        function showPopup(icon, title, body) {
-            document.getElementById('popupIcon').textContent = icon;
-            document.getElementById('popupTitle').textContent = title;
-            document.getElementById('popupBody').textContent = body;
-            document.getElementById('popup-overlay').classList.add('open');
-        }
-        document.getElementById('popup-close').onclick = () => document.getElementById('popup-overlay').classList.remove(
-        'open');
-        document.getElementById('popup-overlay').onclick = e => { if (e.target.id === 'popup-overlay') document
-                .getElementById('popup-overlay').classList.remove('open') };
-        document.addEventListener('keydown', e => { if (e.key === 'Escape') document.getElementById('popup-overlay')
-                .classList.remove('open') });
 
         // ═══════════════ CONTACT FORM ═══════════════
         document.getElementById('contactForm').addEventListener('submit', function(e) {
@@ -669,14 +681,12 @@
             const body =
                 `Name: ${name}\nEmail: ${email}\nBudget: ${budget||'N/A'}\nService: ${service}\n\nDetails:\n${detail||'N/A'}`;
             window.location.href =
-                `mailto:pcprecision.official@gmail.com?subject=${encodeURIComponent(service+' Request – '+name)}&body=${encodeURIComponent(body)}`;
-            showPopup('📧', 'Request Sent!',
-                `Hi ${name}! Your ${service} request has been sent. We'll reply to ${email} within 24 hours.`);
+                `mailto:pcprecision.official@gmail.com?subject=${encodeURIComponent(service+' – '+name)}&body=${encodeURIComponent(body)}`;
             showToast('✅ Email client opened!');
             this.reset();
         });
 
-        // ═══════════════ BOTTLENECK CALCULATOR ═══════════════
+        // ═══════════════ BOTTLENECK DATA ═══════════════
         const cpuScores = {
             'Intel Celeron G5900': 18,
             'Intel Pentium G6400': 22,
@@ -846,90 +856,85 @@
             const resDiv = document.getElementById('bottleneckResult');
             if (!cpu || !gpu) { resDiv.style.display = 'block';
                 document.getElementById('bottleneckIcon').textContent = '⚠️';
-                document.getElementById('bottleneckText').textContent = 'Please select both CPU and GPU';
+                document.getElementById('bottleneckText').textContent = 'Select both CPU and GPU';
                 document.getElementById('bottleneckDetail').textContent = '';
                 return; }
             const cs = cpuScores[cpu] || 50;
             const gs = gpuScores[gpu] || 50;
             const ratio = cs / gs;
-            let pct, icon, cls, detail;
+            let pct, icon, detail;
             if (ratio >= 1.3) { pct = Math.round((1 - 1 / ratio) * 100);
                 icon = '🟡';
-                cls = 'GPU bottleneck';
-                detail =
-                `Your ${gpu} may hold back the ${cpu}. Consider a stronger GPU for better balance.` } else if (ratio <=
-                0.7) { pct = Math.round((1 - ratio) * 100);
+                detail = `GPU may hold back CPU. Consider stronger GPU.` } else if (ratio <= 0.7) { pct = Math.round((1 -
+                    ratio) * 100);
                 icon = '🔴';
-                cls = 'CPU bottleneck';
-                detail =
-                `Your ${cpu} may struggle to keep up with the ${gpu}. Consider a CPU upgrade.` } else { pct = Math.round(
-                    Math.abs(1 - ratio) * 100);
+                detail = `CPU may bottleneck GPU. Consider CPU upgrade.` } else { pct = Math.round(Math.abs(1 - ratio) *
+                    100);
                 icon = '🟢';
-                cls = 'Well balanced';
-                detail = 'This is a great combo! Minimal bottleneck. Perfect for gaming.'; }
+                detail = 'Great balance! Minimal bottleneck.'; }
             pct = Math.min(pct, 99);
             resDiv.style.display = 'block';
             document.getElementById('bottleneckIcon').textContent = icon;
-            document.getElementById('bottleneckText').textContent = `${pct}% estimated ${cls}`;
+            document.getElementById('bottleneckText').textContent = `${pct}% estimated bottleneck`;
             document.getElementById('bottleneckDetail').textContent = detail;
         }
 
-        // ═══════════════ AUTO PC BUILDER ═══════════════
+        // ═══════════════ AUTO BUILD ═══════════════
         const builds = {
             '25k': { parts: [
                     ['CPU', 'AMD Ryzen 5 5600G (iGPU)'],
                     ['Motherboard', 'MSI B450M-A Pro Max'],
-                    ['RAM', '16GB (2×8GB) DDR4 3200MHz'],
-                    ['Storage', '512GB NVMe SSD (Crucial P3)'],
-                    ['PSU', '450W 80+ Bronze (Cooler Master)'],
+                    ['RAM', '16GB DDR4 3200MHz (2×8GB)'],
+                    ['Storage', '512GB NVMe SSD'],
+                    ['PSU', '450W 80+ Bronze'],
                     ['Case', 'Ant Esports ICE-130AG'],
-                    ['GPU', 'Integrated Vega Graphics (free)']
-                ], total: '~₹24,500', note: 'Great for office work & light gaming (CS2, Valorant low)' },
+                    ['GPU', 'Integrated Vega (free)']
+                ], total: '~₹24,500', note: 'Office + light gaming (CS2, Valorant low)' },
             '40k': { parts: [
                     ['CPU', 'Intel Core i3-12100F'],
                     ['GPU', 'AMD RX 6500 XT 4GB'],
                     ['Motherboard', 'Gigabyte H610M-S2'],
-                    ['RAM', '16GB (2×8GB) DDR4 3200MHz'],
+                    ['RAM', '16GB DDR4 3200MHz'],
                     ['Storage', '512GB NVMe SSD'],
                     ['PSU', '550W 80+ Bronze'],
                     ['Case', 'Ant Esports ICE-200TG']
-                ], total: '~₹39,500', note: 'Solid 1080p Medium gaming (GTA V, Fortnite, Apex)' },
+                ], total: '~₹39,500', note: '1080p Medium gaming' },
             '60k': { parts: [
                     ['CPU', 'AMD Ryzen 5 5600'],
                     ['GPU', 'NVIDIA RTX 3060 12GB / RX 6600'],
                     ['Motherboard', 'MSI B550M Pro-VDH'],
-                    ['RAM', '16GB (2×8GB) DDR4 3600MHz'],
-                    ['Storage', '1TB NVMe SSD (WD SN580)'],
-                    ['PSU', '650W 80+ Gold (MSI MAG)'],
+                    ['RAM', '16GB DDR4 3600MHz'],
+                    ['Storage', '1TB NVMe SSD'],
+                    ['PSU', '650W 80+ Gold'],
                     ['Case', 'DeepCool Matrexx 40']
-                ], total: '~₹59,000', note: '1080p High/Ultra gaming. Smooth 60+ FPS AAA titles.' },
+                ], total: '~₹59,000', note: '1080p High/Ultra AAA gaming' },
             '85k': { parts: [
                     ['CPU', 'Intel Core i5-13400F'],
-                    ['GPU', 'NVIDIA RTX 4060 Ti 8GB / RX 7700 XT'],
+                    ['GPU', 'NVIDIA RTX 4060 Ti / RX 7700 XT'],
                     ['Motherboard', 'MSI B760M-A Pro'],
-                    ['RAM', '32GB (2×16GB) DDR5 5600MHz'],
+                    ['RAM', '32GB DDR5 5600MHz'],
                     ['Storage', '1TB NVMe Gen4 SSD'],
                     ['PSU', '750W 80+ Gold'],
                     ['Case', 'Lian Li Lancool 205']
-                ], total: '~₹84,000', note: '1440p gaming ready. Excellent for streaming + gaming.' },
+                ], total: '~₹84,000', note: '1440p gaming + streaming' },
             '120k': { parts: [
                     ['CPU', 'AMD Ryzen 7 7800X3D'],
-                    ['GPU', 'NVIDIA RTX 4070 Super 12GB'],
+                    ['GPU', 'NVIDIA RTX 4070 Super'],
                     ['Motherboard', 'Gigabyte B650 Aorus Elite'],
-                    ['RAM', '32GB (2×16GB) DDR5 6000MHz CL30'],
+                    ['RAM', '32GB DDR5 6000MHz CL30'],
                     ['Storage', '2TB NVMe Gen4 SSD'],
-                    ['PSU', '850W 80+ Gold (Corsair RM850e)'],
+                    ['PSU', '850W 80+ Gold'],
                     ['Case', 'NZXT H5 Flow']
-                ], total: '~₹1,18,000', note: '1440p Ultra / 4K Medium. Top-tier gaming beast.' },
+                ], total: '~₹1,18,000', note: '1440p Ultra / 4K Medium' },
             '180k': { parts: [
                     ['CPU', 'AMD Ryzen 7 9800X3D / i7-14700K'],
                     ['GPU', 'NVIDIA RTX 4080 Super 16GB'],
                     ['Motherboard', 'MSI MAG X670E / Z790'],
                     ['RAM', '32GB DDR5 6400MHz CL32'],
                     ['Storage', '2TB NVMe Gen4 + 4TB HDD'],
-                    ['PSU', '1000W 80+ Gold (Corsair RM1000x)'],
-                    ['Case', 'Fractal North / Lian Li O11']
-                ], total: '~₹1,78,000', note: '4K Ultra gaming. Creator-ready. No compromises.' },
+                    ['PSU', '1000W 80+ Gold'],
+                    ['Case', 'Fractal North']
+                ], total: '~₹1,78,000', note: '4K Ultra gaming. Creator-ready.' },
             '250k': { parts: [
                     ['CPU', 'AMD Ryzen 9 7950X3D'],
                     ['GPU', 'NVIDIA RTX 4090 24GB'],
@@ -938,7 +943,7 @@
                     ['Storage', '4TB NVMe Gen5 + 8TB HDD'],
                     ['PSU', '1200W 80+ Platinum'],
                     ['Case', 'Lian Li O11 Dynamic Evo XL']
-                ], total: '~₹2,45,000', note: 'Ultimate 4K + AI/ML workstation. The absolute best.' },
+                ], total: '~₹2,45,000', note: 'Ultimate 4K + AI/ML workstation' },
         };
 
         function autoBuild() {
@@ -949,259 +954,249 @@
             if (!key || !builds[key]) { res.style.display = 'none'; return; }
             const b = builds[key];
             parts.innerHTML = b.parts.map(p =>
-                `<div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border)"><span style="font-weight:600;color:#cbd5e1">${p[0]}</span><span style="color:#e2e8f0;text-align:right">${p[1]}</span></div>`
+                `<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);font-size:13px"><span style="font-weight:600">${p[0]}</span><span style="text-align:right">${p[1]}</span></div>`
                 ).join('');
-            total.innerHTML = `💰 Estimated Total: <span style="color:#34d399">${b.total}</span>`;
-            total.innerHTML +=
-                `<br><span style="font-size:13px;color:var(--text-muted)">📌 ${b.note}</span>`;
+            total.innerHTML = `💰 Estimated: <span style="color:#34d399">${b.total}</span><br><span style="font-size:11px;color:var(--muted)">📌 ${b.note}</span>`;
             res.style.display = 'block';
             res.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
 
-        // ═══════════════ TROUBLESHOOT DATABASE (200+ entries covering 5000+ scenarios) ═══════════════
+        // ═══════════════ CUSTOM PC BUILDER ═══════════════
+        const customComponents = {
+            '🧠 CPU': [
+                { name: 'Intel Celeron G5900', price: 3500, icon: '🔹', score: 18 },
+                { name: 'Intel Pentium G6400', price: 4200, icon: '🔹', score: 22 },
+                { name: 'Intel Core i3-12100', price: 8500, icon: '🔷', score: 55 },
+                { name: 'Intel Core i3-14100', price: 9500, icon: '🔷', score: 60 },
+                { name: 'Intel Core i5-12400', price: 14500, icon: '🔵', score: 68 },
+                { name: 'Intel Core i5-13400', price: 16500, icon: '🔵', score: 72 },
+                { name: 'Intel Core i5-13600K', price: 24500, icon: '🔵', score: 85 },
+                { name: 'Intel Core i5-14600K', price: 26500, icon: '🔵', score: 88 },
+                { name: 'Intel Core i7-12700K', price: 28500, icon: '🟦', score: 82 },
+                { name: 'Intel Core i7-13700K', price: 34500, icon: '🟦', score: 90 },
+                { name: 'Intel Core i7-14700K', price: 37500, icon: '🟦', score: 93 },
+                { name: 'Intel Core i9-13900K', price: 48000, icon: '💎', score: 96 },
+                { name: 'Intel Core i9-14900K', price: 55000, icon: '💎', score: 100 },
+                { name: 'AMD Ryzen 3 4100', price: 5500, icon: '🔴', score: 34 },
+                { name: 'AMD Ryzen 5 3600', price: 9500, icon: '🟠', score: 48 },
+                { name: 'AMD Ryzen 5 5600', price: 11500, icon: '🟠', score: 62 },
+                { name: 'AMD Ryzen 5 5600X', price: 13500, icon: '🟠', score: 65 },
+                { name: 'AMD Ryzen 5 7600', price: 17500, icon: '🟡', score: 72 },
+                { name: 'AMD Ryzen 5 7600X', price: 19500, icon: '🟡', score: 76 },
+                { name: 'AMD Ryzen 5 9600X', price: 22500, icon: '🟡', score: 80 },
+                { name: 'AMD Ryzen 7 5700X', price: 17500, icon: '🟤', score: 68 },
+                { name: 'AMD Ryzen 7 5800X3D', price: 28500, icon: '🟤', score: 82 },
+                { name: 'AMD Ryzen 7 7800X3D', price: 36500, icon: '🟣', score: 92 },
+                { name: 'AMD Ryzen 7 9800X3D', price: 42000, icon: '🟣', score: 96 },
+                { name: 'AMD Ryzen 9 5950X', price: 42000, icon: '👑', score: 88 },
+                { name: 'AMD Ryzen 9 7950X', price: 52000, icon: '👑', score: 97 },
+                { name: 'AMD Ryzen 9 7950X3D', price: 60000, icon: '👑', score: 100 },
+            ],
+            '🎮 GPU': [
+                { name: 'NVIDIA GT 710', price: 2800, icon: '⬛', score: 2 },
+                { name: 'NVIDIA GT 1030', price: 5500, icon: '⬛', score: 5 },
+                { name: 'NVIDIA GTX 1050 Ti', price: 9500, icon: '🟫', score: 13 },
+                { name: 'NVIDIA GTX 1650', price: 12500, icon: '🟫', score: 15 },
+                { name: 'NVIDIA GTX 1660 Super', price: 17500, icon: '🟫', score: 22 },
+                { name: 'NVIDIA RTX 2060', price: 19500, icon: '🟩', score: 26 },
+                { name: 'NVIDIA RTX 3060 12GB', price: 24500, icon: '🟩', score: 30 },
+                { name: 'NVIDIA RTX 3060 Ti', price: 29500, icon: '🟩', score: 35 },
+                { name: 'NVIDIA RTX 4060', price: 26500, icon: '🟢', score: 32 },
+                { name: 'NVIDIA RTX 4060 Ti', price: 34500, icon: '🟢', score: 38 },
+                { name: 'NVIDIA RTX 4070', price: 52000, icon: '🟢', score: 48 },
+                { name: 'NVIDIA RTX 4070 Super', price: 58000, icon: '🟢', score: 52 },
+                { name: 'NVIDIA RTX 4070 Ti Super', price: 72000, icon: '🟢', score: 60 },
+                { name: 'NVIDIA RTX 4080 Super', price: 95000, icon: '🔰', score: 70 },
+                { name: 'NVIDIA RTX 4090', price: 165000, icon: '👑', score: 88 },
+                { name: 'NVIDIA RTX 5090', price: 195000, icon: '👑', score: 100 },
+                { name: 'AMD RX 580', price: 11000, icon: '🔴', score: 17 },
+                { name: 'AMD RX 6500 XT', price: 11500, icon: '🔴', score: 14 },
+                { name: 'AMD RX 6600', price: 19500, icon: '🟠', score: 26 },
+                { name: 'AMD RX 6700 XT', price: 28500, icon: '🟠', score: 34 },
+                { name: 'AMD RX 6800 XT', price: 42000, icon: '🟡', score: 48 },
+                { name: 'AMD RX 7700 XT', price: 38500, icon: '🟡', score: 44 },
+                { name: 'AMD RX 7800 XT', price: 48000, icon: '🟡', score: 52 },
+                { name: 'AMD RX 7900 GRE', price: 54000, icon: '🟣', score: 56 },
+                { name: 'AMD RX 7900 XTX', price: 82000, icon: '🟣', score: 72 },
+                { name: 'AMD RX 9070 XT', price: 68000, icon: '🟣', score: 76 },
+            ],
+            '🖥️ Motherboard': [
+                { name: 'MSI B450M-A Pro Max', price: 4500, icon: '📋' },
+                { name: 'Gigabyte H610M-S2', price: 5500, icon: '📋' },
+                { name: 'MSI B550M Pro-VDH', price: 8500, icon: '📋' },
+                { name: 'MSI B760M-A Pro', price: 10500, icon: '📋' },
+                { name: 'Gigabyte B650 Aorus Elite', price: 16500, icon: '📋' },
+                { name: 'ASUS ROG X670E Hero', price: 38000, icon: '📋' },
+                { name: 'MSI MAG Z790 Tomahawk', price: 28000, icon: '📋' },
+                { name: 'ASRock Z690 Steel Legend', price: 18500, icon: '📋' },
+            ],
+            '🧠 RAM': [
+                { name: '8GB DDR4 3200MHz', price: 1800, icon: '📏' },
+                { name: '16GB DDR4 3200MHz (2×8)', price: 3200, icon: '📏' },
+                { name: '16GB DDR4 3600MHz (2×8)', price: 3800, icon: '📏' },
+                { name: '32GB DDR4 3600MHz (2×16)', price: 6500, icon: '📏' },
+                { name: '16GB DDR5 5600MHz (2×8)', price: 5000, icon: '📏' },
+                { name: '32GB DDR5 6000MHz (2×16)', price: 9500, icon: '📏' },
+                { name: '32GB DDR5 6400MHz CL30', price: 12500, icon: '📏' },
+                { name: '64GB DDR5 6400MHz (2×32)', price: 22000, icon: '📏' },
+            ],
+            '💾 Storage': [
+                { name: '256GB NVMe SSD', price: 1600, icon: '💿' },
+                { name: '512GB NVMe SSD (Crucial P3)', price: 2800, icon: '💿' },
+                { name: '1TB NVMe SSD (WD SN580)', price: 4800, icon: '💿' },
+                { name: '1TB NVMe Gen4 SSD', price: 6500, icon: '💿' },
+                { name: '2TB NVMe Gen4 SSD', price: 11000, icon: '💿' },
+                { name: '4TB NVMe Gen5 SSD', price: 24000, icon: '💿' },
+                { name: '1TB HDD 7200RPM', price: 2800, icon: '📀' },
+                { name: '4TB HDD 7200RPM', price: 7500, icon: '📀' },
+            ],
+            '⚡ PSU': [
+                { name: '450W 80+ Bronze', price: 2200, icon: '🔌' },
+                { name: '550W 80+ Bronze', price: 3200, icon: '🔌' },
+                { name: '650W 80+ Gold (MSI MAG)', price: 5500, icon: '🔌' },
+                { name: '750W 80+ Gold', price: 7000, icon: '🔌' },
+                { name: '850W 80+ Gold (Corsair RM850e)', price: 9500, icon: '🔌' },
+                { name: '1000W 80+ Gold (RM1000x)', price: 13000, icon: '🔌' },
+                { name: '1200W 80+ Platinum', price: 19500, icon: '🔌' },
+            ],
+            '🏠 Cabinet': [
+                { name: 'Ant Esports ICE-130AG', price: 1800, icon: '🏠' },
+                { name: 'Ant Esports ICE-200TG', price: 2600, icon: '🏠' },
+                { name: 'DeepCool Matrexx 40', price: 3200, icon: '🏠' },
+                { name: 'Lian Li Lancool 205', price: 5500, icon: '🏠' },
+                { name: 'NZXT H5 Flow', price: 6500, icon: '🏠' },
+                { name: 'Fractal North', price: 9500, icon: '🏠' },
+                { name: 'Lian Li O11 Dynamic Evo XL', price: 16000, icon: '🏠' },
+            ],
+            '❄️ CPU Cooler': [
+                { name: 'Stock Cooler (Free)', price: 0, icon: '❄️' },
+                { name: 'DeepCool AK400', price: 1800, icon: '❄️' },
+                { name: 'Cooler Master Hyper 212', price: 2500, icon: '❄️' },
+                { name: 'Noctua NH-D15', price: 7500, icon: '❄️' },
+                { name: 'Arctic Liquid Freezer II 240', price: 6500, icon: '💧' },
+                { name: 'DeepCool LS720 360mm', price: 9500, icon: '💧' },
+            ],
+            '🌀 Case Fans': [
+                { name: '1× 120mm Basic Fan', price: 300, icon: '🌀' },
+                { name: '3× 120mm ARGB Fan Kit', price: 1200, icon: '🌀' },
+                { name: 'Noctua NF-A12x25 (1 fan)', price: 1800, icon: '🌀' },
+                { name: 'Lian Li UNI Fan SL120 (3-pack)', price: 3500, icon: '🌀' },
+            ],
+        };
+
+        let customSelected = {};
+        const customCatDiv = document.getElementById('customCategories');
+
+        function buildCustomUI() {
+            customCatDiv.innerHTML = '';
+            Object.entries(customComponents).forEach(([cat, items]) => {
+                const wrapper = document.createElement('div');
+                wrapper.innerHTML = `
+              <div class="collapsible-header" onclick="this.nextElementSibling.classList.toggle('open');this.querySelector('span:last-child').textContent=this.nextElementSibling.classList.contains('open')?'▾':'▸'">
+                <span>${cat}</span><span style="color:var(--muted)">▸</span>
+              </div>
+              <div class="collapsible-body">
+                <div class="comp-grid">${items.map((item,idx)=>`
+                  <div class="comp-card" data-cat="${cat}" data-idx="${idx}" onclick="selectCustomPart('${cat}',${idx},this)" style="flex:1 1 auto">
+                    <div class="comp-icon">${item.icon}</div>
+                    <div style="flex:1;min-width:0">
+                      <div style="font-weight:600;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${item.name}</div>
+                      <div class="comp-price">₹${item.price.toLocaleString('en-IN')}</div>
+                    </div>
+                  </div>`).join('')}</div>
+              </div>`;
+                customCatDiv.appendChild(wrapper);
+            });
+        }
+
+        function selectCustomPart(cat, idx, el) {
+            const items = customComponents[cat];
+            const item = items[idx];
+            // Deselect all in category
+            document.querySelectorAll(`.comp-card[data-cat="${cat}"]`).forEach(c => c.classList.remove('selected'));
+            el.classList.add('selected');
+            customSelected[cat] = item;
+            updateCustomSummary();
+            // Open the collapsible body if not open
+            const body = el.closest('.collapsible-body');
+            if (body && !body.classList.contains('open')) body.classList.add('open');
+            if (body) body.previousElementSibling.querySelector('span:last-child').textContent = '▾';
+        }
+
+        function updateCustomSummary() {
+            let total = 0;
+            Object.values(customSelected).forEach(item => total += item.price);
+            document.getElementById('customTotal').textContent = '₹' + total.toLocaleString('en-IN');
+            // Bottleneck check
+            const cpuItem = customSelected['🧠 CPU'];
+            const gpuItem = customSelected['🎮 GPU'];
+            const bnEl = document.getElementById('customBottleneck');
+            if (cpuItem && gpuItem && cpuItem.score && gpuItem.score) {
+                const cs = cpuItem.score;
+                const gs = gpuItem.score;
+                const ratio = cs / gs;
+                let bnText, bnColor;
+                if (ratio >= 1.3) { bnText = `⚠️ GPU bottleneck ~${Math.round((1-1/ratio)*100)}% — GPU may hold back CPU`;
+                    bnColor = '#fcd34d' } else if (ratio <= 0.7) { bnText =
+                        `🔴 CPU bottleneck ~${Math.round((1-ratio)*100)}% — CPU may hold back GPU`;
+                    bnColor = '#f87171' } else { bnText = '🟢 Well balanced! Minimal bottleneck';
+                    bnColor = '#34d399' }
+                bnEl.innerHTML = `<span style="color:${bnColor}">${bnText}</span>`;
+            } else if (cpuItem || gpuItem) {
+                bnEl.innerHTML = '⚠️ Select <strong>both</strong> CPU & GPU to check bottleneck';
+            } else {
+                bnEl.innerHTML = 'Select CPU + GPU to check bottleneck';
+            }
+        }
+
+        function resetCustomBuild() {
+            customSelected = {};
+            document.querySelectorAll('.comp-card').forEach(c => c.classList.remove('selected'));
+            document.getElementById('customTotal').textContent = '₹0';
+            document.getElementById('customBottleneck').textContent = 'Select CPU + GPU to check';
+            document.querySelectorAll('.collapsible-body').forEach(b => b.classList.remove('open'));
+            document.querySelectorAll('.collapsible-header span:last-child').forEach(s => s.textContent = '▸');
+        }
+
+        buildCustomUI();
+
+        // ═══════════════ TROUBLESHOOT ═══════════════
         const TS_DATA = [
-            // BOOT ISSUES (25)
-            { cat: 'Boot Issues', icon: '💻', title: 'No Bootable Device Found',
-                sev: 'medium', fix: '<ul><li>Enter BIOS (Del/F2) → Boot tab → ensure SSD/HDD is first</li><li>Check SATA/NVMe cable connection</li><li>If new drive: install Windows from USB</li><li>Run Startup Repair from Windows Recovery USB</li></ul>' },
-            { cat: 'Boot Issues', icon: '💻', title: 'PC Stuck on BIOS Screen',
-                sev: 'easy', fix: '<ul><li>Remove all USB drives</li><li>Clear CMOS (remove coin battery 30s)</li><li>Reseat RAM sticks firmly</li><li>Try booting with 1 RAM stick</li></ul>' },
-            { cat: 'Boot Issues', icon: '💻', title: 'PC Turns On But No Display',
-                sev: 'medium', fix: '<ul><li>Ensure monitor cable is in GPU (not motherboard)</li><li>Reseat GPU in PCIe slot</li><li>Test different cable/monitor</li><li>Try onboard graphics (remove GPU)</li><li>Reseat RAM</li></ul>' },
-            { cat: 'Boot Issues', icon: '💻', title: 'Windows Stuck on Loading Circle',
-                sev: 'medium', fix: '<ul><li>Force shutdown 3 times → Automatic Repair</li><li>Startup Repair from recovery</li><li>CMD: <code>sfc /scannow</code></li><li>Check drive health with CrystalDiskInfo</li></ul>' },
-            { cat: 'Boot Issues', icon: '💻', title: 'BOOTMGR is Missing',
-                sev: 'medium', fix: '<ul><li>Boot from Windows USB → Repair → CMD</li><li><code>bootrec /fixmbr</code></li><li><code>bootrec /fixboot</code></li><li><code>bootrec /rebuildbcd</code></li></ul>' },
-            { cat: 'Boot Issues', icon: '💻', title: 'Operating System Not Found',
-                sev: 'medium', fix: '<ul><li>BIOS: check drive detected</li><li>Check SATA cables / try different port</li><li>Reinstall Windows if OS corrupted</li><li>Test drive with live USB</li></ul>' },
-            { cat: 'Boot Issues', icon: '💻', title: 'PC Boots to Black Screen After Login',
-                sev: 'medium', fix: '<ul><li>Ctrl+Alt+Del → Task Manager → Run <code>explorer.exe</code></li><li>Safe Mode → reinstall GPU drivers</li><li>Disable Fast Startup in Power Options</li></ul>' },
-            { cat: 'Boot Issues', icon: '💻', title: 'PC Restarts Before Windows Loads',
-                sev: 'hard', fix: '<ul><li>Run Startup Repair from USB</li><li>Test RAM: MemTest86 2+ passes</li><li>Check Event Viewer for critical errors</li><li>Test with different PSU</li></ul>' },
-            { cat: 'Boot Issues', icon: '💻', title: 'Dual Boot Menu Not Showing',
-                sev: 'easy', fix: '<ul><li>CMD admin: <code>bcdedit /set {bootmgr} displaybootmenu yes</code></li><li><code>bcdedit /timeout 10</code></li><li>Linux: <code>sudo update-grub</code></li></ul>' },
-            { cat: 'Boot Issues', icon: '💻', title: 'Boot Loop / Infinite Restart',
-                sev: 'hard', fix: '<ul><li>Remove all external devices</li><li>Safe Mode → uninstall recent drivers/updates</li><li>Run <code>sfc /scannow</code></li><li>Test RAM with MemTest86</li></ul>' },
-            { cat: 'Boot Issues', icon: '💻', title: 'PC Beeps on Startup (Beep Codes)',
-                sev: 'medium', fix: '<ul><li>1 long beep = RAM issue → reseat</li><li>3 beeps = memory error → test sticks</li><li>Continuous = RAM/CPU not seated</li><li>Check motherboard manual for codes</li></ul>' },
-            { cat: 'Boot Issues', icon: '💻', title: 'New Build Won\'t POST',
-                sev: 'hard', fix: '<ul><li>Minimal test: CPU+1RAM+power only</li><li>Check CPU seated correctly</li><li>Connect 24-pin AND 4+4 pin CPU power</li><li>Clear CMOS</li><li>Check CPU-mobo compatibility</li></ul>' },
-            { cat: 'Boot Issues', icon: '💻', title: 'PC Turns On Then Off Immediately',
-                sev: 'hard', fix: '<ul><li>Possible short circuit — check standoffs</li><li>Remove all PCIe cards, extra drives</li><li>Test minimal config</li><li>Check CPU seating</li></ul>' },
-            { cat: 'Boot Issues', icon: '💻', title: 'BIOS Time Keeps Resetting',
-                sev: 'easy', fix: '<ul><li>Dead CMOS battery → replace CR2032 coin cell</li><li>Set correct time in BIOS after replacement</li></ul>' },
-            { cat: 'Boot Issues', icon: '💻', title: 'Slow Boot Times (Takes Minutes)',
-                sev: 'easy', fix: '<ul><li>Upgrade HDD → SSD (biggest improvement)</li><li>Disable startup programs in Task Manager</li><li>Enable Fast Boot in BIOS</li><li>Check for malware</li></ul>' },
-
-            // OVERHEATING (12)
-            { cat: 'Overheating', icon: '🌡️', title: 'CPU Temperature 90°C+',
-                sev: 'medium', fix: '<ul><li>Check CPU cooler fan spinning</li><li>Reapply thermal paste (pea-sized dot)</li><li>Ensure cooler mounted tightly</li><li>Clean dust from fins</li><li>Improve case airflow</li></ul>' },
-            { cat: 'Overheating', icon: '🌡️', title: 'GPU Temperature 85°C+',
-                sev: 'medium', fix: '<ul><li>Clean GPU heatsink with compressed air</li><li>Reapply GPU thermal paste</li><li>Increase fan curve in MSI Afterburner</li><li>Improve case airflow</li><li>Undervolt GPU</li></ul>' },
-            { cat: 'Overheating', icon: '🌡️', title: 'PC Shuts Down During Gaming',
-                sev: 'medium', fix: '<ul><li>Thermal shutdown — monitor temps with HWMonitor</li><li>Clean all dust</li><li>Reapply CPU thermal paste</li><li>Check PSU wattage vs system draw</li></ul>' },
-            { cat: 'Overheating', icon: '🌡️', title: 'CPU Fan Not Spinning',
-                sev: 'hard', fix: '<ul><li>Check fan cable in CPU_FAN header</li><li>Try different header</li><li>Test with different fan</li><li>Replace immediately if dead</li></ul>' },
-            { cat: 'Overheating', icon: '🌡️', title: 'Laptop Overheating / Throttling',
-                sev: 'easy', fix: '<ul><li>Use on hard flat surface</li><li>Buy cooling pad</li><li>Clean vents with compressed air</li><li>Reapply thermal paste (may void warranty)</li><li>Use Throttlestop/Ryzen Controller</li></ul>' },
-            { cat: 'Overheating', icon: '🌡️', title: 'Poor Case Airflow',
-                sev: 'easy', fix: '<ul><li>Ideal: 2-3 intake (front/bottom) + 1-2 exhaust (rear/top)</li><li>Clean dust filters monthly</li><li>Positive pressure reduces dust</li><li>Use mesh front panel case</li></ul>' },
-            { cat: 'Overheating', icon: '🌡️', title: 'Thermal Paste Dried Out',
-                sev: 'easy', fix: '<ul><li>Remove cooler, clean with 99% isopropyl alcohol</li><li>Apply pea-sized new paste (Noctua NT-H1, Arctic MX-4)</li><li>Tighten cooler evenly in X pattern</li></ul>' },
-            { cat: 'Overheating', icon: '🌡️', title: 'AIO Liquid Cooler Not Working',
-                sev: 'hard', fix: '<ul><li>Check pump vibration</li><li>Ensure pump in AIO_PUMP header</li><li>Bleed air bubbles (tilt case)</li><li>Check tubing for kinks</li><li>Replace if pump dead</li></ul>' },
-            { cat: 'Overheating', icon: '🌡️', title: 'PC Running Hot in Summer',
-                sev: 'easy', fix: '<ul><li>Clean all dust thoroughly</li><li>Reapply thermal paste</li><li>Improve room ventilation/AC</li><li>Add case fans</li><li>Consider water cooling</li></ul>' },
-            { cat: 'Overheating', icon: '🌡️', title: 'M.2 SSD Overheating',
-                sev: 'easy', fix: '<ul><li>Install M.2 heatsink (many motherboards include one)</li><li>Ensure airflow over M.2 slot</li><li>Check SSD temps with HWMonitor</li></ul>' },
-
-            // BLUE SCREEN / BSOD (12)
-            { cat: 'Blue Screen (BSOD)', icon: '🔵', title: 'BSOD MEMORY_MANAGEMENT',
-                sev: 'medium', fix: '<ul><li>Run Windows Memory Diagnostic</li><li>Run MemTest86 thoroughly</li><li>Try removing 1 RAM stick</li><li>Check RAM seated in A2+B2 slots</li><li>Update/rollback XMP profile</li></ul>' },
-            { cat: 'Blue Screen (BSOD)', icon: '🔵', title: 'BSOD DRIVER_IRQL_NOT_LESS_OR_EQUAL',
-                sev: 'medium', fix: '<ul><li>Note .sys file name on BSOD</li><li>Safe Mode → uninstall that driver</li><li>Use DDU for GPU drivers</li><li>Reinstall latest from manufacturer</li></ul>' },
-            { cat: 'Blue Screen (BSOD)', icon: '🔵', title: 'BSOD SYSTEM_SERVICE_EXCEPTION',
-                sev: 'medium', fix: '<ul><li><code>sfc /scannow</code></li><li><code>DISM /Online /Cleanup-Image /RestoreHealth</code></li><li>Update all drivers</li><li>Check Windows Update</li></ul>' },
-            { cat: 'Blue Screen (BSOD)', icon: '🔵', title: 'BSOD WHEA_UNCORRECTABLE_ERROR',
-                sev: 'hard', fix: '<ul><li>Disable XMP/EXPO in BIOS</li><li>Test RAM with MemTest86</li><li>Check CPU for bent pins</li><li>Reset BIOS defaults</li><li>Test with different PSU</li></ul>' },
-            { cat: 'Blue Screen (BSOD)', icon: '🔵', title: 'BSOD PAGE_FAULT_IN_NONPAGED_AREA',
-                sev: 'medium', fix: '<ul><li><code>chkdsk C: /f /r</code></li><li><code>sfc /scannow</code></li><li>Test RAM</li><li>Check drive health</li></ul>' },
-            { cat: 'Blue Screen (BSOD)', icon: '🔵', title: 'BSOD NTFS_FILE_SYSTEM',
-                sev: 'hard', fix: '<ul><li><code>chkdsk C: /f /r /x</code></li><li>Check drive with CrystalDiskInfo</li><li>Backup data immediately if drive failing</li></ul>' },
-            { cat: 'Blue Screen (BSOD)', icon: '🔵', title: 'BSOD VIDEO_TDR_FAILURE',
-                sev: 'medium', fix: '<ul><li>Use DDU in Safe Mode</li><li>Install fresh GPU drivers</li><li>Check GPU temps</li><li>Reseat GPU</li></ul>' },
-            { cat: 'Blue Screen (BSOD)', icon: '🔵', title: 'BSOD CRITICAL_PROCESS_DIED',
-                sev: 'medium', fix: '<ul><li><code>sfc /scannow</code> + DISM</li><li>Full malware scan</li><li>Uninstall recent software</li><li><code>chkdsk /f /r</code></li></ul>' },
-            { cat: 'Blue Screen (BSOD)', icon: '🔵', title: 'Random BSODs No Pattern',
-                sev: 'hard', fix: '<ul><li>Run MemTest86 overnight</li><li>Check PSU stability</li><li>Update all drivers</li><li>Use WhoCrashed to analyze dumps</li><li>Check Event Viewer</li></ul>' },
-            { cat: 'Blue Screen (BSOD)', icon: '🔵', title: 'BSOD After Windows Update',
-                sev: 'medium', fix: '<ul><li>Boot Safe Mode</li><li>Uninstall latest update: Settings → Update → View history → Uninstall</li><li>Roll back drivers</li></ul>' },
-            { cat: 'Blue Screen (BSOD)', icon: '🔵', title: 'BSOD KERNEL_DATA_INPAGE_ERROR',
-                sev: 'hard', fix: '<ul><li>Check drive health immediately</li><li>Run <code>chkdsk /f /r</code></li><li>Check SATA cables</li><li>Possible failing drive</li></ul>' },
-            { cat: 'Blue Screen (BSOD)', icon: '🔵', title: 'BSOD DPC_WATCHDOG_VIOLATION',
-                sev: 'medium', fix: '<ul><li>Update SSD firmware</li><li>Update all drivers especially storage</li><li>Check for faulty hardware</li><li>Run <code>sfc /scannow</code></li></ul>' },
-
-            // GPU & DISPLAY (12)
-            { cat: 'GPU & Display', icon: '🖥️', title: 'No Signal on Monitor',
-                sev: 'easy', fix: '<ul><li>Plug cable into GPU not motherboard</li><li>Try different cable/port</li><li>Test different monitor</li><li>Reseat GPU</li><li>Check refresh rate in display settings</li></ul>' },
-            { cat: 'GPU & Display', icon: '🖥️', title: 'Screen Flickering / Flashing',
-                sev: 'medium', fix: '<ul><li>Update/rollback GPU drivers</li><li>Check cable connections</li><li>Try DisplayPort instead of HDMI</li><li>Disable G-Sync/FreeSync temporarily</li></ul>' },
-            { cat: 'GPU & Display', icon: '🖥️', title: 'GPU Artifacting (Weird Colors)',
-                sev: 'hard', fix: '<ul><li>GPU overheating → clean & repaste</li><li>Underclock GPU 100MHz in Afterburner</li><li>Test VRAM with OCCT</li><li>If on desktop: GPU may be dying</li></ul>' },
-            { cat: 'GPU & Display', icon: '🖥️', title: 'Second Monitor Not Detected',
-                sev: 'easy', fix: '<ul><li>Display Settings → Detect</li><li>Try different GPU port</li><li>Update GPU drivers</li><li>Check monitor power</li></ul>' },
-            { cat: 'GPU & Display', icon: '🖥️', title: 'Resolution Stuck Wrong',
-                sev: 'easy', fix: '<ul><li>Display Settings → set correct resolution</li><li>Update GPU drivers</li><li>Check cable supports resolution (4K needs HDMI 2.0+)</li></ul>' },
-            { cat: 'GPU & Display', icon: '🖥️', title: 'FPS Drops / Stuttering Gaming',
-                sev: 'medium', fix: '<ul><li>Check GPU temps — thermal throttling</li><li>Set power plan to High Performance</li><li>Disable Xbox Game Bar</li><li>Update GPU drivers</li><li>Enable XMP in BIOS</li></ul>' },
-            { cat: 'GPU & Display', icon: '🖥️', title: 'Low FPS vs Expected',
-                sev: 'medium', fix: '<ul><li>Check GPU clock in GPU-Z</li><li>Nvidia Control Panel → preferred GPU</li><li>Laptop: plug in + High Performance plan</li><li>Update DirectX & VC++</li><li>Run benchmark to verify</li></ul>' },
-            { cat: 'GPU & Display', icon: '🖥️', title: 'GPU Not Detected in Device Manager',
-                sev: 'hard', fix: '<ul><li>Reseat GPU firmly</li><li>Check power cables connected</li><li>Try different PCIe slot</li><li>Clear CMOS</li><li>Test GPU in another PC</li></ul>' },
-            { cat: 'GPU & Display', icon: '🖥️', title: 'Monitor Dead Pixels',
-                sev: 'hard', fix: '<ul><li>Run JScreenFix for stuck pixels</li><li>Gently massage pixel area</li><li>Check warranty — most cover dead pixels</li></ul>' },
-            { cat: 'GPU & Display', icon: '🖥️', title: 'Monitor Not at 144Hz+',
-                sev: 'easy', fix: '<ul><li>Display Settings → Advanced → set 144Hz</li><li>Use DisplayPort cable</li><li>Update GPU drivers</li><li>Check monitor OSD menu</li></ul>' },
-            { cat: 'GPU & Display', icon: '🖥️', title: 'Black Screen During Gaming',
-                sev: 'medium', fix: '<ul><li>GPU driver crash → use DDU</li><li>Check GPU temps</li><li>Check PSU wattage</li><li>Test with different PSU</li></ul>' },
-
-            // RAM ISSUES (6)
-            { cat: 'RAM Issues', icon: '🧠', title: 'PC Not Using Full RAM',
-                sev: 'easy', fix: '<ul><li>Task Manager → Memory → check usable</li><li>Test sticks individually</li><li>Use A2+B2 slots for dual channel</li><li>Check BIOS recognizes both sticks</li></ul>' },
-            { cat: 'RAM Issues', icon: '🧠', title: 'RAM Not Running at Rated Speed',
-                sev: 'easy', fix: '<ul><li>Enable XMP (Intel) / EXPO (AMD) in BIOS</li><li>Check speed in Task Manager</li><li>Default JEDEC speed is lower until XMP enabled</li></ul>' },
-            { cat: 'RAM Issues', icon: '🧠', title: 'System Unstable After Adding RAM',
-                sev: 'medium', fix: '<ul><li>Enable XMP/EXPO</li><li>Check QVL compatibility list</li><li>Test new stick alone</li><li>Mixing brands/speeds causes instability</li></ul>' },
-            { cat: 'RAM Issues', icon: '🧠', title: 'RAM Slot Not Working',
-                sev: 'hard', fix: '<ul><li>Test with known-good RAM</li><li>Check for bent pins/debris</li><li>Reset BIOS</li><li>Use remaining working slots</li></ul>' },
-            { cat: 'RAM Issues', icon: '🧠', title: 'Wrong RAM Slots Being Used',
-                sev: 'easy', fix: '<ul><li>2 sticks: use A2+B2 (2nd & 4th from CPU)</li><li>Wrong slots = single channel = 10-30% perf loss</li><li>Check motherboard manual</li></ul>' },
-            { cat: 'RAM Issues', icon: '🧠', title: 'High RAM Usage at Idle',
-                sev: 'easy', fix: '<ul><li>Task Manager → sort by memory</li><li>Close unnecessary background apps</li><li>Disable startup programs</li><li>Scan for malware</li></ul>' },
-
-            // STORAGE (8)
-            { cat: 'Storage Issues', icon: '💾', title: 'Drive Not Showing in Windows',
-                sev: 'easy', fix: '<ul><li>Disk Management → initialize/format if unallocated</li><li>Check cable connections</li><li>NVMe: check M.2 slot enabled in BIOS</li></ul>' },
-            { cat: 'Storage Issues', icon: '💾', title: 'HDD Making Clicking Noise',
-                sev: 'hard', fix: '<ul><li>⚠️ Drive dying — backup data NOW</li><li>Check SMART with CrystalDiskInfo</li><li>Replace HDD immediately</li></ul>' },
-            { cat: 'Storage Issues', icon: '💾', title: 'SSD Slowing Down Over Time',
-                sev: 'easy', fix: '<ul><li>Keep 10-20% free space</li><li>Run TRIM: <code>fsutil behavior set DisableDeleteNotify 0</code></li><li>Update SSD firmware</li><li>Check SMART health</li></ul>' },
-            { cat: 'Storage Issues', icon: '💾', title: 'Disk at 100% Usage Constantly',
-                sev: 'medium', fix: '<ul><li>Disable SysMain service</li><li>Disable Windows Search temporarily</li><li>Check for malware</li><li>HDD → upgrade to SSD</li><li>Run <code>chkdsk</code></li></ul>' },
-            { cat: 'Storage Issues', icon: '💾', title: 'Files Corrupted / Disappearing',
-                sev: 'hard', fix: '<ul><li>Check drive health immediately</li><li>Run <code>chkdsk /f /r</code></li><li><code>sfc /scannow</code></li><li>Backup and replace if bad sectors</li></ul>' },
-            { cat: 'Storage Issues', icon: '💾', title: 'M.2 SSD Not Detected',
-                sev: 'medium', fix: '<ul><li>Check M.2 shares bandwidth with SATA ports</li><li>Enable M.2 slot in BIOS</li><li>Confirm NVMe vs SATA compatibility</li></ul>' },
-            { cat: 'Storage Issues', icon: '💾', title: 'External Drive Not Recognized',
-                sev: 'easy', fix: '<ul><li>Try different USB port</li><li>Disk Management → assign drive letter</li><li>Test on another PC</li><li>Check USB cable</li></ul>' },
-
-            // AUDIO (6)
-            { cat: 'Audio Issues', icon: '🔊', title: 'No Sound / Audio Not Working',
-                sev: 'easy', fix: '<ul><li>Right-click speaker → Sound Settings → select correct output</li><li>Update audio drivers</li><li>Run troubleshooter</li><li>Check mute</li></ul>' },
-            { cat: 'Audio Issues', icon: '🔊', title: 'Headphone Jack Not Working',
-                sev: 'easy', fix: '<ul><li>Realtek Audio Console → set to headphones</li><li>Update Realtek drivers</li><li>Test different headphones</li></ul>' },
-            { cat: 'Audio Issues', icon: '🔊', title: 'Microphone Not Working',
-                sev: 'easy', fix: '<ul><li>Settings → Privacy → Microphone → allow apps</li><li>Sounds → Recording → set as default</li><li>Update drivers</li><li>Test in Voice Recorder</li></ul>' },
-            { cat: 'Audio Issues', icon: '🔊', title: 'Audio Crackling / Popping',
-                sev: 'easy', fix: '<ul><li>Change bit rate to 24-bit 48000Hz</li><li>Disable audio enhancements</li><li>Update audio drivers</li></ul>' },
-            { cat: 'Audio Issues', icon: '🔊', title: 'HDMI Audio Not Working',
-                sev: 'easy', fix: '<ul><li>Select HDMI as output device</li><li>Update GPU drivers (HDMI audio via GPU)</li></ul>' },
-
-            // NETWORK (8)
-            { cat: 'Network Issues', icon: '📡', title: 'WiFi Connected But No Internet',
-                sev: 'easy', fix: '<ul><li><code>ipconfig /release</code> → <code>/renew</code></li><li><code>netsh winsock reset</code> → restart</li><li>Forget & reconnect WiFi</li><li>Restart router</li><li>Change DNS to 8.8.8.8</li></ul>' },
-            { cat: 'Network Issues', icon: '📡', title: 'Slow WiFi Speed',
-                sev: 'easy', fix: '<ul><li>Use 5GHz band</li><li>Update WiFi driver</li><li>Change router channel</li><li>Use ethernet for gaming</li></ul>' },
-            { cat: 'Network Issues', icon: '📡', title: 'High Ping / Lag in Games',
-                sev: 'medium', fix: '<ul><li>Use ethernet — WiFi adds latency</li><li>Close background downloads</li><li>Change DNS to 1.1.1.1</li><li>Check router QoS</li></ul>' },
-            { cat: 'Network Issues', icon: '📡', title: 'Ethernet Not Working',
-                sev: 'easy', fix: '<ul><li>Try different cable</li><li>Check port lights</li><li>Reinstall ethernet driver</li><li>Try different router port</li></ul>' },
-            { cat: 'Network Issues', icon: '📡', title: 'DNS Server Not Responding',
-                sev: 'easy', fix: '<ul><li>Set DNS to 8.8.8.8 / 8.8.4.4 manually</li><li><code>ipconfig /flushdns</code></li><li>Restart router</li></ul>' },
-            { cat: 'Network Issues', icon: '📡', title: 'Limited Connectivity',
-                sev: 'easy', fix: '<ul><li>Restart router & PC</li><li><code>ipconfig /renew</code></li><li>Check DHCP enabled</li></ul>' },
-
-            // POWER / PSU (6)
-            { cat: 'Power & PSU', icon: '⚡', title: 'PC Won\'t Turn On At All',
-                sev: 'hard', fix: '<ul><li>Check power cable & wall outlet</li><li>PSU switch ON (I not O)</li><li>Check 24-pin & CPU power cables</li><li>Short power pins with screwdriver</li><li>Test with different PSU</li></ul>' },
-            { cat: 'Power & PSU', icon: '⚡', title: 'PC Randomly Shuts Down',
-                sev: 'hard', fix: '<ul><li>Check CPU/GPU temps</li><li>PSU insufficient → use PCPartPicker calc</li><li>Check Event Viewer</li><li>Check loose cables</li></ul>' },
-            { cat: 'Power & PSU', icon: '⚡', title: 'PSU Wattage Too Low Signs',
-                sev: 'medium', fix: '<ul><li>System crashes under load</li><li>Fails to start sometimes</li><li>Use calculator + 20% headroom</li><li>Always 80+ Bronze minimum</li></ul>' },
-            { cat: 'Power & PSU', icon: '⚡', title: 'PC Not Recognizing All Power',
-                sev: 'medium', fix: '<ul><li>Connect all CPU 4+4 pin connectors</li><li>Check GPU 6+2 pin cables</li><li>Reseat all PSU cables</li></ul>' },
-
-            // SOFTWARE / OS (10)
-            { cat: 'Software & OS', icon: '🪟', title: 'Windows Slow After Update',
-                sev: 'easy', fix: '<ul><li>Wait an hour — background tasks run</li><li>Disable SysMain temporarily</li><li>Uninstall problematic update</li></ul>' },
-            { cat: 'Software & OS', icon: '🪟', title: 'Windows Explorer Keeps Crashing',
-                sev: 'medium', fix: '<ul><li><code>sfc /scannow</code></li><li>DISM restore health</li><li>Disable shell extensions</li></ul>' },
-            { cat: 'Software & OS', icon: '🪟', title: 'Apps Crashing / Not Responding',
-                sev: 'easy', fix: '<ul><li>Update app</li><li>Reinstall completely</li><li>Update VC++ & .NET</li><li>Run as admin</li></ul>' },
-            { cat: 'Software & OS', icon: '🪟', title: 'High CPU Usage at Idle',
-                sev: 'medium', fix: '<ul><li>Task Manager → find culprit process</li><li>Disable startup programs</li><li>Full malware scan</li><li>Antimalware: schedule off-hours</li></ul>' },
-            { cat: 'Software & OS', icon: '🪟', title: 'Windows Activation Error',
-                sev: 'easy', fix: '<ul><li>Settings → Activation → Troubleshoot</li><li>Ensure date/time correct</li><li>Re-link license to MS account</li><li><code>slmgr /ato</code></li></ul>' },
-            { cat: 'Software & OS', icon: '🪟', title: 'Windows Update Stuck / Failing',
-                sev: 'easy', fix: '<ul><li>Run Update Troubleshooter</li><li>Stop wuauserv → delete SoftwareDistribution → restart</li></ul>' },
-            { cat: 'Software & OS', icon: '🪟', title: 'Copy/Paste Not Working',
-                sev: 'easy', fix: '<ul><li>Restart Explorer in Task Manager</li><li><code>rdpclip.exe</code> in CMD</li><li>Win+V → enable clipboard history</li></ul>' },
-            { cat: 'Software & OS', icon: '🪟', title: 'Windows Search Not Working',
-                sev: 'easy', fix: '<ul><li>Restart Windows Search service</li><li>Rebuild search index</li><li>Run SFC scan</li></ul>' },
-
-            // GAMING (8)
-            { cat: 'Gaming Issues', icon: '🎮', title: 'Game Stuttering Every Few Seconds',
-                sev: 'medium', fix: '<ul><li>Shader compilation — play longer</li><li>Enable HAGS in Display Settings</li><li>Disable fullscreen optimizations</li><li>High Performance power plan</li><li>Enable XMP</li></ul>' },
-            { cat: 'Gaming Issues', icon: '🎮', title: 'Game Crashing to Desktop',
-                sev: 'medium', fix: '<ul><li>Check GPU temps</li><li>Verify game files</li><li>Update GPU drivers</li><li>Test RAM</li><li>Disable overlays</li></ul>' },
-            { cat: 'Gaming Issues', icon: '🎮', title: 'Game Won\'t Launch',
-                sev: 'easy', fix: '<ul><li>Verify game files</li><li>Install VC++ redistributables</li><li>Install DirectX</li><li>Run as admin</li><li>Disable antivirus temporarily</li></ul>' },
-            { cat: 'Gaming Issues', icon: '🎮', title: 'Low FPS on Good Hardware',
-                sev: 'medium', fix: '<ul><li>Set game to High Performance GPU</li><li>High Performance power plan</li><li>Enable XMP</li><li>Disable VSync</li><li>Close background apps</li></ul>' },
-            { cat: 'Gaming Issues', icon: '🎮', title: 'Controller Not Detected',
-                sev: 'easy', fix: '<ul><li>Xbox: install Xbox Accessories app</li><li>PS: use DS4Windows</li><li>Try different USB port</li><li>Update controller driver</li></ul>' },
-            { cat: 'Gaming Issues', icon: '🎮', title: 'Online Game High Ping',
-                sev: 'easy', fix: '<ul><li>Use ethernet</li><li>Change server region</li><li>Close background downloads</li><li><code>ipconfig /flushdns</code></li></ul>' },
-
-            // USB / PERIPHERALS (6)
-            { cat: 'USB & Peripherals', icon: '🖱️', title: 'USB Device Not Recognized',
-                sev: 'easy', fix: '<ul><li>Try different port (USB 2.0 if 3.0 fails)</li><li>Reinstall USB Root Hub</li><li>Update chipset drivers</li><li>Disable USB selective suspend</li></ul>' },
-            { cat: 'USB & Peripherals', icon: '🖱️', title: 'Mouse Cursor Stuttering',
-                sev: 'easy', fix: '<ul><li>Clean sensor</li><li>Try different mousepad</li><li>Update mouse driver</li><li>Disable pointer precision</li></ul>' },
-            { cat: 'USB & Peripherals', icon: '🖱️', title: 'Keyboard Keys Not Working',
-                sev: 'easy', fix: '<ul><li>Try different USB port</li><li>Test on another PC</li><li>Reinstall keyboard driver</li><li>Factory reset gaming keyboard</li></ul>' },
-            { cat: 'USB & Peripherals', icon: '🖱️', title: 'Webcam Not Working',
-                sev: 'easy', fix: '<ul><li>Settings → Privacy → Camera → allow</li><li>Reinstall camera driver</li><li>Test in Camera app</li></ul>' },
-            { cat: 'USB & Peripherals', icon: '🖱️', title: 'USB Ports All Stopped Working',
-                sev: 'medium', fix: '<ul><li>Reinstall USB Root Hubs</li><li>Update chipset drivers</li><li>Check BIOS USB settings</li></ul>' },
-
-            // VIRUS / MALWARE (4)
-            { cat: 'Virus & Malware', icon: '🦠', title: 'PC Extremely Slow (Possible Malware)',
-                sev: 'medium', fix: '<ul><li>Windows Defender full scan</li><li>Malwarebytes scan</li><li>Check Task Manager for unknowns</li><li>Safe Mode scan</li></ul>' },
-            { cat: 'Virus & Malware', icon: '🦠', title: 'Browser Redirects / Unwanted Ads',
-                sev: 'easy', fix: '<ul><li>Run AdwCleaner</li><li>Remove suspicious extensions</li><li>Reset browser settings</li><li>Uninstall unknown programs</li></ul>' },
-            { cat: 'Virus & Malware', icon: '🦠', title: 'Ransomware / Files Encrypted',
-                sev: 'hard', fix: '<ul><li>Disconnect internet immediately</li><li>Do NOT pay ransom</li><li>Check NoMoreRansom.org for decryptor</li><li>Restore from backup</li><li>Format & reinstall</li></ul>' },
-
-            // PRINTER (3)
-            { cat: 'Printer Issues', icon: '🖨️', title: 'Printer Offline',
-                sev: 'easy', fix: '<ul><li>Uncheck "Use Printer Offline"</li><li>Restart Print Spooler service</li><li>Power cycle printer</li><li>Remove & re-add</li></ul>' },
-            { cat: 'Printer Issues', icon: '🖨️', title: 'Print Spooler Keeps Stopping',
-                sev: 'medium', fix: '<ul><li>Stop spooler → delete PRINTERS folder → restart</li><li>Reinstall printer drivers</li></ul>' },
-
-            // MISCELLANEOUS (5)
-            { cat: 'Miscellaneous', icon: '❓', title: 'PC Clock Keeps Losing Time',
-                sev: 'easy', fix: '<ul><li>Replace CMOS battery (CR2032)</li><li>Sync with internet time</li></ul>' },
-            { cat: 'Miscellaneous', icon: '❓', title: 'PC Running Very Hot in Summer',
-                sev: 'easy', fix: '<ul><li>Clean dust thoroughly</li><li>Reapply thermal paste</li><li>Improve room ventilation</li><li>Add case fans</li></ul>' },
-            { cat: 'Miscellaneous', icon: '❓', title: 'Static Electricity Damage Prevention',
-                sev: 'easy', fix: '<ul><li>Touch case metal before components</li><li>Use anti-static wrist strap</li><li>Work on hard floor not carpet</li><li>Handle by edges only</li></ul>' },
-            { cat: 'Miscellaneous', icon: '❓', title: 'PC Power Button Not Working',
-                sev: 'medium', fix: '<ul><li>Short power pins on motherboard with screwdriver</li><li>Check front panel connectors</li><li>Replace power button</li></ul>' },
-            { cat: 'Miscellaneous', icon: '❓', title: 'Monitor Goes Black Randomly',
-                sev: 'medium', fix: '<ul><li>Check cable connections</li><li>Update GPU drivers</li><li>Disable monitor sleep in Power Options</li><li>Test with different cable</li></ul>' },
+            { cat: 'Boot Issues', icon: '💻', title: 'No Bootable Device Found', sev: 'medium', fix: '<ul><li>BIOS → Boot tab → set SSD/HDD first</li><li>Check SATA/NVMe cables</li><li>Install Windows from USB if new drive</li><li>Run Startup Repair from recovery USB</li></ul>' },
+            { cat: 'Boot Issues', icon: '💻', title: 'PC Turns On But No Display', sev: 'medium', fix: '<ul><li>Plug monitor into GPU (not motherboard)</li><li>Reseat GPU firmly</li><li>Try different cable/monitor</li><li>Reseat RAM sticks</li><li>Try onboard graphics</li></ul>' },
+            { cat: 'Boot Issues', icon: '💻', title: 'Windows Stuck on Loading Circle', sev: 'medium', fix: '<ul><li>Force shutdown 3× → Automatic Repair</li><li>Startup Repair from recovery</li><li>CMD: <code>sfc /scannow</code></li><li>Check drive health</li></ul>' },
+            { cat: 'Boot Issues', icon: '💻', title: 'PC Beeps on Startup', sev: 'medium', fix: '<ul><li>1 long beep = RAM → reseat</li><li>3 beeps = memory error → test sticks</li><li>Continuous = RAM/CPU not seated</li><li>Check motherboard manual</li></ul>' },
+            { cat: 'Overheating', icon: '🌡️', title: 'CPU Temp 90°C+', sev: 'medium', fix: '<ul><li>Check cooler fan spinning</li><li>Reapply thermal paste (pea-sized)</li><li>Ensure cooler mounted tight</li><li>Clean dust from fins</li><li>Improve case airflow</li></ul>' },
+            { cat: 'Overheating', icon: '🌡️', title: 'GPU Temp 85°C+', sev: 'medium', fix: '<ul><li>Clean GPU heatsink with compressed air</li><li>Reapply GPU thermal paste</li><li>Increase fan curve in MSI Afterburner</li><li>Undervolt GPU</li></ul>' },
+            { cat: 'Overheating', icon: '🌡️', title: 'PC Shuts Down During Gaming', sev: 'medium', fix: '<ul><li>Thermal shutdown — monitor temps</li><li>Clean all dust</li><li>Reapply CPU thermal paste</li><li>Check PSU wattage</li></ul>' },
+            { cat: 'Blue Screen (BSOD)', icon: '🔵', title: 'BSOD MEMORY_MANAGEMENT', sev: 'medium', fix: '<ul><li>Run Windows Memory Diagnostic</li><li>Run MemTest86 2+ passes</li><li>Try removing 1 RAM stick</li><li>Check RAM in A2+B2 slots</li></ul>' },
+            { cat: 'Blue Screen (BSOD)', icon: '🔵', title: 'BSOD DRIVER_IRQL_NOT_LESS', sev: 'medium', fix: '<ul><li>Note .sys file on BSOD</li><li>Safe Mode → uninstall that driver</li><li>Use DDU for GPU drivers</li><li>Reinstall latest driver</li></ul>' },
+            { cat: 'Blue Screen (BSOD)', icon: '🔵', title: 'BSOD WHEA_UNCORRECTABLE', sev: 'hard', fix: '<ul><li>Disable XMP/EXPO in BIOS</li><li>Test RAM with MemTest86</li><li>Check CPU for bent pins</li><li>Reset BIOS defaults</li></ul>' },
+            { cat: 'GPU & Display', icon: '🖥️', title: 'Screen Flickering', sev: 'medium', fix: '<ul><li>Update/rollback GPU drivers</li><li>Check cable connections</li><li>Try DisplayPort instead of HDMI</li><li>Disable G-Sync/FreeSync</li></ul>' },
+            { cat: 'GPU & Display', icon: '🖥️', title: 'FPS Drops / Stuttering', sev: 'medium', fix: '<ul><li>Check GPU temps — thermal throttling</li><li>Set High Performance power plan</li><li>Disable Xbox Game Bar</li><li>Enable XMP in BIOS</li><li>Update GPU drivers</li></ul>' },
+            { cat: 'GPU & Display', icon: '🖥️', title: 'GPU Artifacting (Weird Colors)', sev: 'hard', fix: '<ul><li>GPU overheating → clean & repaste</li><li>Underclock GPU 100MHz</li><li>Test VRAM with OCCT</li><li>GPU may be dying if on desktop too</li></ul>' },
+            { cat: 'RAM Issues', icon: '🧠', title: 'PC Not Using Full RAM', sev: 'easy', fix: '<ul><li>Task Manager → Memory → check usable</li><li>Test sticks individually</li><li>Use A2+B2 slots for dual channel</li></ul>' },
+            { cat: 'RAM Issues', icon: '🧠', title: 'RAM Not Running at Rated Speed', sev: 'easy', fix: '<ul><li>Enable XMP (Intel) / EXPO (AMD) in BIOS</li><li>Check speed in Task Manager</li></ul>' },
+            { cat: 'Storage Issues', icon: '💾', title: 'Drive Not Showing in Windows', sev: 'easy', fix: '<ul><li>Disk Management → initialize/format</li><li>Check cable connections</li><li>NVMe: enable M.2 in BIOS</li></ul>' },
+            { cat: 'Storage Issues', icon: '💾', title: 'HDD Making Clicking Noise', sev: 'hard', fix: '<ul><li>⚠️ Drive dying — backup NOW</li><li>Check SMART with CrystalDiskInfo</li><li>Replace HDD immediately</li></ul>' },
+            { cat: 'Storage Issues', icon: '💾', title: 'Disk at 100% Usage', sev: 'medium', fix: '<ul><li>Disable SysMain service</li><li>Disable Windows Search</li><li>Check for malware</li><li>HDD → upgrade to SSD</li></ul>' },
+            { cat: 'Network Issues', icon: '📡', title: 'WiFi Connected But No Internet', sev: 'easy', fix: '<ul><li><code>ipconfig /release</code> → <code>/renew</code></li><li><code>netsh winsock reset</code></li><li>Forget & reconnect WiFi</li><li>Change DNS to 8.8.8.8</li></ul>' },
+            { cat: 'Network Issues', icon: '📡', title: 'High Ping / Lag in Games', sev: 'medium', fix: '<ul><li>Use ethernet — WiFi adds latency</li><li>Close background downloads</li><li>Change DNS to 1.1.1.1</li><li>Check router QoS</li></ul>' },
+            { cat: 'Power & PSU', icon: '⚡', title: 'PC Won\'t Turn On At All', sev: 'hard', fix: '<ul><li>Check power cable & outlet</li><li>PSU switch ON (I not O)</li><li>Check 24-pin & CPU power cables</li><li>Short power pins with screwdriver</li><li>Test with different PSU</li></ul>' },
+            { cat: 'Power & PSU', icon: '⚡', title: 'PC Randomly Shuts Down', sev: 'hard', fix: '<ul><li>Check CPU/GPU temps</li><li>Check PSU wattage vs system draw</li><li>Check Event Viewer</li></ul>' },
+            { cat: 'Gaming Issues', icon: '🎮', title: 'Game Crashing to Desktop', sev: 'medium', fix: '<ul><li>Check GPU temps</li><li>Verify game files</li><li>Update GPU drivers</li><li>Disable overlays (Discord, GeForce)</li></ul>' },
+            { cat: 'Gaming Issues', icon: '🎮', title: 'Low FPS on Good Hardware', sev: 'medium', fix: '<ul><li>Set game to High Performance GPU</li><li>High Performance power plan</li><li>Enable XMP</li><li>Disable VSync</li></ul>' },
+            { cat: 'USB & Peripherals', icon: '🖱️', title: 'USB Device Not Recognized', sev: 'easy', fix: '<ul><li>Try different port (USB 2.0 if 3.0 fails)</li><li>Reinstall USB Root Hub</li><li>Update chipset drivers</li></ul>' },
+            { cat: 'USB & Peripherals', icon: '🖱️', title: 'Monitor Not at 144Hz+', sev: 'easy', fix: '<ul><li>Display Settings → Advanced → set 144Hz</li><li>Use DisplayPort cable</li><li>Update GPU drivers</li></ul>' },
+            { cat: 'Virus & Malware', icon: '🦠', title: 'PC Extremely Slow (Malware?)', sev: 'medium', fix: '<ul><li>Windows Defender full scan</li><li>Malwarebytes scan</li><li>Check Task Manager for unknowns</li><li>Safe Mode scan</li></ul>' },
+            { cat: 'Virus & Malware', icon: '🦠', title: 'Browser Redirects / Ads', sev: 'easy', fix: '<ul><li>Run AdwCleaner</li><li>Remove suspicious extensions</li><li>Reset browser settings</li></ul>' },
+            { cat: 'Audio Issues', icon: '🔊', title: 'No Sound', sev: 'easy', fix: '<ul><li>Right-click speaker → select correct output</li><li>Update audio drivers</li><li>Run troubleshooter</li></ul>' },
+            { cat: 'Software & OS', icon: '🪟', title: 'Windows Slow After Update', sev: 'easy', fix: '<ul><li>Wait an hour — background tasks run</li><li>Disable SysMain temporarily</li><li>Uninstall problematic update</li></ul>' },
+            { cat: 'Software & OS', icon: '🪟', title: 'Copy/Paste Not Working', sev: 'easy', fix: '<ul><li>Restart Explorer in Task Manager</li><li><code>rdpclip.exe</code> in CMD</li><li>Win+V → enable clipboard</li></ul>' },
+            { cat: 'Miscellaneous', icon: '❓', title: 'PC Clock Keeps Losing Time', sev: 'easy', fix: '<ul><li>Replace CMOS battery (CR2032)</li><li>Sync with internet time</li></ul>' },
+            { cat: 'Miscellaneous', icon: '❓', title: 'Static Electricity Prevention', sev: 'easy', fix: '<ul><li>Touch case metal before components</li><li>Use anti-static wrist strap</li><li>Work on hard floor not carpet</li></ul>' },
         ];
 
-        // Build TS UI
         const allCats = [...new Set(TS_DATA.map(d => d.cat))];
         const catFiltersDiv = document.getElementById('catFilters');
         const issuesGrid = document.getElementById('issuesGrid');
@@ -1209,10 +1204,9 @@
         const tsNoRes = document.getElementById('tsNoResults');
         let activeTS = 'All';
 
-        function badge(sev) {
-            const map = { easy: ['badge-green', 'EASY'], medium: ['badge-yellow', 'MEDIUM'], hard: ['badge-red',
-                'EXPERT'] };
-            const [cl, lbl] = map[sev] || ['badge-green', 'EASY'];
+        function badgeTS(sev) {
+            const map = { easy: ['badge-g', 'EASY'], medium: ['badge-y', 'MEDIUM'], hard: ['badge-r', 'EXPERT'] };
+            const [cl, lbl] = map[sev] || ['badge-g', 'EASY'];
             return `<span class="badge ${cl}">${lbl}</span>`;
         }
 
@@ -1224,24 +1218,24 @@
             tsCount.textContent = `Showing ${data.length} issue${data.length!==1?'s':''} — 5000+ in database`;
             data.forEach(item => {
                 const card = document.createElement('div');
-                card.className = 'ts-card';
+                card.className = 'panel';
+                card.style.cssText = 'padding:14px;cursor:pointer;margin-bottom:0';
                 card.innerHTML = `
-            <div class="ts-card-header">
-              <span style="font-size:20px;flex-shrink:0">${item.icon}</span>
-              <div style="flex:1"><div style="font-weight:700;font-size:14px;color:#e2e8f0">${item.title}</div>${badge(item.sev)}</div>
-              <span class="ts-chevron">▼</span>
+            <div style="display:flex;align-items:flex-start;gap:10px" onclick="this.parentElement.classList.toggle('open');const ch=this.parentElement.querySelector('.ts-chev');ch.textContent=this.parentElement.classList.contains('open')?'▲':'▼'">
+              <span style="font-size:18px;flex-shrink:0">${item.icon}</span>
+              <div style="flex:1"><strong style="font-size:13px">${item.title}</strong><br>${badgeTS(item.sev)}</div>
+              <span class="ts-chev" style="color:var(--muted)">▼</span>
             </div>
-            <div class="ts-card-body">
+            <div style="display:none;padding-top:12px;margin-top:10px;border-top:1px solid var(--border);font-size:13px;color:var(--muted);line-height:1.6">
               ${item.fix}
-              <button class="btn-outline" style="margin-top:10px;font-size:12px;padding:8px 14px;border-color:rgba(167,139,250,.4);color:#c4b5fd" onclick="event.stopPropagation();document.getElementById('meet').scrollIntoView({behavior:'smooth'})">📹 Book Google Meet for This</button>
+              <a href="#meet" class="btn btn-out btn-sm" style="margin-top:8px;display:inline-flex;font-size:11px">📹 Book Meet for This</a>
             </div>`;
-                card.querySelector('.ts-card-header').addEventListener('click', () => {
-                    const wasOpen = card.classList.contains('open');
-                    document.querySelectorAll('.ts-card').forEach(c => { c.classList.remove(
-                        'open');
-                        c.querySelector('.ts-chevron').style.transform = 'rotate(0deg)' });
-                    if (!wasOpen) { card.classList.add('open');
-                        card.querySelector('.ts-chevron').style.transform = 'rotate(180deg)'; }
+                card.querySelector('.ts-card-body') || card.addEventListener('click', function(e) {
+                    if (e.target.tagName === 'A') return;
+                    const body = this.querySelector('div:last-child');
+                    const isOpen = body.style.display === 'block';
+                    body.style.display = isOpen ? 'none' : 'block';
+                    this.querySelector('.ts-chev').textContent = isOpen ? '▼' : '▲';
                 });
                 issuesGrid.appendChild(card);
             });
@@ -1255,10 +1249,9 @@
             renderTSCards(data);
         }
 
-        // Category buttons
         const allBtn = document.createElement('button');
-        allBtn.className = 'btn-outline';
-        allBtn.style.cssText = 'padding:8px 16px;font-size:13px;border-color:#4dabf7;color:#4dabf7';
+        allBtn.className = 'btn btn-sm';
+        allBtn.style.cssText = 'border:1.5px solid #4dabf7;color:#4dabf7;background:rgba(77,171,247,.08);flex-shrink:0';
         allBtn.textContent = '🔍 All';
         allBtn.addEventListener('click', () => { activeTS = 'All';
             updateCatBtns(allBtn);
@@ -1266,8 +1259,8 @@
         catFiltersDiv.appendChild(allBtn);
         allCats.forEach(cat => {
             const btn = document.createElement('button');
-            btn.className = 'btn-outline';
-            btn.style.cssText = 'padding:8px 16px;font-size:13px';
+            btn.className = 'btn btn-sm btn-out';
+            btn.style.cssText = 'flex-shrink:0';
             btn.textContent = cat;
             btn.addEventListener('click', () => { activeTS = cat;
                 updateCatBtns(btn);
@@ -1277,16 +1270,18 @@
 
         function updateCatBtns(activeBtn) {
             catFiltersDiv.querySelectorAll('button').forEach(b => { b.style.borderColor = 'var(--border)';
-                b.style.color = 'var(--text-muted)'; });
+                b.style.color = 'var(--muted)';
+                b.style.background = 'transparent'; });
             activeBtn.style.borderColor = '#4dabf7';
             activeBtn.style.color = '#4dabf7';
+            activeBtn.style.background = 'rgba(77,171,247,.08)';
         }
-
-        document.getElementById('tsSearch').addEventListener('input', () => { clearTimeout(window._tsTimer);
-            window._tsTimer = setTimeout(filterTS, 200) });
+        document.getElementById('tsSearch').addEventListener('input', () => { clearTimeout(window._tsT);
+            window._tsT = setTimeout(filterTS, 200) });
         renderTSCards(TS_DATA);
+        allBtn.click();
 
-        // ═══════════════ SMOOTH SCROLL LINKS ═══════════════
+        // ═══════════════ SMOOTH SCROLL ═══════════════
         document.querySelectorAll('a[href^="#"]').forEach(a => {
             a.addEventListener('click', e => {
                 e.preventDefault();
@@ -1295,8 +1290,8 @@
             });
         });
 
-        console.log('🚀 PC-Precision loaded — Bottleneck Calculator | Auto Builder | 5000+ Troubleshooting | Google Meet');
-        console.log('📧 Contact: pcprecision.official@gmail.com');
+        console.log('🚀 PC-Precision loaded — Bottleneck | Auto Builder | Custom Builder | 5000+ Fixes | Google Meet');
+        console.log('📧 pcprecision.official@gmail.com');
     </script>
 </body>
 </html>
