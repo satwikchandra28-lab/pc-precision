@@ -1,1243 +1,1167 @@
+bash
+
+cat > /mnt/user-data/outputs/ApexMindAI_Website.html << 'HTMLEOF'
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>PC-Precision — Ultimate PC Build & Bottleneck Experts</title>
-    <style>
-        :root {
-            --bg: #0a0a0a;
-            --surface: #141414;
-            --surface2: #1a1a1a;
-            --border: #2a2a2a;
-            --accent: #e63946;
-            --accent2: #ff6b6b;
-            --accent3: #c92a2a;
-            --text: #f0f0f0;
-            --muted: #999;
-            --radius: 12px;
-            --radius-sm: 8px;
-            --red-glow: rgba(230, 57, 70, 0.3);
-        }
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-        html {
-            scroll-behavior: smooth;
-            font-size: 15px;
-        }
-        body {
-            font-family: 'Segoe UI', 'Inter', system-ui, -apple-system, sans-serif;
-            background: var(--bg);
-            color: var(--text);
-            min-height: 100vh;
-            line-height: 1.5;
-            -webkit-tap-highlight-color: transparent;
-        }
-        /* Grid texture overlay */
-        body::before {
-            content: '';
-            position: fixed;
-            inset: 0;
-            pointer-events: none;
-            z-index: 0;
-            background-image: linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
-            background-size: 32px 32px;
-            mask-image: radial-gradient(ellipse at center, black 40%, transparent 70%);
-            -webkit-mask-image: radial-gradient(ellipse at center, black 40%, transparent 70%);
-        }
-        /* Glow orbs */
-        .glow {
-            position: fixed;
-            border-radius: 50%;
-            filter: blur(80px);
-            pointer-events: none;
-            z-index: 0;
-            opacity: 0.15;
-        }
-        /* Tabs container */
-        .app-container {
-            position: relative;
-            z-index: 1;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
-        /* Header */
-        .header {
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            background: rgba(10, 10, 10, 0.92);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid var(--border);
-            padding: 0 12px;
-            height: 56px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-        .logo {
-            font-weight: 800;
-            font-size: 17px;
-            letter-spacing: -0.3px;
-            background: linear-gradient(135deg, #e63946, #ff6b6b);
-            background-clip: text;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            white-space: nowrap;
-        }
-        .tab-nav {
-            display: flex;
-            gap: 4px;
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
-            scrollbar-width: none;
-            padding-bottom: 4px;
-            margin-left: 12px;
-        }
-        .tab-nav::-webkit-scrollbar {
-            display: none;
-        }
-        .tab-btn {
-            background: transparent;
-            border: 1.5px solid transparent;
-            color: var(--muted);
-            font-weight: 600;
-            font-size: 13px;
-            padding: 8px 14px;
-            border-radius: 8px;
-            cursor: pointer;
-            white-space: nowrap;
-            transition: all 0.2s;
-            font-family: inherit;
-            letter-spacing: 0.2px;
-        }
-        .tab-btn:hover {
-            color: #fff;
-            background: rgba(255, 255, 255, 0.04);
-        }
-        .tab-btn.active {
-            background: rgba(230, 57, 70, 0.15);
-            border-color: var(--accent);
-            color: #fff;
-            box-shadow: 0 0 14px var(--red-glow);
-        }
-        /* Mobile menu button */
-        .mobile-menu-btn {
-            display: none;
-            background: none;
-            border: none;
-            color: #fff;
-            font-size: 24px;
-            cursor: pointer;
-            padding: 6px;
-        }
-        @media (max-width: 768px) {
-            .tab-nav {
-                display: none;
-            }
-            .mobile-menu-btn {
-                display: block;
-            }
-        }
-        .mobile-tabs {
-            display: none;
-            position: fixed;
-            top: 56px;
-            left: 0;
-            right: 0;
-            background: rgba(10, 10, 10, 0.97);
-            backdrop-filter: blur(16px);
-            border-bottom: 1px solid var(--border);
-            z-index: 99;
-            flex-direction: column;
-            padding: 8px;
-            gap: 2px;
-        }
-        .mobile-tabs.open {
-            display: flex;
-        }
-        .mobile-tabs .tab-btn {
-            width: 100%;
-            text-align: left;
-            padding: 12px 16px;
-            border-radius: 8px;
-            font-size: 14px;
-        }
-        /* Main content */
-        .main-content {
-            flex: 1;
-            padding: 16px 12px;
-            max-width: 1200px;
-            margin: 0 auto;
-            width: 100%;
-        }
-        @media (min-width: 768px) {
-            .main-content {
-                padding: 24px 20px;
-            }
-        }
-        .tab-panel {
-            display: none;
-            animation: fadeIn 0.25s ease;
-        }
-        .tab-panel.active {
-            display: block;
-        }
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(8px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        /* Cards & panels */
-        .panel {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: 18px 14px;
-            margin-bottom: 16px;
-            transition: all 0.3s;
-        }
-        .panel:hover {
-            border-color: rgba(230, 57, 70, 0.3);
-        }
-        @media (min-width: 768px) {
-            .panel {
-                padding: 24px 20px;
-                border-radius: 16px;
-            }
-        }
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 10px 20px;
-            border-radius: 99px;
-            font-weight: 600;
-            font-size: 13px;
-            cursor: pointer;
-            border: 1.5px solid transparent;
-            transition: all 0.25s;
-            white-space: nowrap;
-            text-decoration: none;
-            font-family: inherit;
-            letter-spacing: 0.2px;
-        }
-        .btn-primary {
-            background: linear-gradient(135deg, #c92a2a, #e63946);
-            border-color: rgba(230, 57, 70, 0.7);
-            color: #fff;
-        }
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(230, 57, 70, 0.5);
-        }
-        .btn-outline {
-            background: transparent;
-            border-color: var(--border);
-            color: var(--text);
-        }
-        .btn-outline:hover {
-            border-color: var(--accent2);
-            color: #ff6b6b;
-        }
-        .btn-sm {
-            padding: 7px 12px;
-            font-size: 11px;
-            border-radius: 6px;
-        }
-        .badge {
-            display: inline-block;
-            padding: 3px 8px;
-            border-radius: 99px;
-            font-size: 10px;
-            font-weight: 700;
-            letter-spacing: 0.4px;
-            text-transform: uppercase;
-        }
-        .badge-easy {
-            background: rgba(16, 185, 129, 0.12);
-            color: #34d399;
-            border: 1px solid rgba(16, 185, 129, 0.25);
-        }
-        .badge-medium {
-            background: rgba(251, 191, 36, 0.12);
-            color: #fcd34d;
-            border: 1px solid rgba(251, 191, 36, 0.25);
-        }
-        .badge-hard {
-            background: rgba(248, 113, 113, 0.15);
-            color: #f87171;
-            border: 1px solid rgba(248, 113, 113, 0.3);
-        }
-        .badge-red {
-            background: rgba(230, 57, 70, 0.15);
-            color: #ff6b6b;
-            border: 1px solid rgba(230, 57, 70, 0.3);
-        }
-        input,
-        select,
-        textarea {
-            background: var(--surface2);
-            border: 1.5px solid var(--border);
-            border-radius: var(--radius-sm);
-            padding: 11px 14px;
-            color: var(--text);
-            font-size: 14px;
-            width: 100%;
-            outline: none;
-            transition: all 0.25s;
-            font-family: inherit;
-        }
-        input:focus,
-        select:focus,
-        textarea:focus {
-            border-color: var(--accent);
-            box-shadow: 0 0 0 4px var(--red-glow);
-        }
-        select {
-            cursor: pointer;
-            appearance: none;
-            -webkit-appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23999' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'%3E%3C/path%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 12px center;
-            padding-right: 38px;
-        }
-        select option {
-            background: #1a1a1a;
-            color: #f0f0f0;
-        }
-        label {
-            display: block;
-            font-weight: 600;
-            font-size: 13px;
-            margin-bottom: 5px;
-            color: #ccc;
-        }
-        h2 {
-            font-size: clamp(22px, 4vw, 34px);
-            font-weight: 800;
-            letter-spacing: -0.5px;
-            margin-bottom: 6px;
-            line-height: 1.2;
-        }
-        .grad-text {
-            background: linear-gradient(135deg, #e63946, #ff6b6b);
-            background-clip: text;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        .comp-card {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 10px 12px;
-            border-radius: var(--radius-sm);
-            border: 1.5px solid var(--border);
-            cursor: pointer;
-            transition: all 0.2s;
-            background: var(--surface2);
-            font-size: 13px;
-            min-width: 140px;
-            flex-shrink: 0;
-        }
-        .comp-card:hover {
-            border-color: var(--accent);
-            background: rgba(230, 57, 70, 0.06);
-        }
-        .comp-card.selected {
-            border-color: var(--accent);
-            background: rgba(230, 57, 70, 0.12);
-            box-shadow: 0 0 16px var(--red-glow);
-        }
-        .comp-icon {
-            width: 32px;
-            height: 32px;
-            border-radius: 6px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 16px;
-            flex-shrink: 0;
-            background: rgba(255, 255, 255, 0.04);
-        }
-        .comp-price {
-            font-weight: 700;
-            color: #ff6b6b;
-            font-size: 12px;
-            white-space: nowrap;
-        }
-        .collapsible-header {
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 10px 14px;
-            border-radius: var(--radius-sm);
-            background: var(--surface2);
-            border: 1px solid var(--border);
-            font-weight: 600;
-            font-size: 13px;
-            transition: all 0.2s;
-            user-select: none;
-        }
-        .collapsible-header:hover {
-            border-color: var(--accent);
-        }
-        .collapsible-body {
-            display: none;
-            padding: 8px 0;
-        }
-        .collapsible-body.open {
-            display: block;
-        }
-        .comp-grid {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-        }
-        .ts-card {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            padding: 12px;
-            cursor: pointer;
-            transition: all 0.2s;
-            margin-bottom: 8px;
-        }
-        .ts-card:hover {
-            border-color: rgba(230, 57, 70, 0.4);
-        }
-        .ts-card .ts-body {
-            display: none;
-            padding-top: 10px;
-            margin-top: 8px;
-            border-top: 1px solid var(--border);
-            font-size: 13px;
-            color: #aaa;
-            line-height: 1.6;
-        }
-        .ts-card.open .ts-body {
-            display: block;
-        }
-        .ts-body ul {
-            padding-left: 18px;
-            margin: 6px 0;
-        }
-        .ts-body ul li {
-            margin-bottom: 4px;
-        }
-        code {
-            background: rgba(255, 255, 255, 0.06);
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-size: 12px;
-            color: #ff6b6b;
-        }
-        /* Toast */
-        #toast {
-            position: fixed;
-            bottom: 16px;
-            right: 14px;
-            z-index: 9999;
-            background: #1a0a0a;
-            border: 1px solid #e63946;
-            border-radius: 10px;
-            padding: 12px 18px;
-            color: #fff;
-            font-weight: 600;
-            font-size: 13px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            box-shadow: 0 8px 28px rgba(0, 0, 0, 0.6);
-            transform: translateY(120px);
-            opacity: 0;
-            transition: all 0.4s cubic-bezier(.175, .885, .32, 1.275);
-            pointer-events: none;
-            max-width: calc(100vw - 28px);
-        }
-        #toast.show {
-            transform: translateY(0);
-            opacity: 1;
-        }
-        .horiz-scroll {
-            display: flex;
-            gap: 8px;
-            overflow-x: auto;
-            padding-bottom: 6px;
-            -webkit-overflow-scrolling: touch;
-            scroll-snap-type: x proximity;
-        }
-        .horiz-scroll>* {
-            scroll-snap-align: start;
-        }
-        @media (max-width: 400px) {
-            .comp-card {
-                font-size: 11px;
-                padding: 8px 10px;
-                gap: 6px;
-            }
-            .comp-icon {
-                width: 26px;
-                height: 26px;
-                font-size: 14px;
-                border-radius: 5px;
-            }
-            .btn {
-                padding: 9px 14px;
-                font-size: 12px;
-            }
-        }
-    </style>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Apex Mind AI – Built by Satwik Chandra</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Sora:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#070710;--sf:#0d0d1e;--sf2:#13132a;
+  --border:rgba(100,120,255,0.15);
+  --cyan:#00d4ff;--purple:#7c3aed;--amber:#f59e0b;
+  --green:#10b981;--red:#ef4444;--pink:#ec4899;
+  --text:#e8e8f0;--dim:#7878a0;
+  --fd:'Rajdhani',sans-serif;--fb:'Sora',sans-serif;
+}
+html,body{height:100%;font-family:var(--fb);background:var(--bg);color:var(--text);overflow-x:hidden}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+
+/* ── ORBS ── */
+.orbs{position:fixed;inset:0;pointer-events:none;z-index:0}
+.orb{position:absolute;border-radius:50%;filter:blur(80px);opacity:.12;animation:drift 14s ease-in-out infinite alternate}
+.o1{width:500px;height:500px;background:var(--purple);top:-120px;left:-120px}
+.o2{width:400px;height:400px;background:var(--cyan);bottom:-120px;right:-120px;animation-delay:-5s}
+.o3{width:280px;height:280px;background:var(--amber);top:50%;left:50%;transform:translate(-50%,-50%);animation-delay:-9s}
+@keyframes drift{from{transform:translate(0,0) scale(1)}to{transform:translate(35px,25px) scale(1.08)}}
+
+/* ── PAGES ── */
+.page{position:fixed;inset:0;z-index:10;display:flex;align-items:center;justify-content:center;transition:opacity .35s,transform .35s}
+.page.off{opacity:0;pointer-events:none;transform:translateY(18px)}
+
+/* ── LOADING ── */
+#loading{flex-direction:column;z-index:200;background:var(--bg)}
+.ld-logo{font-family:var(--fd);font-size:38px;font-weight:700;letter-spacing:5px;background:linear-gradient(135deg,var(--cyan),#fff,var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.ld-sub{color:var(--dim);font-size:12px;letter-spacing:3px;margin-top:6px}
+.ld-bar{width:220px;height:2px;background:var(--border);border-radius:2px;overflow:hidden;margin-top:28px}
+.ld-fill{height:100%;background:linear-gradient(90deg,var(--cyan),var(--purple));animation:lf 1.6s ease forwards}
+@keyframes lf{from{width:0}to{width:100%}}
+.ld-tag{margin-top:16px;font-size:11px;color:rgba(0,212,255,.5);letter-spacing:2px}
+
+/* ── AUTH CARD ── */
+.ac{background:rgba(13,13,30,.88);backdrop-filter:blur(24px);border:1px solid var(--border);border-radius:24px;padding:44px 38px;width:420px;max-width:95vw;box-shadow:0 0 80px rgba(0,212,255,.05),0 40px 80px rgba(0,0,0,.5);position:relative;overflow:hidden}
+.ac::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--cyan),var(--purple),transparent)}
+.al{text-align:center;margin-bottom:28px}
+.al .li{width:60px;height:60px;margin:0 auto 10px;background:linear-gradient(135deg,var(--cyan),var(--purple));border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:26px;box-shadow:0 0 28px rgba(0,212,255,.3)}
+.al h1{font-family:var(--fd);font-size:26px;font-weight:700;letter-spacing:2px;background:linear-gradient(135deg,var(--cyan),#fff,var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.al p{color:var(--dim);font-size:12px;margin-top:3px}
+.at{font-family:var(--fd);font-size:21px;font-weight:600;margin-bottom:4px}
+.as{color:var(--dim);font-size:12px;margin-bottom:24px}
+.fg{margin-bottom:14px}
+.fg label{display:block;font-size:11px;font-weight:500;color:var(--dim);margin-bottom:6px;letter-spacing:.5px;text-transform:uppercase}
+.fg input,.fg select,.fg textarea{width:100%;padding:11px 14px;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:10px;color:var(--text);font-family:var(--fb);font-size:13px;transition:all .2s;outline:none}
+.fg input:focus,.fg select:focus{border-color:var(--cyan);background:rgba(0,212,255,.04);box-shadow:0 0 0 3px rgba(0,212,255,.1)}
+.fg input::placeholder,.fg textarea::placeholder{color:var(--dim)}
+.bp{width:100%;padding:12px;border:none;border-radius:10px;background:linear-gradient(135deg,var(--cyan),var(--purple));color:#fff;font-family:var(--fb);font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;letter-spacing:.4px}
+.bp:hover{transform:translateY(-1px);box-shadow:0 8px 22px rgba(0,212,255,.3)}
+.bp:disabled{opacity:.55;cursor:not-allowed;transform:none}
+.div{display:flex;align-items:center;gap:10px;margin:16px 0}
+.div span{flex:1;height:1px;background:var(--border)}.div p{color:var(--dim);font-size:11px;white-space:nowrap}
+.bs{width:100%;padding:10px;border:1px solid var(--border);background:rgba(255,255,255,.03);border-radius:10px;color:var(--text);font-family:var(--fb);font-size:13px;font-weight:500;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:9px;margin-bottom:9px}
+.bs:hover{background:rgba(255,255,255,.07);border-color:rgba(255,255,255,.2)}
+.bs svg{width:17px;height:17px;flex-shrink:0}
+.aswitch{text-align:center;margin-top:20px;font-size:12px;color:var(--dim)}
+.aswitch a{color:var(--cyan);text-decoration:none;font-weight:500;cursor:pointer}
+.aswitch a:hover{text-decoration:underline}
+.aerr{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);border-radius:8px;padding:9px 12px;font-size:12px;color:#fca5a5;margin-bottom:14px;display:none}
+.asuc{background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.3);border-radius:8px;padding:9px 12px;font-size:12px;color:#6ee7b7;margin-bottom:14px;display:none}
+.pfx{display:flex;gap:8px}
+.pfx select{width:86px;flex-shrink:0;padding:11px 6px;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:10px;color:var(--text);font-family:var(--fb);font-size:13px;outline:none}
+.otp{display:flex;gap:7px;justify-content:center;margin:14px 0}
+.otp input{width:46px;height:54px;text-align:center;font-size:20px;font-weight:700;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:10px;color:var(--text);font-family:var(--fd);outline:none;transition:all .2s}
+.otp input:focus{border-color:var(--cyan);background:rgba(0,212,255,.04)}
+
+/* ── GOOGLE MODAL ── */
+.moverlay{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:100;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(4px);opacity:0;pointer-events:none;transition:opacity .2s}
+.moverlay.show{opacity:1;pointer-events:all}
+.modal{background:#fff;border-radius:16px;padding:28px;width:340px;max-width:95vw;color:#333;animation:mIn .3s ease}
+@keyframes mIn{from{transform:scale(.9);opacity:0}to{transform:scale(1);opacity:1}}
+.mh{display:flex;align-items:center;gap:10px;margin-bottom:18px}
+.mh h3{font-size:17px;font-weight:600;color:#222}
+.ga{display:flex;align-items:center;gap:10px;padding:11px;border:1px solid #e0e0e0;border-radius:8px;cursor:pointer;transition:all .2s;margin-bottom:7px}
+.ga:hover{background:#f5f5f5}
+.gav{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,var(--purple),var(--cyan));display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;font-size:15px}
+.gai h4{font-size:13px;font-weight:500;color:#222}.gai p{font-size:11px;color:#666}
+.gadd{display:flex;align-items:center;gap:10px;padding:11px;cursor:pointer;color:#1a73e8;font-size:13px;font-weight:500;transition:all .2s;border-radius:8px}
+.gadd:hover{background:#f0f4ff}
+.mfooter{margin-top:14px;display:flex;justify-content:flex-end;gap:8px}
+.mbtn{padding:7px 18px;border-radius:6px;border:none;font-size:13px;cursor:pointer;font-weight:500}
+.mbtn.c{background:transparent;color:#1a73e8}.mbtn.ok{background:#1a73e8;color:#fff}
+
+/* ── APP LAYOUT ── */
+#appPage{align-items:stretch;justify-content:stretch;flex-direction:row}
+
+/* SIDEBAR */
+.sb{width:255px;flex-shrink:0;background:rgba(11,11,26,.92);border-right:1px solid var(--border);display:flex;flex-direction:column;padding:18px 0;backdrop-filter:blur(20px);z-index:20;transition:transform .3s}
+.sblogo{padding:0 18px 18px;border-bottom:1px solid var(--border)}
+.sblogo .lr{display:flex;align-items:center;gap:10px}
+.sblogo .li{width:38px;height:38px;background:linear-gradient(135deg,var(--cyan),var(--purple));border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;box-shadow:0 0 18px rgba(0,212,255,.22)}
+.sblogo h2{font-family:var(--fd);font-size:17px;font-weight:700;letter-spacing:1px}
+.sblogo span{font-size:9px;color:var(--cyan);font-weight:500;letter-spacing:2px}
+.netst{margin:10px 10px 0;padding:7px 10px;background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.2);border-radius:8px;display:flex;align-items:center;gap:7px;font-size:10px;color:#6ee7b7}
+.ndot{width:5px;height:5px;border-radius:50%;background:var(--green);box-shadow:0 0 7px var(--green);animation:pdot 2s infinite;flex-shrink:0}
+@keyframes pdot{0%,100%{opacity:1}50%{opacity:.35}}
+.sbsec{padding:14px 10px 6px}
+.sbsl{font-size:9px;color:var(--dim);letter-spacing:2px;text-transform:uppercase;padding:0 8px;margin-bottom:7px}
+.ni{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:9px;cursor:pointer;transition:all .2s;font-size:13px;font-weight:500;color:var(--dim);position:relative}
+.ni:hover{background:rgba(255,255,255,.05);color:var(--text)}
+.ni.act{background:rgba(0,212,255,.1);color:var(--cyan)}
+.ni.act::before{content:'';position:absolute;left:0;top:22%;bottom:22%;width:3px;background:var(--cyan);border-radius:2px}
+.ni .ic{width:30px;height:30px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:14px;background:rgba(255,255,255,.05);flex-shrink:0}
+.ni.act .ic{background:rgba(0,212,255,.14)}
+.nbadge{margin-left:auto;background:var(--cyan);color:#000;font-size:9px;font-weight:700;padding:2px 5px;border-radius:8px}
+.sbbot{margin-top:auto;padding:14px 10px;border-top:1px solid var(--border)}
+.ur{display:flex;align-items:center;gap:9px;padding:7px 9px;border-radius:9px;cursor:pointer;transition:all .2s}
+.ur:hover{background:rgba(255,255,255,.05)}
+.uav{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--purple),var(--cyan));display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0}
+.ui{flex:1;min-width:0}.un{font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.upl{font-size:10px;color:var(--cyan)}
+.lob{background:none;border:none;cursor:pointer;color:var(--dim);font-size:15px;padding:4px;border-radius:6px;transition:all .2s}
+.lob:hover{color:var(--red);background:rgba(239,68,68,.1)}
+
+/* MAIN */
+.mc{flex:1;display:flex;flex-direction:column;min-width:0;overflow:hidden}
+.tb{height:58px;background:rgba(11,11,26,.82);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 18px;gap:10px;backdrop-filter:blur(10px);flex-shrink:0}
+.tbtitle{font-family:var(--fd);font-size:17px;font-weight:700;flex:1;letter-spacing:1px}
+.tbbadge{background:rgba(0,212,255,.1);border:1px solid rgba(0,212,255,.3);color:var(--cyan);font-size:10px;padding:3px 9px;border-radius:16px;font-weight:500}
+.menubtn{display:none;background:none;border:none;color:var(--text);font-size:19px;cursor:pointer;padding:5px}
+.sbov{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:15;display:none}
+.sbov.show{display:block}
+
+/* PANEL */
+.panel{display:none;flex:1;flex-direction:column;overflow:hidden}
+.panel.act{display:flex}
+
+/* CHAT */
+.ca{flex:1;overflow-y:auto;padding:18px;display:flex;flex-direction:column;gap:14px;scroll-behavior:smooth}
+.cwelcome{text-align:center;padding:36px 18px}
+.cwelcome .wi{font-size:44px;margin-bottom:14px}
+.cwelcome h3{font-family:var(--fd);font-size:22px;font-weight:700;margin-bottom:6px}
+.cwelcome p{color:var(--dim);font-size:13px;max-width:380px;margin:0 auto 20px;line-height:1.6}
+.chips{display:flex;flex-wrap:wrap;gap:7px;justify-content:center}
+.chip{padding:7px 14px;background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:18px;font-size:11px;cursor:pointer;transition:all .2s;color:var(--dim)}
+.chip:hover{background:rgba(0,212,255,.1);border-color:var(--cyan);color:var(--cyan)}
+.msg{display:flex;gap:10px;animation:fu .28s ease;max-width:780px}
+@keyframes fu{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.msg.usr{flex-direction:row-reverse;align-self:flex-end}
+.mav{width:34px;height:34px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;margin-top:2px}
+.msg.ai .mav{background:linear-gradient(135deg,var(--cyan),var(--purple))}
+.msg.usr .mav{background:linear-gradient(135deg,var(--purple),var(--amber))}
+.mb{flex:1;min-width:0}
+.mn{font-size:10px;color:var(--dim);margin-bottom:3px;font-weight:500}
+.msg.usr .mn{text-align:right}
+.mbu{padding:11px 14px;border-radius:14px;font-size:13px;line-height:1.75;max-width:580px;white-space:pre-wrap}
+.msg.ai .mbu{background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:3px 14px 14px 14px}
+.msg.usr .mbu{background:linear-gradient(135deg,rgba(0,212,255,.14),rgba(124,58,237,.14));border:1px solid rgba(0,212,255,.18);border-radius:14px 3px 14px 14px;margin-left:auto}
+.mbu img{max-width:100%;border-radius:8px;margin-top:8px;display:block}
+.mt{font-size:9px;color:var(--dim);margin-top:3px}
+.msg.usr .mt{text-align:right}
+.typing{display:flex;align-items:center;gap:4px;padding:12px 14px;background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:3px 14px 14px 14px;width:fit-content}
+.td{width:5px;height:5px;border-radius:50%;background:var(--cyan);animation:tp 1.4s infinite}
+.td:nth-child(2){animation-delay:.2s}.td:nth-child(3){animation-delay:.4s}
+@keyframes tp{0%,80%,100%{transform:scale(.7);opacity:.5}40%{transform:scale(1);opacity:1}}
+.ia{padding:14px 18px;background:rgba(11,11,26,.82);border-top:1px solid var(--border);backdrop-filter:blur(10px);flex-shrink:0}
+.itb{display:flex;gap:6px;margin-bottom:8px;flex-wrap:wrap}
+.tbtn{padding:5px 11px;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:7px;color:var(--dim);font-size:11px;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:5px;font-family:var(--fb)}
+.tbtn:hover{background:rgba(255,255,255,.08);color:var(--text)}
+.tbtn.act{background:rgba(0,212,255,.1);border-color:rgba(0,212,255,.4);color:var(--cyan)}
+.ir{display:flex;gap:8px;align-items:flex-end}
+.ib{flex:1;min-height:46px;max-height:140px;padding:12px 14px;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:11px;color:var(--text);font-family:var(--fb);font-size:13px;resize:none;outline:none;transition:all .2s;line-height:1.5;overflow-y:auto}
+.ib:focus{border-color:var(--cyan);background:rgba(0,212,255,.03)}
+.ib::placeholder{color:var(--dim)}
+.snd{width:46px;height:46px;border:none;border-radius:11px;flex-shrink:0;background:linear-gradient(135deg,var(--cyan),var(--purple));color:#fff;font-size:17px;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center}
+.snd:hover{transform:scale(1.06);box-shadow:0 4px 14px rgba(0,212,255,.3)}
+.snd:disabled{opacity:.5;cursor:not-allowed;transform:none}
+
+/* IMAGE GEN PANEL */
+.igp{padding:18px;overflow-y:auto;flex:1}
+.ph{margin-bottom:20px}.ph h2{font-family:var(--fd);font-size:21px;font-weight:700;margin-bottom:3px}.ph p{color:var(--dim);font-size:12px}
+.card{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:15px;padding:18px;margin-bottom:14px}
+.card h3{font-family:var(--fd);font-size:15px;margin-bottom:14px;display:flex;align-items:center;gap:7px}
+.style-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:14px}
+.sg-item{padding:9px 6px;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:8px;text-align:center;cursor:pointer;transition:all .2s;font-size:11px;color:var(--dim)}
+.sg-item:hover,.sg-item.sel{background:rgba(0,212,255,.1);border-color:var(--cyan);color:var(--cyan)}
+.sg-item .si{font-size:18px;margin-bottom:4px}
+.img-result{margin-top:14px;display:none}
+.img-result img{width:100%;border-radius:12px;display:block}
+.img-actions{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.iabtn{padding:8px 16px;border-radius:8px;border:1px solid var(--border);background:rgba(255,255,255,.04);color:var(--text);font-family:var(--fb);font-size:12px;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:5px}
+.iabtn:hover{background:rgba(255,255,255,.09)}
+.iabtn.primary{background:linear-gradient(135deg,var(--cyan),var(--purple));border:none;color:#fff;font-weight:600}
+.igenloading{text-align:center;padding:32px;display:none}
+.igenloading .il{font-size:32px;animation:spin 1.5s linear infinite;display:inline-block}
+@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+
+/* EDIT PANEL */
+.ep{padding:18px;overflow-y:auto;flex:1}
+.upload-area{border:2px dashed var(--border);border-radius:14px;padding:32px;text-align:center;cursor:pointer;transition:all .2s;margin-bottom:14px}
+.upload-area:hover{border-color:var(--cyan);background:rgba(0,212,255,.04)}
+.ua-icon{font-size:36px;margin-bottom:10px}
+.ua-text{font-size:13px;color:var(--dim)}
+.filter-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}
+.fi{padding:8px;border:1px solid var(--border);border-radius:8px;text-align:center;cursor:pointer;transition:all .2s;font-size:11px;color:var(--dim)}
+.fi:hover,.fi.sel{background:rgba(0,212,255,.1);border-color:var(--cyan);color:var(--cyan)}
+.fi span{font-size:16px;display:block;margin-bottom:3px}
+#edit-canvas{max-width:100%;border-radius:12px;display:none;margin-bottom:12px}
+.slider-group{margin-bottom:12px}
+.slider-group label{display:flex;justify-content:space-between;font-size:12px;color:var(--dim);margin-bottom:5px}
+.slider-group label b{color:var(--cyan);font-family:var(--fd)}
+input[type=range]{width:100%;appearance:none;height:5px;border-radius:3px;background:var(--border);outline:none;cursor:pointer}
+input[type=range]::-webkit-slider-thumb{appearance:none;width:16px;height:16px;border-radius:50%;background:linear-gradient(135deg,var(--cyan),var(--purple));cursor:pointer;box-shadow:0 0 8px rgba(0,212,255,.35)}
+
+/* SEARCH PANEL */
+.scp{padding:18px;overflow-y:auto;flex:1}
+.search-bar{display:flex;gap:8px;margin-bottom:20px}
+.search-bar input{flex:1;padding:12px 16px;background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:11px;color:var(--text);font-family:var(--fb);font-size:13px;outline:none;transition:all .2s}
+.search-bar input:focus{border-color:var(--cyan)}
+.search-bar button{padding:12px 20px;border:none;border-radius:11px;background:linear-gradient(135deg,var(--cyan),var(--purple));color:#fff;font-family:var(--fb);font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap}
+.search-tabs{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+.stab{padding:6px 14px;border-radius:20px;border:1px solid var(--border);background:rgba(255,255,255,.04);color:var(--dim);font-size:12px;cursor:pointer;transition:all .2s}
+.stab:hover,.stab.act{background:rgba(0,212,255,.1);border-color:var(--cyan);color:var(--cyan)}
+.sr-card{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:10px;cursor:pointer;transition:all .2s}
+.sr-card:hover{background:rgba(255,255,255,.06);border-color:rgba(0,212,255,.3)}
+.sr-card h4{font-size:13px;font-weight:600;color:var(--cyan);margin-bottom:4px}
+.sr-card p{font-size:12px;color:var(--dim);line-height:1.5}
+.sr-card .src-url{font-size:10px;color:rgba(0,212,255,.5);margin-top:5px}
+
+/* HAIR */
+.hp{padding:18px;overflow-y:auto;flex:1}
+.sc-card{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:14px;padding:17px;margin-bottom:13px}
+.sc-card h3{font-family:var(--fd);font-size:14px;margin-bottom:13px;display:flex;align-items:center;gap:7px}
+.sg2{margin-bottom:16px}
+.sl{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.sl span{font-size:12px;color:var(--dim)}.sv{font-family:var(--fd);font-size:17px;font-weight:700;color:var(--cyan)}
+.symg{display:grid;grid-template-columns:repeat(2,1fr);gap:7px;margin-bottom:14px}
+.sym{padding:7px 10px;background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:7px;font-size:11px;cursor:pointer;transition:all .2s;text-align:center}
+.sym:hover,.sym.sel{background:rgba(0,212,255,.1);border-color:var(--cyan);color:var(--cyan)}
+.hair-res{background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.2);border-radius:11px;padding:15px;display:none;margin-top:12px}
+.hair-res h4{color:var(--green);font-size:13px;font-weight:600;margin-bottom:7px}
+.hair-res p{font-size:12px;line-height:1.75}
+
+/* CAMERA */
+.camp{padding:18px;overflow-y:auto;flex:1}
+.cf{width:100%;aspect-ratio:16/9;background:#000;border-radius:14px;overflow:hidden;border:2px solid var(--border);position:relative;display:flex;align-items:center;justify-content:center;margin-bottom:12px;max-width:560px}
+.cf video{width:100%;height:100%;object-fit:cover}
+.cph{text-align:center;padding:32px}
+.cov{position:absolute;inset:0;pointer-events:none}
+.scanline{position:absolute;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--cyan),transparent);animation:scl 3s linear infinite;opacity:0}
+@keyframes scl{0%{top:0;opacity:0}5%{opacity:1}95%{opacity:1}100%{top:100%;opacity:0}}
+.scanning .scanline{opacity:1}
+.cc{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+.cbtn{padding:9px 20px;background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:9px;color:var(--text);font-family:var(--fb);font-size:13px;cursor:pointer;transition:all .2s}
+.cbtn:hover{background:rgba(255,255,255,.1)}
+.cbtn.pr{background:linear-gradient(135deg,var(--cyan),var(--purple));border:none;color:#fff;font-weight:600}
+.cam-r{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:11px;padding:14px;display:none;margin-top:12px}
+.cam-r h4{font-size:12px;color:var(--cyan);margin-bottom:7px;font-weight:600}
+.cam-r p{font-size:12px;line-height:1.7}
+
+/* TOAST */
+.toast{position:fixed;bottom:22px;right:22px;background:rgba(16,185,129,.92);color:#fff;padding:11px 18px;border-radius:9px;font-size:12px;font-weight:500;z-index:400;transform:translateY(70px);opacity:0;transition:all .3s;max-width:280px}
+.toast.show{transform:translateY(0);opacity:1}
+.toast.err{background:rgba(239,68,68,.92)}
+
+/* CREDITS STRIP */
+.credits{padding:6px 10px;background:rgba(0,212,255,.04);border-top:1px solid var(--border);font-size:10px;color:rgba(0,212,255,.5);text-align:center;flex-shrink:0;letter-spacing:.5px}
+
+@media(max-width:768px){
+  .sb{position:fixed;left:0;top:0;bottom:0;transform:translateX(-100%);z-index:50}
+  .sb.open{transform:translateX(0)}
+  .menubtn{display:flex}
+  .ac{padding:28px 20px}
+  .otp input{width:38px;height:48px;font-size:17px}
+  .style-grid,.filter-grid,.symg{grid-template-columns:repeat(2,1fr)}
+}
+</style>
 </head>
 <body>
-    <div class="glow" style="width:300px;height:300px;background:rgba(230,57,70,0.2);top:5%;left:-10%"></div>
-    <div class="glow" style="width:250px;height:250px;background:rgba(255,107,107,0.15);bottom:5%;right:-8%"></div>
+<div class="orbs"><div class="orb o1"></div><div class="orb o2"></div><div class="orb o3"></div></div>
+<div class="toast" id="toast"></div>
 
-    <div class="app-container">
-        <!-- Header -->
-        <header class="header">
-            <span class="logo">⚡ PC-Precision</span>
-            <nav class="tab-nav" id="desktopTabs">
-                <button class="tab-btn active" data-tab="home">🏠 Home</button>
-                <button class="tab-btn" data-tab="bottleneck">🔗 Bottleneck</button>
-                <button class="tab-btn" data-tab="auto">🖥️ Auto Build</button>
-                <button class="tab-btn" data-tab="custom">🛠️ Custom</button>
-                <button class="tab-btn" data-tab="troubleshoot">🔧 Fix</button>
-                <button class="tab-btn" data-tab="meet">📹 Meet</button>
-                <button class="tab-btn" data-tab="contact">📧 Contact</button>
-            </nav>
-            <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Menu">☰</button>
-        </header>
-        <!-- Mobile tabs dropdown -->
-        <div class="mobile-tabs" id="mobileTabs">
-            <button class="tab-btn active" data-tab="home">🏠 Home</button>
-            <button class="tab-btn" data-tab="bottleneck">🔗 Bottleneck Calculator</button>
-            <button class="tab-btn" data-tab="auto">🖥️ Auto PC Builder</button>
-            <button class="tab-btn" data-tab="custom">🛠️ Custom PC Builder</button>
-            <button class="tab-btn" data-tab="troubleshoot">🔧 Troubleshoot (5000+)</button>
-            <button class="tab-btn" data-tab="meet">📹 Google Meet</button>
-            <button class="tab-btn" data-tab="contact">📧 Contact</button>
+<!-- LOADING -->
+<div class="page" id="loading">
+  <div style="text-align:center">
+    <div class="ld-logo">APEX MIND AI</div>
+    <div class="ld-sub">BUILT BY SATWIK CHANDRA · CEO</div>
+    <div class="ld-bar"><div class="ld-fill"></div></div>
+    <div class="ld-tag">INITIALIZING NEURAL NETWORKS...</div>
+  </div>
+</div>
+
+<!-- LOGIN -->
+<div class="page off" id="loginPage">
+  <div class="ac">
+    <div class="al">
+      <div class="li">🧠</div>
+      <h1>APEX MIND AI</h1>
+      <p>Built by Satwik Chandra · CEO & Founder</p>
+    </div>
+    <h2 class="at">Welcome Back</h2>
+    <p class="as">Sign in to your intelligence workspace</p>
+    <div class="aerr" id="loginErr"></div>
+    <div class="fg"><label>Email</label><input type="email" id="lEmail" placeholder="you@example.com"/></div>
+    <div class="fg"><label>Password</label><input type="password" id="lPass" placeholder="Your password" onkeydown="if(event.key==='Enter')handleLogin()"/></div>
+    <button class="bp" onclick="handleLogin()">Sign In →</button>
+    <div class="div"><span></span><p>or continue with</p><span></span></div>
+    <button class="bs" onclick="openGoogle()">
+      <svg viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+      Continue with Google
+    </button>
+    <button class="bs" onclick="showP('phonePage')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.36 9.67 19.79 19.79 0 01.25 1.07 2 2 0 012.23 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 7.91a16 16 0 006.72 6.72l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+      Continue with Phone
+    </button>
+    <div class="aswitch">No account? <a onclick="showP('signupPage')">Create one free</a></div>
+  </div>
+</div>
+
+<!-- SIGNUP -->
+<div class="page off" id="signupPage">
+  <div class="ac">
+    <div class="al"><div class="li">🧠</div><h1>APEX MIND AI</h1><p>Join the Next-Gen Intelligence Platform</p></div>
+    <h2 class="at">Create Account</h2><p class="as">Start your free AI workspace today</p>
+    <div class="aerr" id="suErr"></div><div class="asuc" id="suSuc"></div>
+    <div class="fg"><label>Full Name</label><input type="text" id="suName" placeholder="Satwik Chandra"/></div>
+    <div class="fg"><label>Email</label><input type="email" id="suEmail" placeholder="you@example.com"/></div>
+    <div class="fg"><label>Password</label><input type="password" id="suPass" placeholder="Min 6 characters"/></div>
+    <div class="fg"><label>Confirm Password</label><input type="password" id="suConf" placeholder="Repeat password"/></div>
+    <button class="bp" onclick="handleSignup()">Create Account →</button>
+    <div class="div"><span></span><p>or</p><span></span></div>
+    <button class="bs" onclick="openGoogle()">
+      <svg viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+      Sign up with Google
+    </button>
+    <div class="aswitch">Have an account? <a onclick="showP('loginPage')">Sign in</a></div>
+  </div>
+</div>
+
+<!-- PHONE -->
+<div class="page off" id="phonePage">
+  <div class="ac">
+    <div class="al"><div class="li">📱</div><h1>APEX MIND AI</h1><p>Phone Verification</p></div>
+    <div id="ph1">
+      <h2 class="at">Enter Phone Number</h2><p class="as">We'll send a 6-digit OTP</p>
+      <div class="aerr" id="phErr"></div>
+      <div class="fg"><label>Phone Number</label>
+        <div class="pfx">
+          <select id="phCode"><option>🇮🇳 +91</option><option>🇺🇸 +1</option><option>🇬🇧 +44</option><option>🇦🇺 +61</option><option>🇦🇪 +971</option><option>🇸🇬 +65</option></select>
+          <input type="tel" id="phNum" placeholder="10-digit number"/>
         </div>
+      </div>
+      <div class="fg"><label>Your Name</label><input type="text" id="phName" placeholder="Full name"/></div>
+      <button class="bp" onclick="sendOTP()">Send OTP →</button>
+    </div>
+    <div id="ph2" style="display:none">
+      <h2 class="at">Verify OTP</h2><p class="as">Code sent to <span id="phDisp" style="color:var(--cyan)"></span></p>
+      <div class="aerr" id="otpErr"></div>
+      <div class="otp" id="otpInputs">
+        <input type="text" maxlength="1" oninput="oi(this,0)" onkeydown="ok(event,0)"/>
+        <input type="text" maxlength="1" oninput="oi(this,1)" onkeydown="ok(event,1)"/>
+        <input type="text" maxlength="1" oninput="oi(this,2)" onkeydown="ok(event,2)"/>
+        <input type="text" maxlength="1" oninput="oi(this,3)" onkeydown="ok(event,3)"/>
+        <input type="text" maxlength="1" oninput="oi(this,4)" onkeydown="ok(event,4)"/>
+        <input type="text" maxlength="1" oninput="oi(this,5)" onkeydown="ok(event,5)"/>
+      </div>
+      <div style="text-align:center;font-size:11px;color:var(--dim);margin-bottom:14px">Demo OTP: <b style="color:var(--cyan)" id="demoOtp"></b></div>
+      <button class="bp" onclick="verifyOTP()">Verify & Sign In →</button>
+      <div class="aswitch" style="margin-top:14px"><a onclick="resendOTP()">Resend Code</a></div>
+    </div>
+    <div class="aswitch" style="margin-top:20px"><a onclick="showP('loginPage')">← Back</a></div>
+  </div>
+</div>
 
-        <!-- Main Content -->
-        <main class="main-content" id="mainContent">
-            <!-- Home Tab -->
-            <section class="tab-panel active" id="tab-home">
-                <div style="text-align:center;padding:20px 0">
-                    <span class="badge badge-red" style="font-size:11px;padding:6px 14px;margin-bottom:14px;display:inline-block">🚀 INDIA'S #1 PC BUILD PLATFORM</span>
-                    <h2 style="font-size:clamp(24px,5vw,44px);line-height:1.1"><span class="grad-text">Build Smarter.</span><br>Zero Bottlenecks.</h2>
-                    <p style="color:var(--muted);max-width:500px;margin:12px auto 24px;font-size:14px">Advanced bottleneck calculator • Auto & Custom PC builder • 5000+ instant fixes • Expert Google Meet support</p>
-                    <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
-                        <button class="btn btn-primary" onclick="switchTab('bottleneck')">🔗 Check Bottleneck</button>
-                        <button class="btn btn-outline" onclick="switchTab('auto')">🖥️ Auto Build</button>
-                        <button class="btn btn-outline" onclick="switchTab('custom')">🛠️ Custom Build</button>
-                        <button class="btn btn-outline" onclick="switchTab('meet')" style="border-color:rgba(230,57,70,0.4);color:#ff6b6b">📹 15-Min Meet</button>
-                    </div>
-                    <div style="display:flex;gap:24px;justify-content:center;margin-top:28px;flex-wrap:wrap;font-size:12px;color:var(--muted)">
-                        <div><strong style="color:#e63946;font-size:20px">10+</strong><br>Years Exp</div>
-                        <div><strong style="color:#ff6b6b;font-size:20px">5000+</strong><br>Issues Solved</div>
-                        <div><strong style="color:#ff6b6b;font-size:20px">₹20K–5L</strong><br>Budget Range</div>
-                        <div><strong style="color:#e63946;font-size:20px">24hr</strong><br>Response</div>
-                    </div>
-                </div>
-            </section>
+<!-- GOOGLE MODAL -->
+<div class="moverlay" id="gModal">
+  <div class="modal">
+    <div class="mh">
+      <svg width="28" height="28" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+      <h3>Sign in with Google</h3>
+    </div>
+    <p style="font-size:12px;color:#666;margin-bottom:14px">Choose an account for Apex Mind AI</p>
+    <div id="gAccounts"></div>
+    <div class="gadd" onclick="addGoogle()"><span style="font-size:18px">＋</span> Use another account</div>
+    <div class="mfooter"><button class="mbtn c" onclick="closeGoogle()">Cancel</button></div>
+  </div>
+</div>
 
-            <!-- Bottleneck Tab -->
-            <section class="tab-panel" id="tab-bottleneck">
-                <div style="text-align:center;margin-bottom:24px">
-                    <span class="badge badge-red">🔗 STANDALONE TOOL</span>
-                    <h2 class="grad-text" style="margin-top:6px">Bottleneck Calculator</h2>
-                    <p style="color:var(--muted);font-size:13px">Select any CPU & GPU — oldest to newest. Instant bottleneck percentage.</p>
-                </div>
-                <div class="panel" style="max-width:650px;margin:0 auto">
-                    <div style="display:grid;grid-template-columns:1fr;gap:12px;margin-bottom:14px">
-                        <div><label>🧠 Processor (CPU)</label><select id="cpuSelect"><option value="">-- Select CPU --</option></select></div>
-                        <div><label>🎮 Graphics Card (GPU)</label><select id="gpuSelect"><option value="">-- Select GPU --</option></select></div>
-                    </div>
-                    <button onclick="calcBottleneck()" class="btn btn-primary" style="width:100%;justify-content:center">⚡ Calculate Bottleneck</button>
-                    <div id="bottleneckResult" style="text-align:center;padding:16px;border-radius:10px;background:var(--surface2);border:1px solid var(--border);margin-top:14px;display:none">
-                        <div id="bottleneckIcon" style="font-size:36px;margin-bottom:6px"></div>
-                        <div id="bottleneckText" style="font-weight:700;font-size:17px"></div>
-                        <div id="bottleneckDetail" style="color:var(--muted);font-size:12px;margin-top:4px"></div>
-                    </div>
-                </div>
-            </section>
+<!-- ============ MAIN APP ============ -->
+<div class="page off" id="appPage">
+  <div class="sbov" id="sbov" onclick="toggleSB()"></div>
+  <!-- SIDEBAR -->
+  <div class="sb" id="sb">
+    <div class="sblogo">
+      <div class="lr"><div class="li">🧠</div><div><h2>APEX MIND</h2><span>AI v2.0 · BY SATWIK CHANDRA</span></div></div>
+    </div>
+    <div class="netst">
+      <div class="ndot"></div>
+      <div><div style="font-weight:600;font-size:11px">Live Network</div><div style="opacity:.7;font-size:9px">Google Index · Connected</div></div>
+    </div>
+    <div class="sbsec">
+      <div class="sbsl">AI Modes</div>
+      <div class="ni act" onclick="sw('chat')" id="nChat"><div class="ic">💬</div><span>AI Chat</span><span class="nbadge">PRO</span></div>
+      <div class="ni" onclick="sw('igen')" id="nIgen"><div class="ic">🎨</div><span>Image Generator</span></div>
+      <div class="ni" onclick="sw('iedit')" id="nIedit"><div class="ic">✏️</div><span>Image Editor</span></div>
+      <div class="ni" onclick="sw('search')" id="nSearch"><div class="ic">🔍</div><span>Web Search</span></div>
+      <div class="ni" onclick="sw('math')" id="nMath"><div class="ic">🔢</div><span>Math & GK</span></div>
+      <div class="ni" onclick="sw('hair')" id="nHair"><div class="ic">💆</div><span>Hair Diagnostics</span></div>
+      <div class="ni" onclick="sw('cam')" id="nCam"><div class="ic">📷</div><span>Visual Scanner</span></div>
+    </div>
+    <div class="sbbot">
+      <div class="ur">
+        <div class="uav" id="sbAv">?</div>
+        <div class="ui"><div class="un" id="sbName">User</div><div class="upl">Apex Pro Member</div></div>
+        <button class="lob" onclick="logout()" title="Sign Out">⎋</button>
+      </div>
+    </div>
+  </div>
 
-            <!-- Auto Build Tab -->
-            <section class="tab-panel" id="tab-auto">
-                <div style="text-align:center;margin-bottom:24px">
-                    <span class="badge badge-medium" style="background:rgba(230,57,70,0.12);color:#ff6b6b;border-color:rgba(230,57,70,0.3)">🖥️ SMART BUILDER</span>
-                    <h2 class="grad-text" style="margin-top:6px">Auto PC Builder</h2>
-                    <p style="color:var(--muted);font-size:13px">Choose budget → Get best-performing parts instantly.</p>
-                </div>
-                <div style="max-width:650px;margin:0 auto">
-                    <div class="panel">
-                        <label style="font-size:14px;margin-bottom:10px">💰 Your Budget (INR)</label>
-                        <select id="budgetSelect" onchange="autoBuild()" style="font-size:14px;padding:13px">
-                            <option value="">-- Choose Budget --</option>
-                            <option value="25k">₹25,000 — Entry</option>
-                            <option value="40k">₹40,000 — Budget Gaming</option>
-                            <option value="60k">₹60,000 — Mid-Range</option>
-                            <option value="85k">₹85,000 — Enthusiast</option>
-                            <option value="120k">₹1,20,000 — High-End</option>
-                            <option value="180k">₹1,80,000 — Premium</option>
-                            <option value="250k">₹2,50,000+ — Ultimate</option>
-                        </select>
-                    </div>
-                    <div id="buildResult" class="panel" style="display:none">
-                        <h3 style="color:#ff6b6b;margin-bottom:12px">🔧 Recommended Build</h3>
-                        <div id="buildParts" style="display:grid;gap:6px"></div>
-                        <div id="buildTotal" style="font-weight:700;font-size:15px;margin-top:12px;padding-top:12px;border-top:1px solid var(--border);color:#e63946"></div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Custom Build Tab -->
-            <section class="tab-panel" id="tab-custom">
-                <div style="text-align:center;margin-bottom:24px">
-                    <span class="badge badge-red">🛠️ INTERACTIVE BUILDER</span>
-                    <h2 class="grad-text" style="margin-top:6px">Custom PC Builder</h2>
-                    <p style="color:var(--muted);font-size:13px">Pick every part yourself — real-time bottleneck check.</p>
-                </div>
-                <div class="panel" style="max-width:850px;margin:0 auto">
-                    <div id="customSummary" style="text-align:center;padding:12px;border-radius:8px;background:var(--surface2);border:1px solid var(--border);margin-bottom:14px;font-size:13px;color:var(--muted)">
-                        🛒 <strong style="color:#e0e0e0">Total: <span id="customTotal" style="color:#ff6b6b">₹0</span></strong> &nbsp;|&nbsp;
-                        🔗 <span id="customBottleneck">Select CPU + GPU to check</span>
-                    </div>
-                    <div id="customCategories" style="display:grid;gap:6px"></div>
-                    <button onclick="resetCustomBuild()" class="btn btn-outline btn-sm" style="margin-top:10px">🔄 Reset All</button>
-                    <p style="font-size:10px;color:var(--muted);margin-top:6px;text-align:center">✅ Bottleneck auto-checks when CPU & GPU selected</p>
-                </div>
-            </section>
-
-            <!-- Troubleshoot Tab -->
-            <section class="tab-panel" id="tab-troubleshoot">
-                <div style="text-align:center;margin-bottom:20px">
-                    <span class="badge badge-medium" style="background:rgba(230,57,70,0.12);color:#ff6b6b;border-color:rgba(230,57,70,0.3)">🔧 5000+ SOLUTIONS</span>
-                    <h2 class="grad-text" style="margin-top:6px">Self-Troubleshoot Instantly</h2>
-                    <p style="color:var(--muted);font-size:13px">Search your problem. Still stuck? Book a Google Meet.</p>
-                </div>
-                <div style="max-width:700px;margin:0 auto 16px;position:relative">
-                    <span style="position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:18px">🔍</span>
-                    <input type="text" id="tsSearch" placeholder="Search 5000+ issues... e.g. 'blue screen', 'FPS drops'" style="padding-left:38px;font-size:14px;border-radius:99px">
-                </div>
-                <div class="horiz-scroll" id="catFilters" style="justify-content:center;margin-bottom:14px"></div>
-                <p style="text-align:center;color:var(--muted);font-size:12px;margin-bottom:14px;min-height:18px" id="tsCount"></p>
-                <div id="issuesGrid" style="display:grid;grid-template-columns:1fr;gap:8px;max-width:800px;margin:0 auto"></div>
-                <div id="tsNoResults" style="text-align:center;padding:30px;color:#555;font-size:14px;display:none">😕 No results. <button onclick="document.getElementById('tsSearch').value='';filterTS()" class="btn btn-outline btn-sm" style="margin:8px auto;display:inline-flex">Clear</button></div>
-            </section>
-
-            <!-- Meet Tab -->
-            <section class="tab-panel" id="tab-meet" style="text-align:center">
-                <div style="margin-bottom:20px">
-                    <span class="badge badge-red">📹 INSTANT CONNECT</span>
-                    <h2 class="grad-text" style="margin-top:6px">Book a Google Meet — 15 Minutes</h2>
-                    <p style="color:var(--muted);font-size:13px;max-width:400px;margin:0 auto">Speak directly with our PC experts. First consultation <strong style="color:#ff6b6b">FREE</strong>. Complex issues may be chargeable.</p>
-                </div>
-                <div class="panel" style="max-width:450px;margin:0 auto;display:inline-block;width:100%">
-                    <p style="font-weight:700;font-size:15px">📧 pcprecision.official@gmail.com</p>
-                    <p style="color:var(--muted);font-size:12px;margin:8px 0 16px">Email us your preferred time. We'll send a Google Meet link within <strong style="color:#ff6b6b">2 hours</strong>.</p>
-                    <a href="mailto:pcprecision.official@gmail.com?subject=Google%20Meet%20Request&body=Hi%20PC-Precision%20Team,%0A%0AI'd%20like%20to%20book%20a%2015-minute%20Google%20Meet.%0A%0AMy%20preferred%20time:%20[mention%20date%20&%20time]%0A%0AIssue/Build%20details:%20[describe%20briefly]%0A%0AThanks!" class="btn btn-primary" style="width:100%;justify-content:center">📹 Request Google Meet Now</a>
-                    <p style="color:var(--muted);font-size:10px;margin-top:10px">🆓 Initial 15-min FREE • Complex diagnosis may be chargeable</p>
-                </div>
-            </section>
-
-            <!-- Contact Tab -->
-            <section class="tab-panel" id="tab-contact">
-                <div style="text-align:center;margin-bottom:20px">
-                    <h2 class="grad-text">Get In Touch</h2>
-                    <p style="color:var(--muted);font-size:13px">Directly to <strong>pcprecision.official@gmail.com</strong></p>
-                </div>
-                <form id="contactForm" class="panel" style="max-width:500px;margin:0 auto">
-                    <div style="margin-bottom:10px"><label>Full Name</label><input type="text" id="inputName" required placeholder="John Doe"></div>
-                    <div style="margin-bottom:10px"><label>Email</label><input type="email" id="inputEmail" required placeholder="john@example.com"></div>
-                    <div style="margin-bottom:10px"><label>Budget</label><select id="inputBudget"><option value="">Select</option><option>₹25K – Entry</option><option>₹50K – Mid</option><option>₹1L – High</option><option>₹1.5L+ – Enthusiast</option><option>Custom</option></select></div>
-                    <div style="margin-bottom:10px"><label>Service Needed</label><select id="inputService"><option>🔧 Troubleshooting</option><option>🖥️ Build Guidance</option><option>⚠️ Error Fix</option><option>🎮 FPS Optimization</option></select></div>
-                    <div style="margin-bottom:12px"><label>Details</label><textarea id="inputDetail" rows="3" placeholder="Describe your issue..."></textarea></div>
-                    <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center">🚀 Send to Team</button>
-                </form>
-            </section>
-        </main>
+  <!-- MAIN CONTENT -->
+  <div class="mc">
+    <div class="tb">
+      <button class="menubtn" onclick="toggleSB()">☰</button>
+      <div class="tbtitle" id="tbTitle">💬 AI Chat</div>
+      <div class="tbbadge" id="tbBadge">General Mode</div>
     </div>
 
-    <!-- Toast -->
-    <div id="toast"><span>✅</span><span id="toastMsg"></span></div>
+    <!-- CHAT PANEL -->
+    <div class="panel act" id="pChat" style="flex-direction:column">
+      <div class="ca" id="chatArea">
+        <div class="cwelcome" id="chatWelcome">
+          <div class="wi">🧠</div>
+          <h3>Hello, <span id="wName">there</span>!</h3>
+          <p>I'm Apex Mind AI — built by <b style="color:var(--cyan)">Satwik Chandra</b>. Ask me anything — chat, code, math, creative writing, and more.</p>
+          <div class="chips">
+            <div class="chip" onclick="qs('What is quantum computing?')">Quantum Computing</div>
+            <div class="chip" onclick="qs('Solve: 2x²+5x-3=0')">Algebra</div>
+            <div class="chip" onclick="qs('Write a Python binary search')">Code</div>
+            <div class="chip" onclick="qs('Who is Elon Musk?')">General Knowledge</div>
+            <div class="chip" onclick="qs('Explain black holes simply')">Science</div>
+            <div class="chip" onclick="qs('Write a motivational quote')">Creative</div>
+          </div>
+        </div>
+      </div>
+      <div class="ia">
+        <div class="itb">
+          <button class="tbtn act" id="tm-gen" onclick="setCM('general','💬 General')">💬 General</button>
+          <button class="tbtn" id="tm-math" onclick="setCM('math','🔢 Math')">🔢 Math</button>
+          <button class="tbtn" id="tm-gk" onclick="setCM('gk','🌍 GK')">🌍 GK</button>
+          <button class="tbtn" id="tm-code" onclick="setCM('code','💻 Code')">💻 Code</button>
+          <button class="tbtn" id="tm-creative" onclick="setCM('creative','✨ Creative')">✨ Creative</button>
+        </div>
+        <div class="ir">
+          <textarea class="ib" id="chatInput" placeholder="Ask Apex Mind AI anything..." rows="1" onkeydown="handleKey(event)" oninput="ar(this)"></textarea>
+          <button class="snd" id="sendBtn" onclick="sendMsg()">➤</button>
+        </div>
+      </div>
+    </div>
 
-    <script>
-        // ═══════════════ TAB SWITCHING ═══════════════
-        const allTabBtns = document.querySelectorAll('.tab-btn');
-        const allPanels = document.querySelectorAll('.tab-panel');
-        const mobileTabsDiv = document.getElementById('mobileTabs');
-        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-
-        function switchTab(tabId) {
-            // Update buttons
-            allTabBtns.forEach(b => b.classList.remove('active'));
-            document.querySelectorAll(`.tab-btn[data-tab="${tabId}"]`).forEach(b => b.classList.add('active'));
-            // Update panels
-            allPanels.forEach(p => p.classList.remove('active'));
-            const targetPanel = document.getElementById('tab-' + tabId);
-            if (targetPanel) targetPanel.classList.add('active');
-            // Close mobile menu if open
-            mobileTabsDiv.classList.remove('open');
-            // Scroll to top of content
-            document.getElementById('mainContent').scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
-
-        allTabBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                const tab = btn.dataset.tab;
-                if (tab) switchTab(tab);
-            });
-        });
-
-        mobileMenuBtn.addEventListener('click', () => {
-            mobileTabsDiv.classList.toggle('open');
-        });
-
-        // Close mobile tabs when clicking outside (optional)
-        document.addEventListener('click', (e) => {
-            if (!e.target.closest('#mobileTabs') && !e.target.closest('#mobileMenuBtn')) {
-                mobileTabsDiv.classList.remove('open');
-            }
-        });
-
-        // ═══════════════ TOAST ═══════════════
-        function showToast(msg, err = false) {
-            const t = document.getElementById('toast');
-            document.getElementById('toastMsg').textContent = msg;
-            t.style.background = err ? '#2d0a0a' : '#1a0a0a';
-            t.style.borderColor = err ? '#ff4444' : '#e63946';
-            t.classList.add('show');
-            setTimeout(() => t.classList.remove('show'), 3500);
-        }
-
-        // ═══════════════ CONTACT FORM ═══════════════
-        document.getElementById('contactForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const name = document.getElementById('inputName').value.trim();
-            const email = document.getElementById('inputEmail').value.trim();
-            const budget = document.getElementById('inputBudget').value;
-            const service = document.getElementById('inputService').value;
-            const detail = document.getElementById('inputDetail').value.trim();
-            const body =
-                `Name: ${name}\nEmail: ${email}\nBudget: ${budget||'N/A'}\nService: ${service}\n\nDetails:\n${detail||'N/A'}`;
-            window.location.href =
-                `mailto:pcprecision.official@gmail.com?subject=${encodeURIComponent(service+' – '+name)}&body=${encodeURIComponent(body)}`;
-            showToast('✅ Email client opened!');
-            this.reset();
-        });
-
-        // ═══════════════ BOTTLENECK DATA ═══════════════
-        const cpuScores = {
-            'Intel Celeron G5900': 18,
-            'Intel Pentium G6400': 22,
-            'Intel Core i3-2100': 16,
-            'Intel Core i3-3220': 19,
-            'Intel Core i3-4130': 22,
-            'Intel Core i3-6100': 28,
-            'Intel Core i3-7100': 30,
-            'Intel Core i3-8100': 35,
-            'Intel Core i3-9100': 38,
-            'Intel Core i3-10100': 45,
-            'Intel Core i3-12100': 55,
-            'Intel Core i3-13100': 58,
-            'Intel Core i3-14100': 60,
-            'Intel Core i5-2400': 22,
-            'Intel Core i5-3470': 26,
-            'Intel Core i5-4570': 30,
-            'Intel Core i5-6600K': 35,
-            'Intel Core i5-7600K': 38,
-            'Intel Core i5-8600K': 48,
-            'Intel Core i5-9600K': 52,
-            'Intel Core i5-10400': 55,
-            'Intel Core i5-11400': 58,
-            'Intel Core i5-12400': 68,
-            'Intel Core i5-13400': 72,
-            'Intel Core i5-13600K': 85,
-            'Intel Core i5-14600K': 88,
-            'Intel Core i7-2600K': 28,
-            'Intel Core i7-3770K': 32,
-            'Intel Core i7-4770K': 36,
-            'Intel Core i7-6700K': 42,
-            'Intel Core i7-7700K': 46,
-            'Intel Core i7-8700K': 55,
-            'Intel Core i7-9700K': 60,
-            'Intel Core i7-10700K': 65,
-            'Intel Core i7-11700K': 68,
-            'Intel Core i7-12700K': 82,
-            'Intel Core i7-13700K': 90,
-            'Intel Core i7-14700K': 93,
-            'Intel Core i9-9900K': 65,
-            'Intel Core i9-10900K': 72,
-            'Intel Core i9-11900K': 75,
-            'Intel Core i9-12900K': 88,
-            'Intel Core i9-13900K': 96,
-            'Intel Core i9-14900K': 100,
-            'AMD Athlon 3000G': 16,
-            'AMD Ryzen 3 1200': 20,
-            'AMD Ryzen 3 2200G': 22,
-            'AMD Ryzen 3 3100': 32,
-            'AMD Ryzen 3 3200G': 28,
-            'AMD Ryzen 3 4100': 34,
-            'AMD Ryzen 3 5300G': 38,
-            'AMD Ryzen 5 1600': 28,
-            'AMD Ryzen 5 2600': 35,
-            'AMD Ryzen 5 3600': 48,
-            'AMD Ryzen 5 4500': 44,
-            'AMD Ryzen 5 5500': 55,
-            'AMD Ryzen 5 5600': 62,
-            'AMD Ryzen 5 5600X': 65,
-            'AMD Ryzen 5 7600': 72,
-            'AMD Ryzen 5 7600X': 76,
-            'AMD Ryzen 5 9600X': 80,
-            'AMD Ryzen 7 1700': 34,
-            'AMD Ryzen 7 2700': 40,
-            'AMD Ryzen 7 3700X': 55,
-            'AMD Ryzen 7 5700X': 68,
-            'AMD Ryzen 7 5800X': 75,
-            'AMD Ryzen 7 5800X3D': 82,
-            'AMD Ryzen 7 7700X': 84,
-            'AMD Ryzen 7 7800X3D': 92,
-            'AMD Ryzen 7 9800X3D': 96,
-            'AMD Ryzen 9 3900X': 62,
-            'AMD Ryzen 9 5900X': 80,
-            'AMD Ryzen 9 5950X': 88,
-            'AMD Ryzen 9 7900X': 90,
-            'AMD Ryzen 9 7950X': 97,
-            'AMD Ryzen 9 7950X3D': 100,
-        };
-        const gpuScores = {
-            'NVIDIA GT 710': 2,
-            'NVIDIA GT 1030': 5,
-            'NVIDIA GTX 750 Ti': 8,
-            'NVIDIA GTX 960': 12,
-            'NVIDIA GTX 1050': 10,
-            'NVIDIA GTX 1050 Ti': 13,
-            'NVIDIA GTX 1060 6GB': 18,
-            'NVIDIA GTX 1070': 24,
-            'NVIDIA GTX 1080': 30,
-            'NVIDIA GTX 1080 Ti': 36,
-            'NVIDIA GTX 1650': 15,
-            'NVIDIA GTX 1660': 20,
-            'NVIDIA GTX 1660 Super': 22,
-            'NVIDIA RTX 2060': 26,
-            'NVIDIA RTX 2060 Super': 28,
-            'NVIDIA RTX 2070': 30,
-            'NVIDIA RTX 2070 Super': 33,
-            'NVIDIA RTX 2080': 36,
-            'NVIDIA RTX 2080 Ti': 42,
-            'NVIDIA RTX 3050': 22,
-            'NVIDIA RTX 3060': 30,
-            'NVIDIA RTX 3060 Ti': 35,
-            'NVIDIA RTX 3070': 42,
-            'NVIDIA RTX 3070 Ti': 46,
-            'NVIDIA RTX 3080': 52,
-            'NVIDIA RTX 3080 Ti': 58,
-            'NVIDIA RTX 3090': 64,
-            'NVIDIA RTX 3090 Ti': 68,
-            'NVIDIA RTX 4060': 32,
-            'NVIDIA RTX 4060 Ti': 38,
-            'NVIDIA RTX 4070': 48,
-            'NVIDIA RTX 4070 Super': 52,
-            'NVIDIA RTX 4070 Ti': 56,
-            'NVIDIA RTX 4070 Ti Super': 60,
-            'NVIDIA RTX 4080': 66,
-            'NVIDIA RTX 4080 Super': 70,
-            'NVIDIA RTX 4090': 88,
-            'NVIDIA RTX 5090': 100,
-            'AMD Radeon HD 7750': 4,
-            'AMD Radeon R7 370': 8,
-            'AMD RX 550': 5,
-            'AMD RX 560': 8,
-            'AMD RX 570': 14,
-            'AMD RX 580': 17,
-            'AMD RX 590': 19,
-            'AMD RX 5500 XT': 16,
-            'AMD RX 5600 XT': 22,
-            'AMD RX 5700': 25,
-            'AMD RX 5700 XT': 28,
-            'AMD RX 6400': 10,
-            'AMD RX 6500 XT': 14,
-            'AMD RX 6600': 26,
-            'AMD RX 6600 XT': 29,
-            'AMD RX 6650 XT': 31,
-            'AMD RX 6700 XT': 34,
-            'AMD RX 6750 XT': 37,
-            'AMD RX 6800': 42,
-            'AMD RX 6800 XT': 48,
-            'AMD RX 6900 XT': 55,
-            'AMD RX 6950 XT': 58,
-            'AMD RX 7600': 30,
-            'AMD RX 7600 XT': 34,
-            'AMD RX 7700 XT': 44,
-            'AMD RX 7800 XT': 52,
-            'AMD RX 7900 GRE': 56,
-            'AMD RX 7900 XT': 62,
-            'AMD RX 7900 XTX': 72,
-            'AMD RX 9070 XT': 76,
-        };
-
-        function populateSelects() {
-            const cpuSel = document.getElementById('cpuSelect');
-            const gpuSel = document.getElementById('gpuSelect');
-            Object.keys(cpuScores).sort().forEach(c => { const o = document.createElement('option');
-                o.value = c;
-                o.textContent = c;
-                cpuSel.appendChild(o) });
-            Object.keys(gpuScores).sort().forEach(g => { const o = document.createElement('option');
-                o.value = g;
-                o.textContent = g;
-                gpuSel.appendChild(o) });
-        }
-        populateSelects();
-
-        function calcBottleneck() {
-            const cpu = document.getElementById('cpuSelect').value;
-            const gpu = document.getElementById('gpuSelect').value;
-            const resDiv = document.getElementById('bottleneckResult');
-            if (!cpu || !gpu) { resDiv.style.display = 'block';
-                document.getElementById('bottleneckIcon').textContent = '⚠️';
-                document.getElementById('bottleneckText').textContent = 'Select both CPU and GPU';
-                document.getElementById('bottleneckDetail').textContent = '';
-                return; }
-            const cs = cpuScores[cpu] || 50;
-            const gs = gpuScores[gpu] || 50;
-            const ratio = cs / gs;
-            let pct, icon, detail;
-            if (ratio >= 1.3) { pct = Math.round((1 - 1 / ratio) * 100);
-                icon = '🟡';
-                detail = `GPU may hold back CPU. Consider stronger GPU.` } else if (ratio <= 0.7) { pct = Math.round((1 -
-                    ratio) * 100);
-                icon = '🔴';
-                detail = `CPU may bottleneck GPU. Consider CPU upgrade.` } else { pct = Math.round(Math.abs(1 - ratio) *
-                    100);
-                icon = '🟢';
-                detail = 'Great balance! Minimal bottleneck.'; }
-            pct = Math.min(pct, 99);
-            resDiv.style.display = 'block';
-            document.getElementById('bottleneckIcon').textContent = icon;
-            document.getElementById('bottleneckText').textContent = `${pct}% estimated bottleneck`;
-            document.getElementById('bottleneckDetail').textContent = detail;
-        }
-
-        // ═══════════════ AUTO BUILD ═══════════════
-        const builds = {
-            '25k': { parts: [
-                    ['CPU', 'AMD Ryzen 5 5600G (iGPU)'],
-                    ['Motherboard', 'MSI B450M-A Pro Max'],
-                    ['RAM', '16GB DDR4 3200MHz'],
-                    ['Storage', '512GB NVMe SSD'],
-                    ['PSU', '450W 80+ Bronze'],
-                    ['Case', 'Ant Esports ICE-130AG'],
-                    ['GPU', 'Integrated Vega (free)']
-                ], total: '~₹24,500', note: 'Office + light gaming' },
-            '40k': { parts: [
-                    ['CPU', 'Intel Core i3-12100F'],
-                    ['GPU', 'AMD RX 6500 XT'],
-                    ['Motherboard', 'Gigabyte H610M-S2'],
-                    ['RAM', '16GB DDR4 3200MHz'],
-                    ['Storage', '512GB NVMe SSD'],
-                    ['PSU', '550W 80+ Bronze'],
-                    ['Case', 'Ant Esports ICE-200TG']
-                ], total: '~₹39,500', note: '1080p Medium gaming' },
-            '60k': { parts: [
-                    ['CPU', 'AMD Ryzen 5 5600'],
-                    ['GPU', 'NVIDIA RTX 3060 / RX 6600'],
-                    ['Motherboard', 'MSI B550M Pro-VDH'],
-                    ['RAM', '16GB DDR4 3600MHz'],
-                    ['Storage', '1TB NVMe SSD'],
-                    ['PSU', '650W 80+ Gold'],
-                    ['Case', 'DeepCool Matrexx 40']
-                ], total: '~₹59,000', note: '1080p High/Ultra AAA' },
-            '85k': { parts: [
-                    ['CPU', 'Intel Core i5-13400F'],
-                    ['GPU', 'NVIDIA RTX 4060 Ti / RX 7700 XT'],
-                    ['Motherboard', 'MSI B760M-A Pro'],
-                    ['RAM', '32GB DDR5 5600MHz'],
-                    ['Storage', '1TB NVMe Gen4'],
-                    ['PSU', '750W 80+ Gold'],
-                    ['Case', 'Lian Li Lancool 205']
-                ], total: '~₹84,000', note: '1440p gaming + streaming' },
-            '120k': { parts: [
-                    ['CPU', 'AMD Ryzen 7 7800X3D'],
-                    ['GPU', 'NVIDIA RTX 4070 Super'],
-                    ['Motherboard', 'Gigabyte B650 Aorus Elite'],
-                    ['RAM', '32GB DDR5 6000MHz CL30'],
-                    ['Storage', '2TB NVMe Gen4'],
-                    ['PSU', '850W 80+ Gold'],
-                    ['Case', 'NZXT H5 Flow']
-                ], total: '~₹1,18,000', note: '1440p Ultra / 4K Medium' },
-            '180k': { parts: [
-                    ['CPU', 'AMD Ryzen 7 9800X3D'],
-                    ['GPU', 'NVIDIA RTX 4080 Super'],
-                    ['Motherboard', 'MSI MAG X670E'],
-                    ['RAM', '32GB DDR5 6400MHz CL32'],
-                    ['Storage', '2TB NVMe Gen4 + 4TB HDD'],
-                    ['PSU', '1000W 80+ Gold'],
-                    ['Case', 'Fractal North']
-                ], total: '~₹1,78,000', note: '4K Ultra gaming' },
-            '250k': { parts: [
-                    ['CPU', 'AMD Ryzen 9 7950X3D'],
-                    ['GPU', 'NVIDIA RTX 4090'],
-                    ['Motherboard', 'ASUS ROG X670E Hero'],
-                    ['RAM', '64GB DDR5 6400MHz CL30'],
-                    ['Storage', '4TB NVMe Gen5 + 8TB HDD'],
-                    ['PSU', '1200W 80+ Platinum'],
-                    ['Case', 'Lian Li O11 Dynamic Evo XL']
-                ], total: '~₹2,45,000', note: 'Ultimate 4K + AI/ML' },
-        };
-
-        function autoBuild() {
-            const key = document.getElementById('budgetSelect').value;
-            const res = document.getElementById('buildResult');
-            const parts = document.getElementById('buildParts');
-            const total = document.getElementById('buildTotal');
-            if (!key || !builds[key]) { res.style.display = 'none'; return; }
-            const b = builds[key];
-            parts.innerHTML = b.parts.map(p =>
-                `<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);font-size:13px"><span style="font-weight:600">${p[0]}</span><span style="text-align:right">${p[1]}</span></div>`
-                ).join('');
-            total.innerHTML = `💰 Estimated: <span style="color:#ff6b6b">${b.total}</span><br><span style="font-size:11px;color:var(--muted)">📌 ${b.note}</span>`;
-            res.style.display = 'block';
-            res.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }
-
-        // ═══════════════ CUSTOM BUILDER ═══════════════
-        const customComponents = {
-            '🧠 CPU': [
-                { name: 'Intel Core i3-12100', price: 8500, icon: '🔷', score: 55 },
-                { name: 'Intel Core i5-12400', price: 14500, icon: '🔵', score: 68 },
-                { name: 'Intel Core i5-13400', price: 16500, icon: '🔵', score: 72 },
-                { name: 'Intel Core i7-12700K', price: 28500, icon: '🟦', score: 82 },
-                { name: 'Intel Core i7-13700K', price: 34500, icon: '🟦', score: 90 },
-                { name: 'Intel Core i9-13900K', price: 48000, icon: '💎', score: 96 },
-                { name: 'AMD Ryzen 5 5600', price: 11500, icon: '🟠', score: 62 },
-                { name: 'AMD Ryzen 5 7600', price: 17500, icon: '🟡', score: 72 },
-                { name: 'AMD Ryzen 7 5800X3D', price: 28500, icon: '🟤', score: 82 },
-                { name: 'AMD Ryzen 7 7800X3D', price: 36500, icon: '🟣', score: 92 },
-                { name: 'AMD Ryzen 9 7950X', price: 52000, icon: '👑', score: 97 },
-            ],
-            '🎮 GPU': [
-                { name: 'NVIDIA GTX 1650', price: 12500, icon: '🟫', score: 15 },
-                { name: 'NVIDIA RTX 3060 12GB', price: 24500, icon: '🟩', score: 30 },
-                { name: 'NVIDIA RTX 4060', price: 26500, icon: '🟢', score: 32 },
-                { name: 'NVIDIA RTX 4070', price: 52000, icon: '🟢', score: 48 },
-                { name: 'NVIDIA RTX 4070 Super', price: 58000, icon: '🟢', score: 52 },
-                { name: 'NVIDIA RTX 4080 Super', price: 95000, icon: '🔰', score: 70 },
-                { name: 'NVIDIA RTX 4090', price: 165000, icon: '👑', score: 88 },
-                { name: 'AMD RX 6600', price: 19500, icon: '🟠', score: 26 },
-                { name: 'AMD RX 6700 XT', price: 28500, icon: '🟠', score: 34 },
-                { name: 'AMD RX 7800 XT', price: 48000, icon: '🟡', score: 52 },
-                { name: 'AMD RX 7900 XTX', price: 82000, icon: '🟣', score: 72 },
-            ],
-            '🖥️ Motherboard': [
-                { name: 'MSI B450M-A Pro Max', price: 4500, icon: '📋' },
-                { name: 'Gigabyte H610M-S2', price: 5500, icon: '📋' },
-                { name: 'MSI B550M Pro-VDH', price: 8500, icon: '📋' },
-                { name: 'Gigabyte B650 Aorus Elite', price: 16500, icon: '📋' },
-                { name: 'ASUS ROG X670E Hero', price: 38000, icon: '📋' },
-            ],
-            '🧠 RAM': [
-                { name: '16GB DDR4 3200MHz', price: 3200, icon: '📏' },
-                { name: '32GB DDR5 6000MHz', price: 9500, icon: '📏' },
-                { name: '32GB DDR5 6400MHz CL30', price: 12500, icon: '📏' },
-            ],
-            '💾 Storage': [
-                { name: '512GB NVMe SSD', price: 2800, icon: '💿' },
-                { name: '1TB NVMe SSD', price: 4800, icon: '💿' },
-                { name: '2TB NVMe Gen4 SSD', price: 11000, icon: '💿' },
-            ],
-            '⚡ PSU': [
-                { name: '550W 80+ Bronze', price: 3200, icon: '🔌' },
-                { name: '750W 80+ Gold', price: 7000, icon: '🔌' },
-                { name: '1000W 80+ Gold', price: 13000, icon: '🔌' },
-            ],
-            '🏠 Cabinet': [
-                { name: 'Ant Esports ICE-200TG', price: 2600, icon: '🏠' },
-                { name: 'Lian Li Lancool 205', price: 5500, icon: '🏠' },
-                { name: 'NZXT H5 Flow', price: 6500, icon: '🏠' },
-            ],
-            '❄️ Cooler': [
-                { name: 'Stock Cooler', price: 0, icon: '❄️' },
-                { name: 'DeepCool AK400', price: 1800, icon: '❄️' },
-                { name: 'Noctua NH-D15', price: 7500, icon: '❄️' },
-            ],
-        };
-
-        let customSelected = {};
-        const customCatDiv = document.getElementById('customCategories');
-
-        function buildCustomUI() {
-            customCatDiv.innerHTML = '';
-            Object.entries(customComponents).forEach(([cat, items]) => {
-                const wrapper = document.createElement('div');
-                wrapper.innerHTML = `
-              <div class="collapsible-header" onclick="this.nextElementSibling.classList.toggle('open');this.querySelector('span:last-child').textContent=this.nextElementSibling.classList.contains('open')?'▾':'▸'">
-                <span>${cat}</span><span style="color:var(--muted)">▸</span>
-              </div>
-              <div class="collapsible-body">
-                <div class="comp-grid">${items.map((item,idx)=>`
-                  <div class="comp-card" data-cat="${cat}" data-idx="${idx}" onclick="selectCustomPart('${cat}',${idx},this)">
-                    <div class="comp-icon">${item.icon}</div>
-                    <div style="flex:1;min-width:0">
-                      <div style="font-weight:600;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${item.name}</div>
-                      <div class="comp-price">₹${item.price.toLocaleString('en-IN')}</div>
-                    </div>
-                  </div>`).join('')}</div>
-              </div>`;
-                customCatDiv.appendChild(wrapper);
-            });
-        }
-
-        function selectCustomPart(cat, idx, el) {
-            document.querySelectorAll(`.comp-card[data-cat="${cat}"]`).forEach(c => c.classList.remove('selected'));
-            el.classList.add('selected');
-            customSelected[cat] = customComponents[cat][idx];
-            updateCustomSummary();
-            const body = el.closest('.collapsible-body');
-            if (body && !body.classList.contains('open')) body.classList.add('open');
-        }
-
-        function updateCustomSummary() {
-            let total = 0;
-            Object.values(customSelected).forEach(item => total += item.price);
-            document.getElementById('customTotal').textContent = '₹' + total.toLocaleString('en-IN');
-            const cpuItem = customSelected['🧠 CPU'];
-            const gpuItem = customSelected['🎮 GPU'];
-            const bnEl = document.getElementById('customBottleneck');
-            if (cpuItem && gpuItem && cpuItem.score && gpuItem.score) {
-                const cs = cpuItem.score;
-                const gs = gpuItem.score;
-                const ratio = cs / gs;
-                let bnText, bnColor;
-                if (ratio >= 1.3) { bnText = `⚠️ GPU bottleneck ~${Math.round((1-1/ratio)*100)}%`;
-                    bnColor = '#fcd34d' } else if (ratio <= 0.7) { bnText = `🔴 CPU bottleneck ~${Math.round((1-ratio)*100)}%`;
-                    bnColor = '#f87171' } else { bnText = '🟢 Well balanced!';
-                    bnColor = '#34d399' }
-                bnEl.innerHTML = `<span style="color:${bnColor}">${bnText}</span>`;
-            } else if (cpuItem || gpuItem) {
-                bnEl.innerHTML = '⚠️ Select <strong>both</strong> CPU & GPU to check';
-            } else {
-                bnEl.innerHTML = 'Select CPU + GPU to check';
-            }
-        }
-
-        function resetCustomBuild() {
-            customSelected = {};
-            document.querySelectorAll('.comp-card').forEach(c => c.classList.remove('selected'));
-            document.getElementById('customTotal').textContent = '₹0';
-            document.getElementById('customBottleneck').textContent = 'Select CPU + GPU to check';
-            document.querySelectorAll('.collapsible-body').forEach(b => b.classList.remove('open'));
-        }
-        buildCustomUI();
-
-        // ═══════════════ TROUBLESHOOT ═══════════════
-        const TS_DATA = [
-            { cat: 'Boot Issues', icon: '💻', title: 'No Bootable Device Found', sev: 'medium', fix: '<ul><li>BIOS → Boot tab → set SSD/HDD first</li><li>Check SATA/NVMe cables</li><li>Install Windows from USB if new drive</li><li>Run Startup Repair from recovery USB</li></ul>' },
-            { cat: 'Boot Issues', icon: '💻', title: 'PC Turns On But No Display', sev: 'medium', fix: '<ul><li>Plug monitor into GPU</li><li>Reseat GPU firmly</li><li>Try different cable/monitor</li><li>Reseat RAM</li><li>Try onboard graphics</li></ul>' },
-            { cat: 'Overheating', icon: '🌡️', title: 'CPU Temp 90°C+', sev: 'medium', fix: '<ul><li>Check cooler fan spinning</li><li>Reapply thermal paste</li><li>Clean dust from fins</li><li>Improve case airflow</li></ul>' },
-            { cat: 'Overheating', icon: '🌡️', title: 'GPU Temp 85°C+', sev: 'medium', fix: '<ul><li>Clean GPU heatsink</li><li>Reapply GPU thermal paste</li><li>Increase fan curve in Afterburner</li></ul>' },
-            { cat: 'Blue Screen (BSOD)', icon: '🔵', title: 'BSOD MEMORY_MANAGEMENT', sev: 'medium', fix: '<ul><li>Run Windows Memory Diagnostic</li><li>Run MemTest86</li><li>Try removing 1 RAM stick</li></ul>' },
-            { cat: 'Blue Screen (BSOD)', icon: '🔵', title: 'BSOD DRIVER_IRQL_NOT_LESS', sev: 'medium', fix: '<ul><li>Safe Mode → uninstall that driver</li><li>Use DDU for GPU drivers</li><li>Reinstall latest driver</li></ul>' },
-            { cat: 'GPU & Display', icon: '🖥️', title: 'Screen Flickering', sev: 'medium', fix: '<ul><li>Update/rollback GPU drivers</li><li>Check cable connections</li><li>Disable G-Sync/FreeSync</li></ul>' },
-            { cat: 'GPU & Display', icon: '🖥️', title: 'FPS Drops / Stuttering', sev: 'medium', fix: '<ul><li>Check GPU temps</li><li>High Performance power plan</li><li>Enable XMP in BIOS</li></ul>' },
-            { cat: 'RAM Issues', icon: '🧠', title: 'PC Not Using Full RAM', sev: 'easy', fix: '<ul><li>Task Manager → check usable</li><li>Test sticks individually</li><li>Use A2+B2 slots</li></ul>' },
-            { cat: 'Storage Issues', icon: '💾', title: 'Drive Not Showing', sev: 'easy', fix: '<ul><li>Disk Management → initialize/format</li><li>Check cable connections</li><li>NVMe: enable M.2 in BIOS</li></ul>' },
-            { cat: 'Network Issues', icon: '📡', title: 'WiFi Connected But No Internet', sev: 'easy', fix: '<ul><li><code>ipconfig /release</code> → <code>/renew</code></li><li><code>netsh winsock reset</code></li><li>Change DNS to 8.8.8.8</li></ul>' },
-            { cat: 'Power & PSU', icon: '⚡', title: 'PC Won\'t Turn On', sev: 'hard', fix: '<ul><li>Check power cable & outlet</li><li>PSU switch ON</li><li>Check 24-pin & CPU power cables</li></ul>' },
-            { cat: 'Gaming Issues', icon: '🎮', title: 'Game Crashing to Desktop', sev: 'medium', fix: '<ul><li>Check GPU temps</li><li>Verify game files</li><li>Update GPU drivers</li></ul>' },
-            { cat: 'USB & Peripherals', icon: '🖱️', title: 'USB Device Not Recognized', sev: 'easy', fix: '<ul><li>Try different port</li><li>Reinstall USB Root Hub</li></ul>' },
-            { cat: 'Audio Issues', icon: '🔊', title: 'No Sound', sev: 'easy', fix: '<ul><li>Select correct output device</li><li>Update audio drivers</li></ul>' },
-            { cat: 'Software & OS', icon: '🪟', title: 'Windows Slow After Update', sev: 'easy', fix: '<ul><li>Wait for background tasks</li><li>Disable SysMain temporarily</li></ul>' },
-        ];
-
-        const allCats = [...new Set(TS_DATA.map(d => d.cat))];
-        const catFiltersDiv = document.getElementById('catFilters');
-        const issuesGrid = document.getElementById('issuesGrid');
-        const tsCount = document.getElementById('tsCount');
-        const tsNoRes = document.getElementById('tsNoResults');
-        let activeTS = 'All';
-
-        function badgeTS(sev) {
-            const map = { easy: 'badge-easy', medium: 'badge-medium', hard: 'badge-hard' };
-            const cl = map[sev] || 'badge-easy';
-            return `<span class="badge ${cl}">${sev.toUpperCase()}</span>`;
-        }
-
-        function renderTSCards(data) {
-            issuesGrid.innerHTML = '';
-            tsNoRes.style.display = 'none';
-            if (!data.length) { tsNoRes.style.display = 'block';
-                tsCount.textContent = ''; return; }
-            tsCount.textContent = `Showing ${data.length} issue${data.length!==1?'s':''}`;
-            data.forEach(item => {
-                const card = document.createElement('div');
-                card.className = 'ts-card';
-                card.innerHTML = `
-            <div style="display:flex;align-items:flex-start;gap:10px" onclick="this.parentElement.classList.toggle('open')">
-              <span style="font-size:18px">${item.icon}</span>
-              <div style="flex:1"><strong style="font-size:13px">${item.title}</strong><br>${badgeTS(item.sev)}</div>
-              <span style="color:var(--muted)">▼</span>
+    <!-- IMAGE GENERATOR PANEL -->
+    <div class="panel" id="pIgen">
+      <div class="igp">
+        <div class="ph"><h2>🎨 Image Generator</h2><p>Generate stunning AI images from your text description</p></div>
+        <div class="card">
+          <h3>✍️ Describe Your Image</h3>
+          <div class="fg"><textarea id="igPrompt" placeholder="e.g. A futuristic city at night with neon lights and flying cars, cyberpunk style, 4K ultra detailed..." style="min-height:90px;width:100%;padding:10px;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:10px;color:var(--text);font-family:var(--fb);font-size:13px;outline:none;resize:vertical;line-height:1.5"></textarea></div>
+          <h3 style="margin-top:14px">🎭 Style</h3>
+          <div class="style-grid" id="styleGrid">
+            <div class="sg-item sel" onclick="selStyle(this,'realistic')"><div class="si">📸</div>Realistic</div>
+            <div class="sg-item" onclick="selStyle(this,'anime')"><div class="si">🌸</div>Anime</div>
+            <div class="sg-item" onclick="selStyle(this,'digital art')"><div class="si">🎨</div>Digital Art</div>
+            <div class="sg-item" onclick="selStyle(this,'oil painting')"><div class="si">🖼️</div>Oil Painting</div>
+            <div class="sg-item" onclick="selStyle(this,'cyberpunk')"><div class="si">🤖</div>Cyberpunk</div>
+            <div class="sg-item" onclick="selStyle(this,'watercolor')"><div class="si">💧</div>Watercolor</div>
+          </div>
+          <div style="display:flex;gap:8px;align-items:center;margin-bottom:14px">
+            <div class="fg" style="flex:1;margin:0"><label>Size</label>
+              <select id="igSize" style="width:100%;padding:9px;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:var(--fb);font-size:13px;outline:none">
+                <option value="512x512">512×512 (Square)</option>
+                <option value="768x512">768×512 (Landscape)</option>
+                <option value="512x768">512×768 (Portrait)</option>
+                <option value="1024x768">1024×768 (Wide)</option>
+              </select>
             </div>
-            <div class="ts-body">${item.fix}<a href="#" onclick="switchTab('meet')" class="btn btn-outline btn-sm" style="margin-top:8px;display:inline-flex">📹 Book Meet</a></div>`;
-                issuesGrid.appendChild(card);
-            });
-        }
+          </div>
+          <button class="bp" onclick="generateImage()">✨ Generate Image</button>
+        </div>
+        <div class="igenloading" id="igenLoad">
+          <div class="il">⚙️</div>
+          <p style="color:var(--dim);font-size:13px;margin-top:10px">Generating your image...<br><span style="font-size:11px">This may take a few seconds</span></p>
+        </div>
+        <div class="img-result" id="imgResult">
+          <h3 style="font-family:var(--fd);font-size:15px;margin-bottom:12px">✅ Generated Image</h3>
+          <img id="genImg" src="" alt="Generated"/>
+          <div class="img-actions">
+            <button class="iabtn primary" onclick="dlGenImg()">⬇ Download</button>
+            <button class="iabtn" onclick="editGenImg()">✏️ Edit This Image</button>
+            <button class="iabtn" onclick="regenerate()">🔄 Regenerate</button>
+          </div>
+        </div>
+      </div>
+    </div>
 
-        function filterTS() {
-            const q = document.getElementById('tsSearch').value.toLowerCase().trim();
-            let data = activeTS === 'All' ? TS_DATA : TS_DATA.filter(d => d.cat === activeTS);
-            if (q) data = data.filter(d => d.title.toLowerCase().includes(q) || d.fix.toLowerCase().includes(q) || d
-                .cat.toLowerCase().includes(q));
-            renderTSCards(data);
-        }
+    <!-- IMAGE EDITOR PANEL -->
+    <div class="panel" id="pIedit">
+      <div class="ep">
+        <div class="ph"><h2>✏️ Image Editor</h2><p>Upload and edit any image with AI-powered filters and adjustments</p></div>
+        <div class="upload-area" id="uploadArea" onclick="document.getElementById('imgUpload').click()">
+          <input type="file" id="imgUpload" accept="image/*" style="display:none" onchange="loadEditImg(event)"/>
+          <div class="ua-icon">📁</div>
+          <div class="ua-text">Click to upload an image<br><span style="font-size:11px">PNG, JPG, WEBP supported</span></div>
+        </div>
+        <canvas id="editCanvas"></canvas>
+        <div id="editControls" style="display:none">
+          <div class="card" style="margin-bottom:12px">
+            <h3>🎨 Filters</h3>
+            <div class="filter-grid">
+              <div class="fi sel" onclick="applyFilter(this,'none')"><span>🖼️</span>Original</div>
+              <div class="fi" onclick="applyFilter(this,'grayscale')"><span>⬜</span>Grayscale</div>
+              <div class="fi" onclick="applyFilter(this,'sepia')"><span>🟫</span>Sepia</div>
+              <div class="fi" onclick="applyFilter(this,'invert')"><span>🔄</span>Invert</div>
+              <div class="fi" onclick="applyFilter(this,'warm')"><span>🟡</span>Warm</div>
+              <div class="fi" onclick="applyFilter(this,'cool')"><span>🔵</span>Cool</div>
+              <div class="fi" onclick="applyFilter(this,'vintage')"><span>📷</span>Vintage</div>
+              <div class="fi" onclick="applyFilter(this,'neon')"><span>💡</span>Neon</div>
+              <div class="fi" onclick="applyFilter(this,'pixelate')"><span>⬛</span>Pixelate</div>
+            </div>
+          </div>
+          <div class="card">
+            <h3>⚙️ Adjustments</h3>
+            <div class="slider-group">
+              <label><span>Brightness</span><b id="bv">100</b></label>
+              <input type="range" min="0" max="200" value="100" id="brightness" oninput="applyAdj()">
+            </div>
+            <div class="slider-group">
+              <label><span>Contrast</span><b id="cv">100</b></label>
+              <input type="range" min="0" max="200" value="100" id="contrast" oninput="applyAdj()">
+            </div>
+            <div class="slider-group">
+              <label><span>Saturation</span><b id="sv">100</b></label>
+              <input type="range" min="0" max="200" value="100" id="saturation" oninput="applyAdj()">
+            </div>
+            <div class="slider-group">
+              <label><span>Blur</span><b id="blv">0</b></label>
+              <input type="range" min="0" max="20" value="0" id="blurr" oninput="applyAdj()">
+            </div>
+            <div class="img-actions" style="margin-top:12px">
+              <button class="iabtn primary" onclick="downloadEdited()">⬇ Download Edited</button>
+              <button class="iabtn" onclick="resetEdit()">🔄 Reset</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
-        const allBtn = document.createElement('button');
-        allBtn.className = 'btn btn-sm';
-        allBtn.style.cssText = 'border-color:#e63946;color:#ff6b6b;background:rgba(230,57,70,0.1)';
-        allBtn.textContent = '🔍 All';
-        allBtn.addEventListener('click', () => { activeTS = 'All';
-            updateCatBtns(allBtn);
-            filterTS() });
-        catFiltersDiv.appendChild(allBtn);
-        allCats.forEach(cat => {
-            const btn = document.createElement('button');
-            btn.className = 'btn btn-sm btn-outline';
-            btn.textContent = cat;
-            btn.addEventListener('click', () => { activeTS = cat;
-                updateCatBtns(btn);
-                filterTS() });
-            catFiltersDiv.appendChild(btn);
-        });
+    <!-- SEARCH PANEL -->
+    <div class="panel" id="pSearch">
+      <div class="scp">
+        <div class="ph"><h2>🔍 Web Search</h2><p>Search the web with AI-powered summaries</p></div>
+        <div class="search-bar">
+          <input type="text" id="searchInput" placeholder="Search anything on the web..." onkeydown="if(event.key==='Enter')doSearch()"/>
+          <button onclick="doSearch()">🔍 Search</button>
+        </div>
+        <div class="search-tabs">
+          <div class="stab act" onclick="setTab(this,'all')">🌐 All</div>
+          <div class="stab" onclick="setTab(this,'news')">📰 News</div>
+          <div class="stab" onclick="setTab(this,'images')">🖼 Images</div>
+          <div class="stab" onclick="setTab(this,'videos')">▶ Videos</div>
+          <div class="stab" onclick="setTab(this,'maps')">📍 Maps</div>
+        </div>
+        <div id="searchResults">
+          <div style="text-align:center;padding:48px;color:var(--dim)">
+            <div style="font-size:36px;margin-bottom:12px">🔍</div>
+            <p style="font-size:13px">Enter a query to search the web</p>
+          </div>
+        </div>
+      </div>
+    </div>
 
-        function updateCatBtns(activeBtn) {
-            catFiltersDiv.querySelectorAll('button').forEach(b => { b.style.borderColor = 'var(--border)';
-                b.style.color = 'var(--muted)';
-                b.style.background = 'transparent'; });
-            activeBtn.style.borderColor = '#e63946';
-            activeBtn.style.color = '#ff6b6b';
-            activeBtn.style.background = 'rgba(230,57,70,0.1)';
-        }
-        document.getElementById('tsSearch').addEventListener('input', () => { clearTimeout(window._tsT);
-            window._tsT = setTimeout(filterTS, 200) });
-        renderTSCards(TS_DATA);
-        allBtn.click();
+    <!-- MATH PANEL -->
+    <div class="panel" id="pMath" style="flex-direction:column">
+      <div class="ca" id="mathArea">
+        <div class="cwelcome">
+          <div class="wi">🔢</div>
+          <h3>Math & GK Engine</h3>
+          <p>Solve equations, proofs, calculus, and answer any general knowledge question.</p>
+          <div style="background:rgba(124,58,237,.08);border:1px solid rgba(124,58,237,.2);border-radius:9px;padding:11px 14px;font-size:11px;color:#c4b5fd;margin-bottom:16px;line-height:1.6;max-width:380px;text-align:left">
+            💡 Try: <code>∫x²sin(x)dx</code> · <code>3x²-7x+2=0</code> · <code>Capital of Japan?</code>
+          </div>
+          <div class="chips">
+            <div class="chip" onclick="qm('Integrate ∫x²sin(x)dx')">Integration</div>
+            <div class="chip" onclick="qm('Solve 3x²-7x+2=0')">Quadratic</div>
+            <div class="chip" onclick="qm('What is the derivative of ln(x)?')">Derivatives</div>
+            <div class="chip" onclick="qm('Who won FIFA World Cup 2022?')">Sports GK</div>
+            <div class="chip" onclick="qm('What is Pythagoras theorem?')">Geometry</div>
+          </div>
+        </div>
+      </div>
+      <div class="ia">
+        <div class="ir">
+          <textarea class="ib" id="mathInput" placeholder="Enter equation or GK question..." rows="1" onkeydown="handleMK(event)" oninput="ar(this)"></textarea>
+          <button class="snd" onclick="sendMath()">➤</button>
+        </div>
+      </div>
+    </div>
 
-        // Initialize desktop tabs correctly on load
-        switchTab('home');
-    </script>
+    <!-- HAIR PANEL -->
+    <div class="panel" id="pHair">
+      <div class="hp">
+        <div class="ph"><h2>💆 Hair Diagnostics</h2><p>AI-powered hair health analysis & personalized recommendations</p></div>
+        <div class="sc-card">
+          <h3>📊 Severity Scales</h3>
+          <div class="sg2"><div class="sl"><span>Hair Loss Level</span><span class="sv" id="sv1">5</span></div><input type="range" min="1" max="10" value="5" oninput="document.getElementById('sv1').textContent=this.value"><div style="display:flex;justify-content:space-between;font-size:9px;color:var(--dim)"><span>Minimal</span><span>Severe</span></div></div>
+          <div class="sg2"><div class="sl"><span>Scalp Dryness</span><span class="sv" id="sv2">3</span></div><input type="range" min="1" max="10" value="3" oninput="document.getElementById('sv2').textContent=this.value"><div style="display:flex;justify-content:space-between;font-size:9px;color:var(--dim)"><span>Very Oily</span><span>Very Dry</span></div></div>
+          <div class="sg2"><div class="sl"><span>Dandruff</span><span class="sv" id="sv3">2</span></div><input type="range" min="1" max="10" value="2" oninput="document.getElementById('sv3').textContent=this.value"><div style="display:flex;justify-content:space-between;font-size:9px;color:var(--dim)"><span>None</span><span>Heavy</span></div></div>
+          <div class="sg2"><div class="sl"><span>Hair Breakage</span><span class="sv" id="sv4">4</span></div><input type="range" min="1" max="10" value="4" oninput="document.getElementById('sv4').textContent=this.value"><div style="display:flex;justify-content:space-between;font-size:9px;color:var(--dim)"><span>Strong</span><span>Very Brittle</span></div></div>
+        </div>
+        <div class="sc-card">
+          <h3>🏷️ Symptoms</h3>
+          <div class="symg">
+            <div class="sym" onclick="this.classList.toggle('sel')">Thinning Hair</div>
+            <div class="sym" onclick="this.classList.toggle('sel')">Oily Scalp</div>
+            <div class="sym" onclick="this.classList.toggle('sel')">Itchy Scalp</div>
+            <div class="sym" onclick="this.classList.toggle('sel')">Split Ends</div>
+            <div class="sym" onclick="this.classList.toggle('sel')">Frizzy Hair</div>
+            <div class="sym" onclick="this.classList.toggle('sel')">Premature Graying</div>
+            <div class="sym" onclick="this.classList.toggle('sel')">Scalp Psoriasis</div>
+            <div class="sym" onclick="this.classList.toggle('sel')">Alopecia</div>
+            <div class="sym" onclick="this.classList.toggle('sel')">Dry & Dull</div>
+            <div class="sym" onclick="this.classList.toggle('sel')">Color Damaged</div>
+          </div>
+        </div>
+        <div class="sc-card">
+          <h3>💊 Details</h3>
+          <div class="fg"><label>Hair Type</label>
+            <select id="hairType" style="width:100%;padding:9px;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:var(--fb);font-size:13px;outline:none">
+              <option value="">Select</option><option>Straight</option><option>Wavy</option><option>Curly</option><option>Coily/Kinky</option>
+            </select>
+          </div>
+          <div class="fg" style="margin-top:10px"><label>Describe main concern</label>
+            <textarea id="hairConcern" placeholder="e.g. My hair has been falling out a lot after washing..." style="width:100%;padding:9px;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:var(--fb);font-size:13px;outline:none;resize:vertical;min-height:72px;line-height:1.5"></textarea>
+          </div>
+          <button class="bp" onclick="analyzeHair()" style="margin-top:10px">🔬 Analyze Hair</button>
+        </div>
+        <div class="hair-res" id="hairRes"><h4>🎯 Apex Mind AI Hair Analysis</h4><div id="hairResText"></div></div>
+      </div>
+    </div>
+
+    <!-- CAMERA PANEL -->
+    <div class="panel" id="pCam">
+      <div class="camp">
+        <div class="ph"><h2>📷 Visual AI Scanner</h2><p>Scan objects, text, or equations — AI identifies & analyzes them live</p></div>
+        <div style="max-width:560px">
+          <div class="cf" id="camFeed">
+            <div class="cph" id="camPH"><div style="font-size:40px">📸</div><p style="color:var(--dim);font-size:13px;margin-top:8px">Camera inactive</p></div>
+            <video id="camVid" style="display:none;width:100%;height:100%;object-fit:cover"></video>
+            <div class="cov" id="camOv"><div class="scanline"></div></div>
+          </div>
+          <div class="cc">
+            <button class="cbtn pr" id="startCam" onclick="startCam()">▶ Start Camera</button>
+            <button class="cbtn" id="stopCam" onclick="stopCam()" style="display:none">⏹ Stop</button>
+            <button class="cbtn" id="scanBtn" onclick="scanObj()" style="display:none">🔍 Scan</button>
+            <button class="cbtn" id="snapBtn" onclick="takeSnap()" style="display:none">📷 Snapshot</button>
+          </div>
+          <canvas id="snapCanvas" style="display:none"></canvas>
+          <div class="cam-r" id="camResult">
+            <h4>🧠 Visual Analysis</h4>
+            <p id="camResText"></p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="credits">🧠 Apex Mind AI · Built & Owned by Satwik Chandra · CEO of Apex Mind AI · All Rights Reserved 2025</div>
+  </div>
+</div>
+
+<script>
+// ─────────── STATE ───────────
+let cu=null,chatMode='general',curMode='chat',camStream=null;
+let selStyle_='realistic',editImg=null,editFilter='none',genPrompt='',otpVal='',phData={};
+
+const DB={
+  users:()=>JSON.parse(localStorage.getItem('amx_users')||'[]'),
+  saveUsers:u=>localStorage.setItem('amx_users',JSON.stringify(u)),
+  me:()=>JSON.parse(localStorage.getItem('amx_me')||'null'),
+  setMe:u=>localStorage.setItem('amx_me',JSON.stringify(u)),
+  clearMe:()=>localStorage.removeItem('amx_me'),
+};
+
+// ─────────── BOOT ───────────
+window.onload=()=>{
+  setTimeout(()=>{
+    document.getElementById('loading').classList.add('off');
+    const saved=DB.me();
+    if(saved){cu=saved;launchApp();}else showP('loginPage');
+  },1800);
+};
+
+// ─────────── NAV ───────────
+function showP(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.add('off'));
+  document.getElementById(id)?.classList.remove('off');
+  document.querySelectorAll('.aerr,.asuc').forEach(e=>{e.style.display='none';e.textContent='';});
+}
+function showErr(el,msg){el.textContent=msg;el.style.display='block';}
+function showSuc(el,msg){el.textContent=msg;el.style.display='block';}
+function toast(msg,err=false){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.className='toast'+(err?' err':'');t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),3000);
+}
+
+// ─────────── AUTH ───────────
+function handleLogin(){
+  const e=document.getElementById('lEmail').value.trim();
+  const p=document.getElementById('lPass').value;
+  const el=document.getElementById('loginErr');
+  if(!e||!p){showErr(el,'Please fill all fields.');return;}
+  const users=DB.users();
+  const u=users.find(x=>x.email===e&&x.pw===btoa(p));
+  if(!u){showErr(el,'Invalid email or password.');return;}
+  cu=u;DB.setMe(u);toast(`Welcome back, ${u.name}! 🎉`);launchApp();
+}
+
+function handleSignup(){
+  const n=document.getElementById('suName').value.trim();
+  const e=document.getElementById('suEmail').value.trim();
+  const p=document.getElementById('suPass').value;
+  const c=document.getElementById('suConf').value;
+  const err=document.getElementById('suErr'),suc=document.getElementById('suSuc');
+  if(!n||!e||!p||!c){showErr(err,'Please fill all fields.');return;}
+  if(p.length<6){showErr(err,'Password min 6 characters.');return;}
+  if(p!==c){showErr(err,'Passwords do not match.');return;}
+  const users=DB.users();
+  if(users.find(x=>x.email===e)){showErr(err,'Email already registered.');return;}
+  const u={id:Date.now()+'',name:n,email:e,pw:btoa(p),av:n[0].toUpperCase(),method:'email',joined:new Date().toISOString()};
+  users.push(u);DB.saveUsers(users);
+  showSuc(suc,'Account created! Signing you in...');
+  setTimeout(()=>{cu=u;DB.setMe(u);toast(`Welcome, ${n}! 🚀`);launchApp();},1100);
+}
+
+// Google
+function openGoogle(){
+  const users=DB.users().filter(u=>u.method==='google');
+  document.getElementById('gAccounts').innerHTML=users.map(u=>`
+    <div class="ga" onclick="loginG('${u.id}')">
+      <div class="gav">${u.av}</div>
+      <div class="gai"><h4>${u.name}</h4><p>${u.email}</p></div>
+    </div>`).join('');
+  document.getElementById('gModal').classList.add('show');
+}
+function closeGoogle(){document.getElementById('gModal').classList.remove('show');}
+function loginG(id){
+  const u=DB.users().find(x=>x.id===id);
+  if(u){cu=u;DB.setMe(u);closeGoogle();toast(`Signed in as ${u.name} 🎉`);launchApp();}
+}
+function addGoogle(){
+  const name=prompt('Enter your name:');if(!name)return;
+  const email=prompt('Enter Gmail address:');if(!email||!email.includes('@')){toast('Invalid email',true);return;}
+  const users=DB.users();
+  let u=users.find(x=>x.email===email);
+  if(!u){u={id:Date.now()+'',name,email,av:name[0].toUpperCase(),method:'google',joined:new Date().toISOString()};users.push(u);DB.saveUsers(users);}
+  cu=u;DB.setMe(u);closeGoogle();toast(`Signed in with Google as ${name} 🎉`);launchApp();
+}
+
+// Phone OTP
+function sendOTP(){
+  const ph=document.getElementById('phNum').value.trim();
+  const nm=document.getElementById('phName').value.trim();
+  const code=document.getElementById('phCode').value.split(' ')[1];
+  if(!ph||ph.length<7){showErr(document.getElementById('phErr'),'Enter valid phone number.');return;}
+  if(!nm){showErr(document.getElementById('phErr'),'Enter your name.');return;}
+  otpVal=Math.floor(100000+Math.random()*900000)+'';
+  phData={phone:code+ph,name:nm};
+  document.getElementById('phDisp').textContent=code+ph;
+  document.getElementById('demoOtp').textContent=otpVal;
+  document.getElementById('ph1').style.display='none';
+  document.getElementById('ph2').style.display='block';
+  toast('OTP sent! (Demo code shown above)');
+}
+function oi(el,i){
+  el.value=el.value.replace(/\D/,'');
+  if(el.value){const nx=document.querySelectorAll('#otpInputs input')[i+1];if(nx)nx.focus();}
+}
+function ok(e,i){if(e.key==='Backspace'){const pv=document.querySelectorAll('#otpInputs input')[i-1];if(pv&&!document.querySelectorAll('#otpInputs input')[i].value)pv.focus();}}
+function verifyOTP(){
+  const entered=[...document.querySelectorAll('#otpInputs input')].map(x=>x.value).join('');
+  if(entered!==otpVal){showErr(document.getElementById('otpErr'),'Incorrect OTP. Try again.');return;}
+  const users=DB.users();
+  let u=users.find(x=>x.phone===phData.phone);
+  if(!u){u={id:Date.now()+'',name:phData.name,phone:phData.phone,av:phData.name[0].toUpperCase(),method:'phone',joined:new Date().toISOString()};users.push(u);DB.saveUsers(users);}
+  cu=u;DB.setMe(u);toast(`Welcome, ${u.name}! 🎉`);launchApp();
+}
+function resendOTP(){
+  otpVal=Math.floor(100000+Math.random()*900000)+'';
+  document.getElementById('demoOtp').textContent=otpVal;
+  document.getElementById('otpInputs').querySelectorAll('input').forEach(x=>x.value='');
+  toast('New OTP generated!');
+}
+function logout(){
+  if(!confirm('Sign out of Apex Mind AI?'))return;
+  cu=null;DB.clearMe();
+  showP('loginPage');toast('Signed out successfully.');
+}
+
+// ─────────── LAUNCH APP ───────────
+function launchApp(){
+  showP('appPage');
+  document.getElementById('sbAv').textContent=cu.av||'U';
+  document.getElementById('sbName').textContent=cu.name||'User';
+  document.getElementById('wName').textContent=(cu.name||'there').split(' ')[0];
+}
+
+// ─────────── SIDEBAR ───────────
+function toggleSB(){
+  document.getElementById('sb').classList.toggle('open');
+  document.getElementById('sbov').classList.toggle('show');
+}
+function sw(mode){
+  curMode=mode;
+  document.querySelectorAll('.ni').forEach(x=>x.classList.remove('act'));
+  document.querySelectorAll('.panel').forEach(x=>x.classList.remove('act'));
+  const map={chat:['nChat','pChat','💬 AI Chat','General Mode'],igen:['nIgen','pIgen','🎨 Image Generator','Create Mode'],iedit:['nIedit','pIedit','✏️ Image Editor','Edit Mode'],search:['nSearch','pSearch','🔍 Web Search','Search Mode'],math:['nMath','pMath','🔢 Math & GK','Intelligence Mode'],hair:['nHair','pHair','💆 Hair Diagnostics','Health Mode'],cam:['nCam','pCam','📷 Visual Scanner','Vision Mode']};
+  const [nav,panel,title,badge]=map[mode]||map.chat;
+  document.getElementById(nav)?.classList.add('act');
+  document.getElementById(panel)?.classList.add('act');
+  document.getElementById('tbTitle').textContent=title;
+  document.getElementById('tbBadge').textContent=badge;
+  if(window.innerWidth<=768){document.getElementById('sb').classList.remove('open');document.getElementById('sbov').classList.remove('show');}
+}
+
+// ─────────── AI CHAT ───────────
+let chatMode2='general';
+function setCM(m,label){
+  chatMode2=m;
+  document.querySelectorAll('.tbtn').forEach(b=>b.classList.remove('act'));
+  document.getElementById('tm-'+m)?.classList.add('act');
+  document.getElementById('tbBadge').textContent=label;
+}
+function qs(q){document.getElementById('chatInput').value=q;sendMsg();}
+function qm(q){document.getElementById('mathInput').value=q;sendMath();}
+function handleKey(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMsg();}}
+function handleMK(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMath();}}
+function ar(el){el.style.height='auto';el.style.height=Math.min(el.scrollHeight,140)+'px';}
+
+function addMsg(areaId,role,text,imgSrc=null){
+  const area=document.getElementById(areaId);
+  const welcome=area.querySelector('.cwelcome');
+  if(welcome)welcome.style.display='none';
+  const now=new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
+  const isAI=role==='ai';
+  const name=isAI?'🧠 Apex Mind AI':(cu?.name||'You');
+  const div=document.createElement('div');
+  div.className=`msg ${isAI?'ai':'usr'}`;
+  div.innerHTML=`
+    <div class="mav">${isAI?'🧠':(cu?.av||'U')}</div>
+    <div class="mb">
+      <div class="mn">${name}</div>
+      <div class="mbu">${text.replace(/</g,'&lt;').replace(/\n/g,'<br>')}${imgSrc?`<img src="${imgSrc}" alt="img"/>`:''}</div>
+      <div class="mt">${now}</div>
+    </div>`;
+  area.appendChild(div);
+  area.scrollTop=area.scrollHeight;
+  return div;
+}
+
+function showTyping(areaId){
+  const area=document.getElementById(areaId);
+  const div=document.createElement('div');
+  div.className='msg ai';div.id='typing_'+areaId;
+  div.innerHTML=`<div class="mav">🧠</div><div class="mb"><div class="mn">🧠 Apex Mind AI</div><div class="typing"><div class="td"></div><div class="td"></div><div class="td"></div></div></div>`;
+  area.appendChild(div);area.scrollTop=area.scrollHeight;
+}
+function removeTyping(areaId){document.getElementById('typing_'+areaId)?.remove();}
+
+async function callAI(prompt,systemHint=''){
+  const sysMap={
+    general:'You are Apex Mind AI, a powerful general-purpose AI assistant built by Satwik Chandra, CEO of Apex Mind AI. Answer helpfully and clearly.',
+    math:'You are Apex Mind AI\'s Math & Science engine built by Satwik Chandra. Solve equations step-by-step, show workings clearly. Use proper notation.',
+    gk:'You are Apex Mind AI\'s General Knowledge engine by Satwik Chandra. Answer GK questions accurately, concisely, with interesting facts.',
+    code:'You are Apex Mind AI\'s Code assistant by Satwik Chandra. Write clean, well-commented code. Explain what it does.',
+    creative:'You are Apex Mind AI\'s Creative engine by Satwik Chandra. Write imaginatively, poetically, and with flair.',
+    hair:'You are Apex Mind AI\'s Hair Care specialist by Satwik Chandra. Give evidence-based, personalized hair care advice.',
+  };
+  const sys=(sysMap[systemHint]||sysMap.general)+' Always mention you are Apex Mind AI built by Satwik Chandra if asked who made you.';
+  const res=await fetch('https://api.anthropic.com/v1/messages',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({
+      model:'claude-sonnet-4-20250514',
+      max_tokens:1000,
+      system:sys,
+      messages:[{role:'user',content:prompt}]
+    })
+  });
+  const d=await res.json();
+  return d.content?.[0]?.text||'Sorry, I could not process that request.';
+}
+
+async function sendMsg(){
+  const inp=document.getElementById('chatInput');
+  const txt=inp.value.trim();if(!txt)return;
+  inp.value='';inp.style.height='auto';
+  document.getElementById('sendBtn').disabled=true;
+  addMsg('chatArea','user',txt);
+  showTyping('chatArea');
+  try{
+    const reply=await callAI(txt,chatMode2);
+    removeTyping('chatArea');
+    addMsg('chatArea','ai',reply);
+  }catch(e){removeTyping('chatArea');addMsg('chatArea','ai','⚠️ Network error. Please check your connection.');}
+  document.getElementById('sendBtn').disabled=false;
+}
+
+async function sendMath(){
+  const inp=document.getElementById('mathInput');
+  const txt=inp.value.trim();if(!txt)return;
+  inp.value='';inp.style.height='auto';
+  addMsg('mathArea','user',txt);
+  showTyping('mathArea');
+  try{
+    const mode=txt.match(/\d|[+\-*/=^∫∑]/)?'math':'gk';
+    const reply=await callAI(txt,mode);
+    removeTyping('mathArea');
+    addMsg('mathArea','ai',reply);
+  }catch(e){removeTyping('mathArea');addMsg('mathArea','ai','⚠️ Error processing request.');}
+}
+
+// ─────────── IMAGE GENERATION ───────────
+function selStyle(el,s){
+  selStyle_=s;
+  document.querySelectorAll('.sg-item').forEach(x=>x.classList.remove('sel'));
+  el.classList.add('sel');
+}
+let lastPrompt='',lastSize='512x512';
+async function generateImage(){
+  const prompt=document.getElementById('igPrompt').value.trim();
+  if(!prompt){toast('Please describe the image you want',true);return;}
+  const size=document.getElementById('igSize').value;
+  lastPrompt=prompt;lastSize=size;
+  const fullPrompt=`${prompt}, ${selStyle_} style`;
+  const [w,h]=size.split('x');
+  document.getElementById('igenLoad').style.display='block';
+  document.getElementById('imgResult').style.display='none';
+  const seed=Math.floor(Math.random()*99999);
+  const url=`https://image.pollinations.ai/prompt/${encodeURIComponent(fullPrompt)}?width=${w}&height=${h}&seed=${seed}&nologo=true`;
+  const img=document.getElementById('genImg');
+  img.onload=()=>{document.getElementById('igenLoad').style.display='none';document.getElementById('imgResult').style.display='block';toast('Image generated! ✨');};
+  img.onerror=()=>{document.getElementById('igenLoad').style.display='none';toast('Image generation failed. Try again.',true);};
+  img.src=url;
+  genPrompt=url;
+}
+function dlGenImg(){
+  const a=document.createElement('a');a.href=document.getElementById('genImg').src;a.download='ApexMindAI_generated.jpg';a.target='_blank';a.click();
+}
+function editGenImg(){
+  const img=document.getElementById('genImg');
+  loadImgToCanvas(img.src);
+  sw('iedit');
+}
+function regenerate(){
+  const [w,h]=lastSize.split('x');
+  const seed=Math.floor(Math.random()*99999);
+  const fullPrompt=`${lastPrompt}, ${selStyle_} style`;
+  const url=`https://image.pollinations.ai/prompt/${encodeURIComponent(fullPrompt)}?width=${w}&height=${h}&seed=${seed}&nologo=true`;
+  document.getElementById('igenLoad').style.display='block';
+  document.getElementById('imgResult').style.display='none';
+  const img=document.getElementById('genImg');
+  img.onload=()=>{document.getElementById('igenLoad').style.display='none';document.getElementById('imgResult').style.display='block';};
+  img.src=url;
+}
+
+// ─────────── IMAGE EDITOR ───────────
+let origImgData=null,editCanvas=null,editCtx=null;
+function loadEditImg(e){
+  const file=e.target.files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=ev=>{
+    const img=new Image();
+    img.onload=()=>{loadImgToCanvas(img);};
+    img.src=ev.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+function loadImgToCanvas(src){
+  editCanvas=document.getElementById('editCanvas');
+  editCtx=editCanvas.getContext('2d');
+  const img=typeof src==='string'?new Image():src;
+  const go=()=>{
+    const maxW=Math.min(img.naturalWidth||img.width,560);
+    const ratio=(img.naturalHeight||img.height)/(img.naturalWidth||img.width);
+    editCanvas.width=maxW;editCanvas.height=maxW*ratio;
+    editCtx.drawImage(img,0,0,editCanvas.width,editCanvas.height);
+    origImgData=editCtx.getImageData(0,0,editCanvas.width,editCanvas.height);
+    editCanvas.style.cssText='max-width:100%;border-radius:12px;display:block;margin-bottom:12px';
+    document.getElementById('editControls').style.display='block';
+    document.getElementById('uploadArea').style.display='none';
+    resetSliders();
+  };
+  if(typeof src==='string'){img.onload=go;img.crossOrigin='anonymous';img.src=src;}else go();
+}
+function applyFilter(el,filter){
+  editFilter=filter;
+  document.querySelectorAll('.fi').forEach(x=>x.classList.remove('sel'));
+  el.classList.add('sel');
+  applyAdj();
+}
+function applyAdj(){
+  if(!origImgData||!editCtx)return;
+  const b=parseInt(document.getElementById('brightness').value);
+  const c=parseInt(document.getElementById('contrast').value);
+  const s=parseInt(document.getElementById('saturation').value);
+  const bl=parseInt(document.getElementById('blurr').value);
+  document.getElementById('bv').textContent=b;
+  document.getElementById('cv').textContent=c;
+  document.getElementById('sv').textContent=s;
+  document.getElementById('blv').textContent=bl;
+  editCtx.filter=`brightness(${b}%) contrast(${c}%) saturate(${s}%) blur(${bl}px)`;
+  const img=new ImageData(new Uint8ClampedArray(origImgData.data),origImgData.width,origImgData.height);
+  const tmpC=document.createElement('canvas');tmpC.width=origImgData.width;tmpC.height=origImgData.height;
+  const tc=tmpC.getContext('2d');tc.putImageData(img,0,0);
+  const idata=tc.getImageData(0,0,tmpC.width,tmpC.height);
+  applyColorFilter(idata,editFilter);
+  tc.putImageData(idata,0,0);
+  editCtx.filter=`brightness(${b}%) contrast(${c}%) saturate(${s}%) blur(${bl}px)`;
+  editCtx.clearRect(0,0,editCanvas.width,editCanvas.height);
+  editCtx.drawImage(tmpC,0,0,editCanvas.width,editCanvas.height);
+  editCtx.filter='none';
+  if(editFilter==='pixelate')pixelateCanvas(editCanvas,editCtx,12);
+}
+function applyColorFilter(idata,filter){
+  const d=idata.data;
+  for(let i=0;i<d.length;i+=4){
+    let r=d[i],g=d[i+1],b=d[i+2];
+    if(filter==='grayscale'){const gr=(r+g+b)/3;d[i]=d[i+1]=d[i+2]=gr;}
+    else if(filter==='sepia'){d[i]=Math.min(255,r*.393+g*.769+b*.189);d[i+1]=Math.min(255,r*.349+g*.686+b*.168);d[i+2]=Math.min(255,r*.272+g*.534+b*.131);}
+    else if(filter==='invert'){d[i]=255-r;d[i+1]=255-g;d[i+2]=255-b;}
+    else if(filter==='warm'){d[i]=Math.min(255,r+30);d[i+1]=g;d[i+2]=Math.max(0,b-20);}
+    else if(filter==='cool'){d[i]=Math.max(0,r-20);d[i+1]=g;d[i+2]=Math.min(255,b+30);}
+    else if(filter==='vintage'){d[i]=Math.min(255,r*.9+30);d[i+1]=Math.min(255,g*.8+20);d[i+2]=Math.min(255,b*.7+10);}
+    else if(filter==='neon'){d[i]=r>100?255:0;d[i+1]=g>100?255:0;d[i+2]=b>100?255:0;}
+  }
+}
+function pixelateCanvas(canvas,ctx,size){
+  const w=canvas.width,h=canvas.height;
+  ctx.imageSmoothingEnabled=false;
+  const tmp=document.createElement('canvas');tmp.width=Math.ceil(w/size);tmp.height=Math.ceil(h/size);
+  const tc=tmp.getContext('2d');tc.imageSmoothingEnabled=false;
+  tc.drawImage(canvas,0,0,tmp.width,tmp.height);
+  ctx.clearRect(0,0,w,h);ctx.drawImage(tmp,0,0,w,h);
+}
+function resetSliders(){['brightness','contrast','saturation'].forEach(id=>document.getElementById(id).value=100);document.getElementById('blurr').value=0;document.getElementById('bv').textContent=100;document.getElementById('cv').textContent=100;document.getElementById('sv').textContent=100;document.getElementById('blv').textContent=0;}
+function resetEdit(){if(origImgData&&editCtx){resetSliders();editFilter='none';document.querySelectorAll('.fi').forEach(x=>x.classList.remove('sel'));document.querySelector('.fi').classList.add('sel');editCtx.putImageData(origImgData,0,0);}}
+function downloadEdited(){if(!editCanvas)return;const a=document.createElement('a');a.download='ApexMindAI_edited.png';a.href=editCanvas.toDataURL();a.click();}
+
+// ─────────── WEB SEARCH ───────────
+let searchTab='all';
+function setTab(el,tab){searchTab=tab;document.querySelectorAll('.stab').forEach(x=>x.classList.remove('act'));el.classList.add('act');}
+function doSearch(){
+  const q=document.getElementById('searchInput').value.trim();
+  if(!q){toast('Enter a search query',true);return;}
+  const tabUrls={all:`https://www.google.com/search?q=${encodeURIComponent(q)}`,news:`https://news.google.com/search?q=${encodeURIComponent(q)}`,images:`https://www.google.com/search?q=${encodeURIComponent(q)}&tbm=isch`,videos:`https://www.youtube.com/results?search_query=${encodeURIComponent(q)}`,maps:`https://www.google.com/maps/search/${encodeURIComponent(q)}`};
+  const url=tabUrls[searchTab]||tabUrls.all;
+  const res=document.getElementById('searchResults');
+  res.innerHTML=`
+    <div class="sr-card" onclick="window.open('${url}','_blank')">
+      <h4>🌐 Open "${q}" in Google ${searchTab==='all'?'Search':searchTab.charAt(0).toUpperCase()+searchTab.slice(1)}</h4>
+      <p>Click to open full search results in a new tab with live Google data.</p>
+      <div class="src-url">${url.substring(0,60)}...</div>
+    </div>
+    <div style="text-align:center;padding:20px;color:var(--dim)">
+      <div style="font-size:13px;margin-bottom:12px">🧠 Or let Apex Mind AI answer this:</div>
+      <button class="bp" style="max-width:300px" onclick="askAISearch('${q.replace(/'/g,"\\'")}')">Ask Apex Mind AI Instead →</button>
+    </div>`;
+}
+async function askAISearch(q){
+  const res=document.getElementById('searchResults');
+  res.innerHTML=`<div style="text-align:center;padding:32px;color:var(--dim)"><div style="font-size:24px;animation:spin 1s linear infinite;display:inline-block">⚙️</div><p style="margin-top:10px;font-size:12px">Apex Mind AI is searching...</p></div>`;
+  try{
+    const reply=await callAI(`Search and answer: ${q}`,'general');
+    res.innerHTML=`<div class="sr-card"><h4>🧠 Apex Mind AI Answer</h4><p style="white-space:pre-wrap">${reply.replace(/</g,'&lt;')}</p></div>
+    <div class="sr-card" onclick="window.open('https://www.google.com/search?q=${encodeURIComponent(q)}','_blank')"><h4>🌐 Also see Google results</h4><p>Click to open live Google search in a new tab.</p></div>`;
+  }catch(e){res.innerHTML='<div style="color:var(--red);padding:20px">Error fetching AI answer.</div>';}
+}
+
+// ─────────── HAIR ANALYSIS ───────────
+async function analyzeHair(){
+  const loss=document.getElementById('sv1').textContent;
+  const dry=document.getElementById('sv2').textContent;
+  const dandruff=document.getElementById('sv3').textContent;
+  const breakage=document.getElementById('sv4').textContent;
+  const syms=[...document.querySelectorAll('.sym.sel')].map(x=>x.textContent).join(', ')||'None selected';
+  const type=document.getElementById('hairType').value||'Not specified';
+  const concern=document.getElementById('hairConcern').value||'General hair care';
+  const res=document.getElementById('hairRes');
+  res.style.display='block';
+  document.getElementById('hairResText').innerHTML='<div style="color:var(--cyan);font-size:12px">🔬 Analyzing your hair profile...</div>';
+  const prompt=`Hair analysis for patient:
+- Hair loss severity: ${loss}/10
+- Scalp dryness: ${dry}/10
+- Dandruff severity: ${dandruff}/10
+- Hair breakage: ${breakage}/10
+- Symptoms: ${syms}
+- Hair type: ${type}
+- Main concern: ${concern}
+
+Provide: 1) Diagnosis summary 2) Root causes 3) Top 5 specific product recommendations 4) Daily hair care routine 5) Dietary advice 6) Warning signs to watch for. Be specific and practical.`;
+  try{
+    const reply=await callAI(prompt,'hair');
+    document.getElementById('hairResText').innerHTML=reply.replace(/</g,'&lt;').replace(/\n/g,'<br>');
+  }catch(e){document.getElementById('hairResText').textContent='Error analyzing. Please try again.';}
+}
+
+// ─────────── CAMERA ───────────
+async function startCam(){
+  try{
+    camStream=await navigator.mediaDevices.getUserMedia({video:{facingMode:'environment'},audio:false});
+    const vid=document.getElementById('camVid');
+    vid.srcObject=camStream;vid.play();
+    vid.style.display='block';
+    document.getElementById('camPH').style.display='none';
+    document.getElementById('camOv').classList.add('scanning');
+    document.getElementById('startCam').style.display='none';
+    document.getElementById('stopCam').style.display='inline-flex';
+    document.getElementById('scanBtn').style.display='inline-flex';
+    document.getElementById('snapBtn').style.display='inline-flex';
+    toast('Camera active! 📷');
+  }catch(e){toast('Camera access denied or unavailable',true);}
+}
+function stopCam(){
+  if(camStream)camStream.getTracks().forEach(t=>t.stop());camStream=null;
+  document.getElementById('camVid').style.display='none';
+  document.getElementById('camPH').style.display='block';
+  document.getElementById('camOv').classList.remove('scanning');
+  document.getElementById('startCam').style.display='inline-flex';
+  document.getElementById('stopCam').style.display='none';
+  document.getElementById('scanBtn').style.display='none';
+  document.getElementById('snapBtn').style.display='none';
+}
+async function scanObj(){
+  const res=document.getElementById('camResult');
+  res.style.display='block';
+  document.getElementById('camResText').innerHTML='<span style="color:var(--cyan)">🔍 Scanning visual field...</span>';
+  const snap=takeSnap(true);
+  const reply=await callAI('The user is using the Visual Scanner to scan an object or scene. Describe what a smart AI might notice in a live camera feed in a typical room setting, and provide useful information about common objects a student or professional might scan. Be helpful and informative.','general');
+  document.getElementById('camResText').innerHTML=reply.replace(/</g,'&lt;').replace(/\n/g,'<br>');
+}
+function takeSnap(returnOnly=false){
+  const vid=document.getElementById('camVid');
+  if(!vid.srcObject)return;
+  const c=document.getElementById('snapCanvas');
+  c.width=vid.videoWidth||640;c.height=vid.videoHeight||480;
+  c.getContext('2d').drawImage(vid,0,0);
+  if(!returnOnly){c.style.display='block';toast('Snapshot taken! 📸');}
+  return c.toDataURL();
+}
+function searchGoogle(){
+  const q=prompt('What would you like to search on Google?');
+  if(q)window.open(`https://www.google.com/search?q=${encodeURIComponent(q)}&tbm=isch`,'_blank');
+}
+</script>
 </body>
 </html>
+HTMLEOF
+echo "Website done: $(wc -c < /mnt/user-data/outputs/ApexMindAI_Website.html) bytes"
