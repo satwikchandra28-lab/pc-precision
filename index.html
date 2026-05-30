@@ -1,1167 +1,291 @@
-bash
-
-cat > /mnt/user-data/outputs/ApexMindAI_Website.html << 'HTMLEOF'
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Apex Mind AI – Built by Satwik Chandra</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Sora:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
-<style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --bg:#070710;--sf:#0d0d1e;--sf2:#13132a;
-  --border:rgba(100,120,255,0.15);
-  --cyan:#00d4ff;--purple:#7c3aed;--amber:#f59e0b;
-  --green:#10b981;--red:#ef4444;--pink:#ec4899;
-  --text:#e8e8f0;--dim:#7878a0;
-  --fd:'Rajdhani',sans-serif;--fb:'Sora',sans-serif;
-}
-html,body{height:100%;font-family:var(--fb);background:var(--bg);color:var(--text);overflow-x:hidden}
-::-webkit-scrollbar{width:4px}::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Apex Mind AI – Powered by Satwik Chandra</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Sora:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --bg:#070710;--sf:#0d0d1e;--sf2:#13132a;
+      --border:rgba(100,120,255,0.15);
+      --cyan:#00d4ff;--purple:#7c3aed;--amber:#f59e0b;
+      --green:#10b981;--red:#ef4444;--pink:#ec4899;
+      --text:#e8e8f0;--dim:#7878a0;
+      --fd:'Rajdhani',sans-serif;--fb:'Sora',sans-serif;
+    }
+    html,body{height:100%;font-family:var(--fb);background:var(--bg);color:var(--text);overflow-x:hidden}
+    ::-webkit-scrollbar{width:4px}
+    ::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+    .orbs{position:fixed;inset:0;pointer-events:none;z-index:0}
+    .orb{position:absolute;border-radius:50%;filter:blur(80px);opacity:.12;animation:drift 14s ease-in-out infinite alternate}
+    .o1{width:500px;height:500px;background:var(--purple);top:-120px;left:-120px}
+    .o2{width:400px;height:400px;background:var(--cyan);bottom:-120px;right:-120px;animation-delay:-5s}
+    @keyframes drift{from{transform:translate(0,0) scale(1)}to{transform:translate(35px,25px) scale(1.08)}}
+    
+    .page{position:fixed;inset:0;z-index:10;display:flex;align-items:center;justify-content:center;transition:opacity .35s,transform .35s}
+    .page.off{opacity:0;pointer-events:none;transform:translateY(18px);display:none !important}
+    
+    #loading{flex-direction:column;z-index:200;background:var(--bg)}
+    .ld-logo{font-family:var(--fd);font-size:38px;font-weight:700;letter-spacing:5px;background:linear-gradient(135deg,var(--cyan),#fff,var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    .ld-sub{color:var(--dim);font-size:12px;letter-spacing:3px;margin-top:6px}
+    .ld-bar{width:220px;height:2px;background:var(--border);border-radius:2px;overflow:hidden;margin-top:28px}
+    .ld-fill{height:100%;background:linear-gradient(90deg,var(--cyan),var(--purple));animation:lf 1.2s ease forwards}
+    @keyframes lf{from{width:0}to{width:100%}}
+    
+    /* LOGIN SCREEN STYLE */
+    #loginPage { z-index: 50; background: var(--bg); }
+    .ac{background:rgba(13,13,30,.88);backdrop-filter:blur(24px);border:1px solid var(--border);border-radius:24px;padding:44px 38px;width:420px;max-width:95vw;box-shadow:0 0 80px rgba(0,212,255,.05),0 40px 80px rgba(0,0,0,.5);position:relative;overflow:hidden}
+    .ac::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--cyan),var(--purple),transparent)}
+    .al{text-align:center;margin-bottom:28px}
+    .al h1{font-family:var(--fd);font-size:26px;font-weight:700;letter-spacing:2px;background:linear-gradient(135deg,var(--cyan),#fff,var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    .al p{color:var(--dim);font-size:12px;margin-top:3px}
+    .fg{margin-bottom:14px}
+    .fg label{display:block;font-size:11px;font-weight:500;color:var(--dim);margin-bottom:6px;letter-spacing:.5px;text-transform:uppercase}
+    .fg input,.fg textarea{width:100%;padding:11px 14px;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:10px;color:var(--text);font-family:var(--fb);font-size:13px;transition:all .2s;outline:none}
+    .fg input:focus{border-color:var(--cyan);background:rgba(0,212,255,.04);box-shadow:0 0 0 3px rgba(0,212,255,.1)}
+    .bp{width:100%;padding:12px;border:none;border-radius:10px;background:linear-gradient(135deg,var(--cyan),var(--purple));color:#fff;font-family:var(--fb);font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;letter-spacing:.4px}
+    .bp:hover{transform:translateY(-1px);box-shadow:0 8px 22px rgba(0,212,255,.3)}
 
-/* ── ORBS ── */
-.orbs{position:fixed;inset:0;pointer-events:none;z-index:0}
-.orb{position:absolute;border-radius:50%;filter:blur(80px);opacity:.12;animation:drift 14s ease-in-out infinite alternate}
-.o1{width:500px;height:500px;background:var(--purple);top:-120px;left:-120px}
-.o2{width:400px;height:400px;background:var(--cyan);bottom:-120px;right:-120px;animation-delay:-5s}
-.o3{width:280px;height:280px;background:var(--amber);top:50%;left:50%;transform:translate(-50%,-50%);animation-delay:-9s}
-@keyframes drift{from{transform:translate(0,0) scale(1)}to{transform:translate(35px,25px) scale(1.08)}}
-
-/* ── PAGES ── */
-.page{position:fixed;inset:0;z-index:10;display:flex;align-items:center;justify-content:center;transition:opacity .35s,transform .35s}
-.page.off{opacity:0;pointer-events:none;transform:translateY(18px)}
-
-/* ── LOADING ── */
-#loading{flex-direction:column;z-index:200;background:var(--bg)}
-.ld-logo{font-family:var(--fd);font-size:38px;font-weight:700;letter-spacing:5px;background:linear-gradient(135deg,var(--cyan),#fff,var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.ld-sub{color:var(--dim);font-size:12px;letter-spacing:3px;margin-top:6px}
-.ld-bar{width:220px;height:2px;background:var(--border);border-radius:2px;overflow:hidden;margin-top:28px}
-.ld-fill{height:100%;background:linear-gradient(90deg,var(--cyan),var(--purple));animation:lf 1.6s ease forwards}
-@keyframes lf{from{width:0}to{width:100%}}
-.ld-tag{margin-top:16px;font-size:11px;color:rgba(0,212,255,.5);letter-spacing:2px}
-
-/* ── AUTH CARD ── */
-.ac{background:rgba(13,13,30,.88);backdrop-filter:blur(24px);border:1px solid var(--border);border-radius:24px;padding:44px 38px;width:420px;max-width:95vw;box-shadow:0 0 80px rgba(0,212,255,.05),0 40px 80px rgba(0,0,0,.5);position:relative;overflow:hidden}
-.ac::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--cyan),var(--purple),transparent)}
-.al{text-align:center;margin-bottom:28px}
-.al .li{width:60px;height:60px;margin:0 auto 10px;background:linear-gradient(135deg,var(--cyan),var(--purple));border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:26px;box-shadow:0 0 28px rgba(0,212,255,.3)}
-.al h1{font-family:var(--fd);font-size:26px;font-weight:700;letter-spacing:2px;background:linear-gradient(135deg,var(--cyan),#fff,var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.al p{color:var(--dim);font-size:12px;margin-top:3px}
-.at{font-family:var(--fd);font-size:21px;font-weight:600;margin-bottom:4px}
-.as{color:var(--dim);font-size:12px;margin-bottom:24px}
-.fg{margin-bottom:14px}
-.fg label{display:block;font-size:11px;font-weight:500;color:var(--dim);margin-bottom:6px;letter-spacing:.5px;text-transform:uppercase}
-.fg input,.fg select,.fg textarea{width:100%;padding:11px 14px;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:10px;color:var(--text);font-family:var(--fb);font-size:13px;transition:all .2s;outline:none}
-.fg input:focus,.fg select:focus{border-color:var(--cyan);background:rgba(0,212,255,.04);box-shadow:0 0 0 3px rgba(0,212,255,.1)}
-.fg input::placeholder,.fg textarea::placeholder{color:var(--dim)}
-.bp{width:100%;padding:12px;border:none;border-radius:10px;background:linear-gradient(135deg,var(--cyan),var(--purple));color:#fff;font-family:var(--fb);font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;letter-spacing:.4px}
-.bp:hover{transform:translateY(-1px);box-shadow:0 8px 22px rgba(0,212,255,.3)}
-.bp:disabled{opacity:.55;cursor:not-allowed;transform:none}
-.div{display:flex;align-items:center;gap:10px;margin:16px 0}
-.div span{flex:1;height:1px;background:var(--border)}.div p{color:var(--dim);font-size:11px;white-space:nowrap}
-.bs{width:100%;padding:10px;border:1px solid var(--border);background:rgba(255,255,255,.03);border-radius:10px;color:var(--text);font-family:var(--fb);font-size:13px;font-weight:500;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:9px;margin-bottom:9px}
-.bs:hover{background:rgba(255,255,255,.07);border-color:rgba(255,255,255,.2)}
-.bs svg{width:17px;height:17px;flex-shrink:0}
-.aswitch{text-align:center;margin-top:20px;font-size:12px;color:var(--dim)}
-.aswitch a{color:var(--cyan);text-decoration:none;font-weight:500;cursor:pointer}
-.aswitch a:hover{text-decoration:underline}
-.aerr{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);border-radius:8px;padding:9px 12px;font-size:12px;color:#fca5a5;margin-bottom:14px;display:none}
-.asuc{background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.3);border-radius:8px;padding:9px 12px;font-size:12px;color:#6ee7b7;margin-bottom:14px;display:none}
-.pfx{display:flex;gap:8px}
-.pfx select{width:86px;flex-shrink:0;padding:11px 6px;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:10px;color:var(--text);font-family:var(--fb);font-size:13px;outline:none}
-.otp{display:flex;gap:7px;justify-content:center;margin:14px 0}
-.otp input{width:46px;height:54px;text-align:center;font-size:20px;font-weight:700;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:10px;color:var(--text);font-family:var(--fd);outline:none;transition:all .2s}
-.otp input:focus{border-color:var(--cyan);background:rgba(0,212,255,.04)}
-
-/* ── GOOGLE MODAL ── */
-.moverlay{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:100;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(4px);opacity:0;pointer-events:none;transition:opacity .2s}
-.moverlay.show{opacity:1;pointer-events:all}
-.modal{background:#fff;border-radius:16px;padding:28px;width:340px;max-width:95vw;color:#333;animation:mIn .3s ease}
-@keyframes mIn{from{transform:scale(.9);opacity:0}to{transform:scale(1);opacity:1}}
-.mh{display:flex;align-items:center;gap:10px;margin-bottom:18px}
-.mh h3{font-size:17px;font-weight:600;color:#222}
-.ga{display:flex;align-items:center;gap:10px;padding:11px;border:1px solid #e0e0e0;border-radius:8px;cursor:pointer;transition:all .2s;margin-bottom:7px}
-.ga:hover{background:#f5f5f5}
-.gav{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,var(--purple),var(--cyan));display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;font-size:15px}
-.gai h4{font-size:13px;font-weight:500;color:#222}.gai p{font-size:11px;color:#666}
-.gadd{display:flex;align-items:center;gap:10px;padding:11px;cursor:pointer;color:#1a73e8;font-size:13px;font-weight:500;transition:all .2s;border-radius:8px}
-.gadd:hover{background:#f0f4ff}
-.mfooter{margin-top:14px;display:flex;justify-content:flex-end;gap:8px}
-.mbtn{padding:7px 18px;border-radius:6px;border:none;font-size:13px;cursor:pointer;font-weight:500}
-.mbtn.c{background:transparent;color:#1a73e8}.mbtn.ok{background:#1a73e8;color:#fff}
-
-/* ── APP LAYOUT ── */
-#appPage{align-items:stretch;justify-content:stretch;flex-direction:row}
-
-/* SIDEBAR */
-.sb{width:255px;flex-shrink:0;background:rgba(11,11,26,.92);border-right:1px solid var(--border);display:flex;flex-direction:column;padding:18px 0;backdrop-filter:blur(20px);z-index:20;transition:transform .3s}
-.sblogo{padding:0 18px 18px;border-bottom:1px solid var(--border)}
-.sblogo .lr{display:flex;align-items:center;gap:10px}
-.sblogo .li{width:38px;height:38px;background:linear-gradient(135deg,var(--cyan),var(--purple));border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;box-shadow:0 0 18px rgba(0,212,255,.22)}
-.sblogo h2{font-family:var(--fd);font-size:17px;font-weight:700;letter-spacing:1px}
-.sblogo span{font-size:9px;color:var(--cyan);font-weight:500;letter-spacing:2px}
-.netst{margin:10px 10px 0;padding:7px 10px;background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.2);border-radius:8px;display:flex;align-items:center;gap:7px;font-size:10px;color:#6ee7b7}
-.ndot{width:5px;height:5px;border-radius:50%;background:var(--green);box-shadow:0 0 7px var(--green);animation:pdot 2s infinite;flex-shrink:0}
-@keyframes pdot{0%,100%{opacity:1}50%{opacity:.35}}
-.sbsec{padding:14px 10px 6px}
-.sbsl{font-size:9px;color:var(--dim);letter-spacing:2px;text-transform:uppercase;padding:0 8px;margin-bottom:7px}
-.ni{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:9px;cursor:pointer;transition:all .2s;font-size:13px;font-weight:500;color:var(--dim);position:relative}
-.ni:hover{background:rgba(255,255,255,.05);color:var(--text)}
-.ni.act{background:rgba(0,212,255,.1);color:var(--cyan)}
-.ni.act::before{content:'';position:absolute;left:0;top:22%;bottom:22%;width:3px;background:var(--cyan);border-radius:2px}
-.ni .ic{width:30px;height:30px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:14px;background:rgba(255,255,255,.05);flex-shrink:0}
-.ni.act .ic{background:rgba(0,212,255,.14)}
-.nbadge{margin-left:auto;background:var(--cyan);color:#000;font-size:9px;font-weight:700;padding:2px 5px;border-radius:8px}
-.sbbot{margin-top:auto;padding:14px 10px;border-top:1px solid var(--border)}
-.ur{display:flex;align-items:center;gap:9px;padding:7px 9px;border-radius:9px;cursor:pointer;transition:all .2s}
-.ur:hover{background:rgba(255,255,255,.05)}
-.uav{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--purple),var(--cyan));display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0}
-.ui{flex:1;min-width:0}.un{font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.upl{font-size:10px;color:var(--cyan)}
-.lob{background:none;border:none;cursor:pointer;color:var(--dim);font-size:15px;padding:4px;border-radius:6px;transition:all .2s}
-.lob:hover{color:var(--red);background:rgba(239,68,68,.1)}
-
-/* MAIN */
-.mc{flex:1;display:flex;flex-direction:column;min-width:0;overflow:hidden}
-.tb{height:58px;background:rgba(11,11,26,.82);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 18px;gap:10px;backdrop-filter:blur(10px);flex-shrink:0}
-.tbtitle{font-family:var(--fd);font-size:17px;font-weight:700;flex:1;letter-spacing:1px}
-.tbbadge{background:rgba(0,212,255,.1);border:1px solid rgba(0,212,255,.3);color:var(--cyan);font-size:10px;padding:3px 9px;border-radius:16px;font-weight:500}
-.menubtn{display:none;background:none;border:none;color:var(--text);font-size:19px;cursor:pointer;padding:5px}
-.sbov{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:15;display:none}
-.sbov.show{display:block}
-
-/* PANEL */
-.panel{display:none;flex:1;flex-direction:column;overflow:hidden}
-.panel.act{display:flex}
-
-/* CHAT */
-.ca{flex:1;overflow-y:auto;padding:18px;display:flex;flex-direction:column;gap:14px;scroll-behavior:smooth}
-.cwelcome{text-align:center;padding:36px 18px}
-.cwelcome .wi{font-size:44px;margin-bottom:14px}
-.cwelcome h3{font-family:var(--fd);font-size:22px;font-weight:700;margin-bottom:6px}
-.cwelcome p{color:var(--dim);font-size:13px;max-width:380px;margin:0 auto 20px;line-height:1.6}
-.chips{display:flex;flex-wrap:wrap;gap:7px;justify-content:center}
-.chip{padding:7px 14px;background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:18px;font-size:11px;cursor:pointer;transition:all .2s;color:var(--dim)}
-.chip:hover{background:rgba(0,212,255,.1);border-color:var(--cyan);color:var(--cyan)}
-.msg{display:flex;gap:10px;animation:fu .28s ease;max-width:780px}
-@keyframes fu{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-.msg.usr{flex-direction:row-reverse;align-self:flex-end}
-.mav{width:34px;height:34px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;margin-top:2px}
-.msg.ai .mav{background:linear-gradient(135deg,var(--cyan),var(--purple))}
-.msg.usr .mav{background:linear-gradient(135deg,var(--purple),var(--amber))}
-.mb{flex:1;min-width:0}
-.mn{font-size:10px;color:var(--dim);margin-bottom:3px;font-weight:500}
-.msg.usr .mn{text-align:right}
-.mbu{padding:11px 14px;border-radius:14px;font-size:13px;line-height:1.75;max-width:580px;white-space:pre-wrap}
-.msg.ai .mbu{background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:3px 14px 14px 14px}
-.msg.usr .mbu{background:linear-gradient(135deg,rgba(0,212,255,.14),rgba(124,58,237,.14));border:1px solid rgba(0,212,255,.18);border-radius:14px 3px 14px 14px;margin-left:auto}
-.mbu img{max-width:100%;border-radius:8px;margin-top:8px;display:block}
-.mt{font-size:9px;color:var(--dim);margin-top:3px}
-.msg.usr .mt{text-align:right}
-.typing{display:flex;align-items:center;gap:4px;padding:12px 14px;background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:3px 14px 14px 14px;width:fit-content}
-.td{width:5px;height:5px;border-radius:50%;background:var(--cyan);animation:tp 1.4s infinite}
-.td:nth-child(2){animation-delay:.2s}.td:nth-child(3){animation-delay:.4s}
-@keyframes tp{0%,80%,100%{transform:scale(.7);opacity:.5}40%{transform:scale(1);opacity:1}}
-.ia{padding:14px 18px;background:rgba(11,11,26,.82);border-top:1px solid var(--border);backdrop-filter:blur(10px);flex-shrink:0}
-.itb{display:flex;gap:6px;margin-bottom:8px;flex-wrap:wrap}
-.tbtn{padding:5px 11px;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:7px;color:var(--dim);font-size:11px;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:5px;font-family:var(--fb)}
-.tbtn:hover{background:rgba(255,255,255,.08);color:var(--text)}
-.tbtn.act{background:rgba(0,212,255,.1);border-color:rgba(0,212,255,.4);color:var(--cyan)}
-.ir{display:flex;gap:8px;align-items:flex-end}
-.ib{flex:1;min-height:46px;max-height:140px;padding:12px 14px;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:11px;color:var(--text);font-family:var(--fb);font-size:13px;resize:none;outline:none;transition:all .2s;line-height:1.5;overflow-y:auto}
-.ib:focus{border-color:var(--cyan);background:rgba(0,212,255,.03)}
-.ib::placeholder{color:var(--dim)}
-.snd{width:46px;height:46px;border:none;border-radius:11px;flex-shrink:0;background:linear-gradient(135deg,var(--cyan),var(--purple));color:#fff;font-size:17px;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center}
-.snd:hover{transform:scale(1.06);box-shadow:0 4px 14px rgba(0,212,255,.3)}
-.snd:disabled{opacity:.5;cursor:not-allowed;transform:none}
-
-/* IMAGE GEN PANEL */
-.igp{padding:18px;overflow-y:auto;flex:1}
-.ph{margin-bottom:20px}.ph h2{font-family:var(--fd);font-size:21px;font-weight:700;margin-bottom:3px}.ph p{color:var(--dim);font-size:12px}
-.card{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:15px;padding:18px;margin-bottom:14px}
-.card h3{font-family:var(--fd);font-size:15px;margin-bottom:14px;display:flex;align-items:center;gap:7px}
-.style-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:14px}
-.sg-item{padding:9px 6px;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:8px;text-align:center;cursor:pointer;transition:all .2s;font-size:11px;color:var(--dim)}
-.sg-item:hover,.sg-item.sel{background:rgba(0,212,255,.1);border-color:var(--cyan);color:var(--cyan)}
-.sg-item .si{font-size:18px;margin-bottom:4px}
-.img-result{margin-top:14px;display:none}
-.img-result img{width:100%;border-radius:12px;display:block}
-.img-actions{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
-.iabtn{padding:8px 16px;border-radius:8px;border:1px solid var(--border);background:rgba(255,255,255,.04);color:var(--text);font-family:var(--fb);font-size:12px;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:5px}
-.iabtn:hover{background:rgba(255,255,255,.09)}
-.iabtn.primary{background:linear-gradient(135deg,var(--cyan),var(--purple));border:none;color:#fff;font-weight:600}
-.igenloading{text-align:center;padding:32px;display:none}
-.igenloading .il{font-size:32px;animation:spin 1.5s linear infinite;display:inline-block}
-@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
-
-/* EDIT PANEL */
-.ep{padding:18px;overflow-y:auto;flex:1}
-.upload-area{border:2px dashed var(--border);border-radius:14px;padding:32px;text-align:center;cursor:pointer;transition:all .2s;margin-bottom:14px}
-.upload-area:hover{border-color:var(--cyan);background:rgba(0,212,255,.04)}
-.ua-icon{font-size:36px;margin-bottom:10px}
-.ua-text{font-size:13px;color:var(--dim)}
-.filter-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}
-.fi{padding:8px;border:1px solid var(--border);border-radius:8px;text-align:center;cursor:pointer;transition:all .2s;font-size:11px;color:var(--dim)}
-.fi:hover,.fi.sel{background:rgba(0,212,255,.1);border-color:var(--cyan);color:var(--cyan)}
-.fi span{font-size:16px;display:block;margin-bottom:3px}
-#edit-canvas{max-width:100%;border-radius:12px;display:none;margin-bottom:12px}
-.slider-group{margin-bottom:12px}
-.slider-group label{display:flex;justify-content:space-between;font-size:12px;color:var(--dim);margin-bottom:5px}
-.slider-group label b{color:var(--cyan);font-family:var(--fd)}
-input[type=range]{width:100%;appearance:none;height:5px;border-radius:3px;background:var(--border);outline:none;cursor:pointer}
-input[type=range]::-webkit-slider-thumb{appearance:none;width:16px;height:16px;border-radius:50%;background:linear-gradient(135deg,var(--cyan),var(--purple));cursor:pointer;box-shadow:0 0 8px rgba(0,212,255,.35)}
-
-/* SEARCH PANEL */
-.scp{padding:18px;overflow-y:auto;flex:1}
-.search-bar{display:flex;gap:8px;margin-bottom:20px}
-.search-bar input{flex:1;padding:12px 16px;background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:11px;color:var(--text);font-family:var(--fb);font-size:13px;outline:none;transition:all .2s}
-.search-bar input:focus{border-color:var(--cyan)}
-.search-bar button{padding:12px 20px;border:none;border-radius:11px;background:linear-gradient(135deg,var(--cyan),var(--purple));color:#fff;font-family:var(--fb);font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap}
-.search-tabs{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
-.stab{padding:6px 14px;border-radius:20px;border:1px solid var(--border);background:rgba(255,255,255,.04);color:var(--dim);font-size:12px;cursor:pointer;transition:all .2s}
-.stab:hover,.stab.act{background:rgba(0,212,255,.1);border-color:var(--cyan);color:var(--cyan)}
-.sr-card{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:10px;cursor:pointer;transition:all .2s}
-.sr-card:hover{background:rgba(255,255,255,.06);border-color:rgba(0,212,255,.3)}
-.sr-card h4{font-size:13px;font-weight:600;color:var(--cyan);margin-bottom:4px}
-.sr-card p{font-size:12px;color:var(--dim);line-height:1.5}
-.sr-card .src-url{font-size:10px;color:rgba(0,212,255,.5);margin-top:5px}
-
-/* HAIR */
-.hp{padding:18px;overflow-y:auto;flex:1}
-.sc-card{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:14px;padding:17px;margin-bottom:13px}
-.sc-card h3{font-family:var(--fd);font-size:14px;margin-bottom:13px;display:flex;align-items:center;gap:7px}
-.sg2{margin-bottom:16px}
-.sl{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
-.sl span{font-size:12px;color:var(--dim)}.sv{font-family:var(--fd);font-size:17px;font-weight:700;color:var(--cyan)}
-.symg{display:grid;grid-template-columns:repeat(2,1fr);gap:7px;margin-bottom:14px}
-.sym{padding:7px 10px;background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:7px;font-size:11px;cursor:pointer;transition:all .2s;text-align:center}
-.sym:hover,.sym.sel{background:rgba(0,212,255,.1);border-color:var(--cyan);color:var(--cyan)}
-.hair-res{background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.2);border-radius:11px;padding:15px;display:none;margin-top:12px}
-.hair-res h4{color:var(--green);font-size:13px;font-weight:600;margin-bottom:7px}
-.hair-res p{font-size:12px;line-height:1.75}
-
-/* CAMERA */
-.camp{padding:18px;overflow-y:auto;flex:1}
-.cf{width:100%;aspect-ratio:16/9;background:#000;border-radius:14px;overflow:hidden;border:2px solid var(--border);position:relative;display:flex;align-items:center;justify-content:center;margin-bottom:12px;max-width:560px}
-.cf video{width:100%;height:100%;object-fit:cover}
-.cph{text-align:center;padding:32px}
-.cov{position:absolute;inset:0;pointer-events:none}
-.scanline{position:absolute;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--cyan),transparent);animation:scl 3s linear infinite;opacity:0}
-@keyframes scl{0%{top:0;opacity:0}5%{opacity:1}95%{opacity:1}100%{top:100%;opacity:0}}
-.scanning .scanline{opacity:1}
-.cc{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px}
-.cbtn{padding:9px 20px;background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:9px;color:var(--text);font-family:var(--fb);font-size:13px;cursor:pointer;transition:all .2s}
-.cbtn:hover{background:rgba(255,255,255,.1)}
-.cbtn.pr{background:linear-gradient(135deg,var(--cyan),var(--purple));border:none;color:#fff;font-weight:600}
-.cam-r{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:11px;padding:14px;display:none;margin-top:12px}
-.cam-r h4{font-size:12px;color:var(--cyan);margin-bottom:7px;font-weight:600}
-.cam-r p{font-size:12px;line-height:1.7}
-
-/* TOAST */
-.toast{position:fixed;bottom:22px;right:22px;background:rgba(16,185,129,.92);color:#fff;padding:11px 18px;border-radius:9px;font-size:12px;font-weight:500;z-index:400;transform:translateY(70px);opacity:0;transition:all .3s;max-width:280px}
-.toast.show{transform:translateY(0);opacity:1}
-.toast.err{background:rgba(239,68,68,.92)}
-
-/* CREDITS STRIP */
-.credits{padding:6px 10px;background:rgba(0,212,255,.04);border-top:1px solid var(--border);font-size:10px;color:rgba(0,212,255,.5);text-align:center;flex-shrink:0;letter-spacing:.5px}
-
-@media(max-width:768px){
-  .sb{position:fixed;left:0;top:0;bottom:0;transform:translateX(-100%);z-index:50}
-  .sb.open{transform:translateX(0)}
-  .menubtn{display:flex}
-  .ac{padding:28px 20px}
-  .otp input{width:38px;height:48px;font-size:17px}
-  .style-grid,.filter-grid,.symg{grid-template-columns:repeat(2,1fr)}
-}
-</style>
+    /* APP INTERFACE */
+    #appPage{align-items:stretch;justify-content:stretch;flex-direction:row; display: none;}
+    #appPage.on { display: flex; }
+    .sb{width:255px;flex-shrink:0;background:rgba(11,11,26,.92);border-right:1px solid var(--border);display:flex;flex-direction:column;padding:18px 0;backdrop-filter:blur(20px);z-index:20;transition:transform .3s}
+    .sblogo{padding:0 18px 18px;border-bottom:1px solid var(--border)}
+    .sblogo h2{font-family:var(--fd);font-size:17px;font-weight:700;letter-spacing:1px}
+    .sblogo span{font-size:9px;color:var(--cyan);font-weight:500;letter-spacing:2px}
+    .sbsec{padding:14px 10px 6px}
+    .sbsl{font-size:9px;color:var(--dim);letter-spacing:2px;text-transform:uppercase;padding:0 8px;margin-bottom:7px}
+    .ni{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:9px;cursor:pointer;transition:all .2s;font-size:13px;font-weight:500;color:var(--dim);position:relative}
+    .ni:hover{background:rgba(255,255,255,.05);color:var(--text)}
+    .ni.act{background:rgba(0,212,255,.1);color:var(--cyan)}
+    .ni .ic{width:30px;height:30px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:14px;background:rgba(255,255,255,.05);flex-shrink:0}
+    .ni.act .ic{background:rgba(0,0,0,.14)}
+    
+    .sbbot{margin-top:auto;padding:14px 10px;border-top:1px solid var(--border)}
+    .ur{display:flex;align-items:center;gap:9px;padding:7px 9px}
+    .uav{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--purple),var(--cyan));display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700}
+    .un{font-size:12px;font-weight:600}
+    
+    .mc{flex:1;display:flex;flex-direction:column;min-width:0;overflow:hidden}
+    .tb{height:58px;background:rgba(11,11,26,.82);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 18px;gap:10px}
+    .tbtitle{font-family:var(--fd);font-size:17px;font-weight:700;flex:1;letter-spacing:1px}
+    
+    .panel{display:none;flex:1;flex-direction:column;overflow:hidden}
+    .panel.act{display:flex}
+    .ca{flex:1;overflow-y:auto;padding:18px;display:flex;flex-direction:column;gap:14px}
+    .cwelcome{text-align:center;padding:36px 18px}
+    
+    .msg{display:flex;gap:10px;max-width:780px}
+    .msg.usr{flex-direction:row-reverse;align-self:flex-end}
+    .mav{width:34px;height:34px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700}
+    .msg.ai .mav{background:linear-gradient(135deg,var(--cyan),var(--purple))}
+    .msg.usr .mav{background:linear-gradient(135deg,var(--purple),var(--amber))}
+    .mb{flex:1;min-width:0}
+    .mbu{padding:11px 14px;border-radius:14px;font-size:13px;line-height:1.75;max-width:580px;white-space:pre-wrap}
+    .msg.ai .mbu{background:rgba(255,255,255,.05);border:1px solid var(--border)}
+    .msg.usr .mbu{background:rgba(0,212,255,.1);border:1px solid rgba(0,212,255,.2);margin-left:auto}
+    
+    .typing{display:flex;align-items:center;gap:4px;padding:12px 14px;background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:14px;width:fit-content}
+    .td{width:6px;height:6px;border-radius:50%;background:var(--cyan);animation:tp 1.4s infinite}
+    .td:nth-child(2){animation-delay:.2s}.td:nth-child(3){animation-delay:.4s}
+    @keyframes tp{0%,80%,100%{transform:scale(.7);opacity:.5}40%{transform:scale(1);opacity:1}}
+    
+    .ia{padding:14px 18px;background:rgba(11,11,26,.82);border-top:1px solid var(--border)}
+    .ir{display:flex;gap:8px;align-items:center}
+    .ib{flex:1;padding:12px 14px;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:11px;color:var(--text);font-family:var(--fb);font-size:13px;outline:none}
+    .snd{width:46px;height:46px;border:none;border-radius:11px;background:linear-gradient(135deg,var(--cyan),var(--purple));color:#fff;font-size:17px;cursor:pointer}
+    
+    .igp{padding:18px;overflow-y:auto;flex:1}
+    .card{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:15px;padding:18px;margin-bottom:14px}
+    .img-result{margin-top:14px;display:none}
+    .img-result img{width:100%;max-width:500px;border-radius:12px;display:block;border:1px solid var(--border)}
+    .igenloading{text-align:center;padding:32px;display:none;color:var(--cyan)}
+    .credits{padding:6px 10px;background:rgba(0,212,255,.04);border-top:1px solid var(--border);font-size:10px;color:rgba(0,212,255,.5);text-align:center}
+  </style>
 </head>
 <body>
 <div class="orbs"><div class="orb o1"></div><div class="orb o2"></div><div class="orb o3"></div></div>
-<div class="toast" id="toast"></div>
 
-<!-- LOADING -->
 <div class="page" id="loading">
   <div style="text-align:center">
     <div class="ld-logo">APEX MIND AI</div>
-    <div class="ld-sub">BUILT BY SATWIK CHANDRA · CEO</div>
+    <div class="ld-sub">BUILT BY SATWIK CHANDRA</div>
     <div class="ld-bar"><div class="ld-fill"></div></div>
-    <div class="ld-tag">INITIALIZING NEURAL NETWORKS...</div>
   </div>
 </div>
 
-<!-- LOGIN -->
-<div class="page off" id="loginPage">
+<div class="page" id="loginPage">
   <div class="ac">
     <div class="al">
-      <div class="li">🧠</div>
-      <h1>APEX MIND AI</h1>
-      <p>Built by Satwik Chandra · CEO & Founder</p>
+      <h1>APEX MIND CORE</h1>
+      <p>Secure Terminal Access Gateway</p>
     </div>
-    <h2 class="at">Welcome Back</h2>
-    <p class="as">Sign in to your intelligence workspace</p>
-    <div class="aerr" id="loginErr"></div>
-    <div class="fg"><label>Email</label><input type="email" id="lEmail" placeholder="you@example.com"/></div>
-    <div class="fg"><label>Password</label><input type="password" id="lPass" placeholder="Your password" onkeydown="if(event.key==='Enter')handleLogin()"/></div>
-    <button class="bp" onclick="handleLogin()">Sign In →</button>
-    <div class="div"><span></span><p>or continue with</p><span></span></div>
-    <button class="bs" onclick="openGoogle()">
-      <svg viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
-      Continue with Google
-    </button>
-    <button class="bs" onclick="showP('phonePage')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.36 9.67 19.79 19.79 0 01.25 1.07 2 2 0 012.23 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 7.91a16 16 0 006.72 6.72l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
-      Continue with Phone
-    </button>
-    <div class="aswitch">No account? <a onclick="showP('signupPage')">Create one free</a></div>
+    <div class="fg">
+      <label>Access Identity (Email)</label>
+      <input type="email" id="logEmail" placeholder="admin@apexmind.net"/>
+    </div>
+    <div class="fg">
+      <label>Security Keyphrase</label>
+      <input type="password" id="logPass" placeholder="••••••••"/>
+    </div>
+    <button class="bp" onclick="executeLogin()">Initialize Core Handshake →</button>
   </div>
 </div>
 
-<!-- SIGNUP -->
-<div class="page off" id="signupPage">
-  <div class="ac">
-    <div class="al"><div class="li">🧠</div><h1>APEX MIND AI</h1><p>Join the Next-Gen Intelligence Platform</p></div>
-    <h2 class="at">Create Account</h2><p class="as">Start your free AI workspace today</p>
-    <div class="aerr" id="suErr"></div><div class="asuc" id="suSuc"></div>
-    <div class="fg"><label>Full Name</label><input type="text" id="suName" placeholder="Satwik Chandra"/></div>
-    <div class="fg"><label>Email</label><input type="email" id="suEmail" placeholder="you@example.com"/></div>
-    <div class="fg"><label>Password</label><input type="password" id="suPass" placeholder="Min 6 characters"/></div>
-    <div class="fg"><label>Confirm Password</label><input type="password" id="suConf" placeholder="Repeat password"/></div>
-    <button class="bp" onclick="handleSignup()">Create Account →</button>
-    <div class="div"><span></span><p>or</p><span></span></div>
-    <button class="bs" onclick="openGoogle()">
-      <svg viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
-      Sign up with Google
-    </button>
-    <div class="aswitch">Have an account? <a onclick="showP('loginPage')">Sign in</a></div>
-  </div>
-</div>
-
-<!-- PHONE -->
-<div class="page off" id="phonePage">
-  <div class="ac">
-    <div class="al"><div class="li">📱</div><h1>APEX MIND AI</h1><p>Phone Verification</p></div>
-    <div id="ph1">
-      <h2 class="at">Enter Phone Number</h2><p class="as">We'll send a 6-digit OTP</p>
-      <div class="aerr" id="phErr"></div>
-      <div class="fg"><label>Phone Number</label>
-        <div class="pfx">
-          <select id="phCode"><option>🇮🇳 +91</option><option>🇺🇸 +1</option><option>🇬🇧 +44</option><option>🇦🇺 +61</option><option>🇦🇪 +971</option><option>🇸🇬 +65</option></select>
-          <input type="tel" id="phNum" placeholder="10-digit number"/>
-        </div>
-      </div>
-      <div class="fg"><label>Your Name</label><input type="text" id="phName" placeholder="Full name"/></div>
-      <button class="bp" onclick="sendOTP()">Send OTP →</button>
-    </div>
-    <div id="ph2" style="display:none">
-      <h2 class="at">Verify OTP</h2><p class="as">Code sent to <span id="phDisp" style="color:var(--cyan)"></span></p>
-      <div class="aerr" id="otpErr"></div>
-      <div class="otp" id="otpInputs">
-        <input type="text" maxlength="1" oninput="oi(this,0)" onkeydown="ok(event,0)"/>
-        <input type="text" maxlength="1" oninput="oi(this,1)" onkeydown="ok(event,1)"/>
-        <input type="text" maxlength="1" oninput="oi(this,2)" onkeydown="ok(event,2)"/>
-        <input type="text" maxlength="1" oninput="oi(this,3)" onkeydown="ok(event,3)"/>
-        <input type="text" maxlength="1" oninput="oi(this,4)" onkeydown="ok(event,4)"/>
-        <input type="text" maxlength="1" oninput="oi(this,5)" onkeydown="ok(event,5)"/>
-      </div>
-      <div style="text-align:center;font-size:11px;color:var(--dim);margin-bottom:14px">Demo OTP: <b style="color:var(--cyan)" id="demoOtp"></b></div>
-      <button class="bp" onclick="verifyOTP()">Verify & Sign In →</button>
-      <div class="aswitch" style="margin-top:14px"><a onclick="resendOTP()">Resend Code</a></div>
-    </div>
-    <div class="aswitch" style="margin-top:20px"><a onclick="showP('loginPage')">← Back</a></div>
-  </div>
-</div>
-
-<!-- GOOGLE MODAL -->
-<div class="moverlay" id="gModal">
-  <div class="modal">
-    <div class="mh">
-      <svg width="28" height="28" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
-      <h3>Sign in with Google</h3>
-    </div>
-    <p style="font-size:12px;color:#666;margin-bottom:14px">Choose an account for Apex Mind AI</p>
-    <div id="gAccounts"></div>
-    <div class="gadd" onclick="addGoogle()"><span style="font-size:18px">＋</span> Use another account</div>
-    <div class="mfooter"><button class="mbtn c" onclick="closeGoogle()">Cancel</button></div>
-  </div>
-</div>
-
-<!-- ============ MAIN APP ============ -->
-<div class="page off" id="appPage">
-  <div class="sbov" id="sbov" onclick="toggleSB()"></div>
-  <!-- SIDEBAR -->
-  <div class="sb" id="sb">
+<div class="page" id="appPage">
+  <div class="sb">
     <div class="sblogo">
-      <div class="lr"><div class="li">🧠</div><div><h2>APEX MIND</h2><span>AI v2.0 · BY SATWIK CHANDRA</span></div></div>
-    </div>
-    <div class="netst">
-      <div class="ndot"></div>
-      <div><div style="font-weight:600;font-size:11px">Live Network</div><div style="opacity:.7;font-size:9px">Google Index · Connected</div></div>
+      <h2>APEX MIND</h2><span>LIVE AI SUITE</span>
     </div>
     <div class="sbsec">
-      <div class="sbsl">AI Modes</div>
-      <div class="ni act" onclick="sw('chat')" id="nChat"><div class="ic">💬</div><span>AI Chat</span><span class="nbadge">PRO</span></div>
-      <div class="ni" onclick="sw('igen')" id="nIgen"><div class="ic">🎨</div><span>Image Generator</span></div>
-      <div class="ni" onclick="sw('iedit')" id="nIedit"><div class="ic">✏️</div><span>Image Editor</span></div>
-      <div class="ni" onclick="sw('search')" id="nSearch"><div class="ic">🔍</div><span>Web Search</span></div>
-      <div class="ni" onclick="sw('math')" id="nMath"><div class="ic">🔢</div><span>Math & GK</span></div>
-      <div class="ni" onclick="sw('hair')" id="nHair"><div class="ic">💆</div><span>Hair Diagnostics</span></div>
-      <div class="ni" onclick="sw('cam')" id="nCam"><div class="ic">📷</div><span>Visual Scanner</span></div>
+      <div class="sbsl">Workspace</div>
+      <div class="ni act" onclick="sw('chat')" id="nChat"><div class="ic">💬</div><span>Smart AI Chat</span></div>
+      <div class="ni" onclick="sw('igen')" id="nIgen"><div class="ic">🎨</div><span>Real Image Gen</span></div>
     </div>
     <div class="sbbot">
       <div class="ur">
-        <div class="uav" id="sbAv">?</div>
-        <div class="ui"><div class="un" id="sbName">User</div><div class="upl">Apex Pro Member</div></div>
-        <button class="lob" onclick="logout()" title="Sign Out">⎋</button>
+        <div class="uav">SC</div>
+        <div class="ui"><div class="un">Satwik Chandra</div></div>
       </div>
     </div>
   </div>
 
-  <!-- MAIN CONTENT -->
   <div class="mc">
     <div class="tb">
-      <button class="menubtn" onclick="toggleSB()">☰</button>
-      <div class="tbtitle" id="tbTitle">💬 AI Chat</div>
-      <div class="tbbadge" id="tbBadge">General Mode</div>
+      <div class="tbtitle" id="panelTitle">Smart AI Chat</div>
     </div>
 
-    <!-- CHAT PANEL -->
-    <div class="panel act" id="pChat" style="flex-direction:column">
+    <div class="panel act" id="p-chat">
       <div class="ca" id="chatArea">
-        <div class="cwelcome" id="chatWelcome">
-          <div class="wi">🧠</div>
-          <h3>Hello, <span id="wName">there</span>!</h3>
-          <p>I'm Apex Mind AI — built by <b style="color:var(--cyan)">Satwik Chandra</b>. Ask me anything — chat, code, math, creative writing, and more.</p>
-          <div class="chips">
-            <div class="chip" onclick="qs('What is quantum computing?')">Quantum Computing</div>
-            <div class="chip" onclick="qs('Solve: 2x²+5x-3=0')">Algebra</div>
-            <div class="chip" onclick="qs('Write a Python binary search')">Code</div>
-            <div class="chip" onclick="qs('Who is Elon Musk?')">General Knowledge</div>
-            <div class="chip" onclick="qs('Explain black holes simply')">Science</div>
-            <div class="chip" onclick="qs('Write a motivational quote')">Creative</div>
-          </div>
-        </div>
-      </div>
-      <div class="ia">
-        <div class="itb">
-          <button class="tbtn act" id="tm-gen" onclick="setCM('general','💬 General')">💬 General</button>
-          <button class="tbtn" id="tm-math" onclick="setCM('math','🔢 Math')">🔢 Math</button>
-          <button class="tbtn" id="tm-gk" onclick="setCM('gk','🌍 GK')">🌍 GK</button>
-          <button class="tbtn" id="tm-code" onclick="setCM('code','💻 Code')">💻 Code</button>
-          <button class="tbtn" id="tm-creative" onclick="setCM('creative','✨ Creative')">✨ Creative</button>
-        </div>
-        <div class="ir">
-          <textarea class="ib" id="chatInput" placeholder="Ask Apex Mind AI anything..." rows="1" onkeydown="handleKey(event)" oninput="ar(this)"></textarea>
-          <button class="snd" id="sendBtn" onclick="sendMsg()">➤</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- IMAGE GENERATOR PANEL -->
-    <div class="panel" id="pIgen">
-      <div class="igp">
-        <div class="ph"><h2>🎨 Image Generator</h2><p>Generate stunning AI images from your text description</p></div>
-        <div class="card">
-          <h3>✍️ Describe Your Image</h3>
-          <div class="fg"><textarea id="igPrompt" placeholder="e.g. A futuristic city at night with neon lights and flying cars, cyberpunk style, 4K ultra detailed..." style="min-height:90px;width:100%;padding:10px;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:10px;color:var(--text);font-family:var(--fb);font-size:13px;outline:none;resize:vertical;line-height:1.5"></textarea></div>
-          <h3 style="margin-top:14px">🎭 Style</h3>
-          <div class="style-grid" id="styleGrid">
-            <div class="sg-item sel" onclick="selStyle(this,'realistic')"><div class="si">📸</div>Realistic</div>
-            <div class="sg-item" onclick="selStyle(this,'anime')"><div class="si">🌸</div>Anime</div>
-            <div class="sg-item" onclick="selStyle(this,'digital art')"><div class="si">🎨</div>Digital Art</div>
-            <div class="sg-item" onclick="selStyle(this,'oil painting')"><div class="si">🖼️</div>Oil Painting</div>
-            <div class="sg-item" onclick="selStyle(this,'cyberpunk')"><div class="si">🤖</div>Cyberpunk</div>
-            <div class="sg-item" onclick="selStyle(this,'watercolor')"><div class="si">💧</div>Watercolor</div>
-          </div>
-          <div style="display:flex;gap:8px;align-items:center;margin-bottom:14px">
-            <div class="fg" style="flex:1;margin:0"><label>Size</label>
-              <select id="igSize" style="width:100%;padding:9px;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:var(--fb);font-size:13px;outline:none">
-                <option value="512x512">512×512 (Square)</option>
-                <option value="768x512">768×512 (Landscape)</option>
-                <option value="512x768">512×768 (Portrait)</option>
-                <option value="1024x768">1024×768 (Wide)</option>
-              </select>
-            </div>
-          </div>
-          <button class="bp" onclick="generateImage()">✨ Generate Image</button>
-        </div>
-        <div class="igenloading" id="igenLoad">
-          <div class="il">⚙️</div>
-          <p style="color:var(--dim);font-size:13px;margin-top:10px">Generating your image...<br><span style="font-size:11px">This may take a few seconds</span></p>
-        </div>
-        <div class="img-result" id="imgResult">
-          <h3 style="font-family:var(--fd);font-size:15px;margin-bottom:12px">✅ Generated Image</h3>
-          <img id="genImg" src="" alt="Generated"/>
-          <div class="img-actions">
-            <button class="iabtn primary" onclick="dlGenImg()">⬇ Download</button>
-            <button class="iabtn" onclick="editGenImg()">✏️ Edit This Image</button>
-            <button class="iabtn" onclick="regenerate()">🔄 Regenerate</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- IMAGE EDITOR PANEL -->
-    <div class="panel" id="pIedit">
-      <div class="ep">
-        <div class="ph"><h2>✏️ Image Editor</h2><p>Upload and edit any image with AI-powered filters and adjustments</p></div>
-        <div class="upload-area" id="uploadArea" onclick="document.getElementById('imgUpload').click()">
-          <input type="file" id="imgUpload" accept="image/*" style="display:none" onchange="loadEditImg(event)"/>
-          <div class="ua-icon">📁</div>
-          <div class="ua-text">Click to upload an image<br><span style="font-size:11px">PNG, JPG, WEBP supported</span></div>
-        </div>
-        <canvas id="editCanvas"></canvas>
-        <div id="editControls" style="display:none">
-          <div class="card" style="margin-bottom:12px">
-            <h3>🎨 Filters</h3>
-            <div class="filter-grid">
-              <div class="fi sel" onclick="applyFilter(this,'none')"><span>🖼️</span>Original</div>
-              <div class="fi" onclick="applyFilter(this,'grayscale')"><span>⬜</span>Grayscale</div>
-              <div class="fi" onclick="applyFilter(this,'sepia')"><span>🟫</span>Sepia</div>
-              <div class="fi" onclick="applyFilter(this,'invert')"><span>🔄</span>Invert</div>
-              <div class="fi" onclick="applyFilter(this,'warm')"><span>🟡</span>Warm</div>
-              <div class="fi" onclick="applyFilter(this,'cool')"><span>🔵</span>Cool</div>
-              <div class="fi" onclick="applyFilter(this,'vintage')"><span>📷</span>Vintage</div>
-              <div class="fi" onclick="applyFilter(this,'neon')"><span>💡</span>Neon</div>
-              <div class="fi" onclick="applyFilter(this,'pixelate')"><span>⬛</span>Pixelate</div>
-            </div>
-          </div>
-          <div class="card">
-            <h3>⚙️ Adjustments</h3>
-            <div class="slider-group">
-              <label><span>Brightness</span><b id="bv">100</b></label>
-              <input type="range" min="0" max="200" value="100" id="brightness" oninput="applyAdj()">
-            </div>
-            <div class="slider-group">
-              <label><span>Contrast</span><b id="cv">100</b></label>
-              <input type="range" min="0" max="200" value="100" id="contrast" oninput="applyAdj()">
-            </div>
-            <div class="slider-group">
-              <label><span>Saturation</span><b id="sv">100</b></label>
-              <input type="range" min="0" max="200" value="100" id="saturation" oninput="applyAdj()">
-            </div>
-            <div class="slider-group">
-              <label><span>Blur</span><b id="blv">0</b></label>
-              <input type="range" min="0" max="20" value="0" id="blurr" oninput="applyAdj()">
-            </div>
-            <div class="img-actions" style="margin-top:12px">
-              <button class="iabtn primary" onclick="downloadEdited()">⬇ Download Edited</button>
-              <button class="iabtn" onclick="resetEdit()">🔄 Reset</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- SEARCH PANEL -->
-    <div class="panel" id="pSearch">
-      <div class="scp">
-        <div class="ph"><h2>🔍 Web Search</h2><p>Search the web with AI-powered summaries</p></div>
-        <div class="search-bar">
-          <input type="text" id="searchInput" placeholder="Search anything on the web..." onkeydown="if(event.key==='Enter')doSearch()"/>
-          <button onclick="doSearch()">🔍 Search</button>
-        </div>
-        <div class="search-tabs">
-          <div class="stab act" onclick="setTab(this,'all')">🌐 All</div>
-          <div class="stab" onclick="setTab(this,'news')">📰 News</div>
-          <div class="stab" onclick="setTab(this,'images')">🖼 Images</div>
-          <div class="stab" onclick="setTab(this,'videos')">▶ Videos</div>
-          <div class="stab" onclick="setTab(this,'maps')">📍 Maps</div>
-        </div>
-        <div id="searchResults">
-          <div style="text-align:center;padding:48px;color:var(--dim)">
-            <div style="font-size:36px;margin-bottom:12px">🔍</div>
-            <p style="font-size:13px">Enter a query to search the web</p>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- MATH PANEL -->
-    <div class="panel" id="pMath" style="flex-direction:column">
-      <div class="ca" id="mathArea">
         <div class="cwelcome">
-          <div class="wi">🔢</div>
-          <h3>Math & GK Engine</h3>
-          <p>Solve equations, proofs, calculus, and answer any general knowledge question.</p>
-          <div style="background:rgba(124,58,237,.08);border:1px solid rgba(124,58,237,.2);border-radius:9px;padding:11px 14px;font-size:11px;color:#c4b5fd;margin-bottom:16px;line-height:1.6;max-width:380px;text-align:left">
-            💡 Try: <code>∫x²sin(x)dx</code> · <code>3x²-7x+2=0</code> · <code>Capital of Japan?</code>
-          </div>
-          <div class="chips">
-            <div class="chip" onclick="qm('Integrate ∫x²sin(x)dx')">Integration</div>
-            <div class="chip" onclick="qm('Solve 3x²-7x+2=0')">Quadratic</div>
-            <div class="chip" onclick="qm('What is the derivative of ln(x)?')">Derivatives</div>
-            <div class="chip" onclick="qm('Who won FIFA World Cup 2022?')">Sports GK</div>
-            <div class="chip" onclick="qm('What is Pythagoras theorem?')">Geometry</div>
-          </div>
+          <h3>Apex Mind Generative Intelligence</h3>
+          <p>The neural pathway is active. Ask anything—the language model will now process your specific intent directly.</p>
         </div>
       </div>
       <div class="ia">
         <div class="ir">
-          <textarea class="ib" id="mathInput" placeholder="Enter equation or GK question..." rows="1" onkeydown="handleMK(event)" oninput="ar(this)"></textarea>
-          <button class="snd" onclick="sendMath()">➤</button>
+          <input type="text" class="ib" id="chatInput" placeholder="Ask a question..." onkeydown="if(event.key==='Enter') sendChat()"/>
+          <button class="snd" onclick="sendChat()">⚡</button>
         </div>
       </div>
     </div>
 
-    <!-- HAIR PANEL -->
-    <div class="panel" id="pHair">
-      <div class="hp">
-        <div class="ph"><h2>💆 Hair Diagnostics</h2><p>AI-powered hair health analysis & personalized recommendations</p></div>
-        <div class="sc-card">
-          <h3>📊 Severity Scales</h3>
-          <div class="sg2"><div class="sl"><span>Hair Loss Level</span><span class="sv" id="sv1">5</span></div><input type="range" min="1" max="10" value="5" oninput="document.getElementById('sv1').textContent=this.value"><div style="display:flex;justify-content:space-between;font-size:9px;color:var(--dim)"><span>Minimal</span><span>Severe</span></div></div>
-          <div class="sg2"><div class="sl"><span>Scalp Dryness</span><span class="sv" id="sv2">3</span></div><input type="range" min="1" max="10" value="3" oninput="document.getElementById('sv2').textContent=this.value"><div style="display:flex;justify-content:space-between;font-size:9px;color:var(--dim)"><span>Very Oily</span><span>Very Dry</span></div></div>
-          <div class="sg2"><div class="sl"><span>Dandruff</span><span class="sv" id="sv3">2</span></div><input type="range" min="1" max="10" value="2" oninput="document.getElementById('sv3').textContent=this.value"><div style="display:flex;justify-content:space-between;font-size:9px;color:var(--dim)"><span>None</span><span>Heavy</span></div></div>
-          <div class="sg2"><div class="sl"><span>Hair Breakage</span><span class="sv" id="sv4">4</span></div><input type="range" min="1" max="10" value="4" oninput="document.getElementById('sv4').textContent=this.value"><div style="display:flex;justify-content:space-between;font-size:9px;color:var(--dim)"><span>Strong</span><span>Very Brittle</span></div></div>
+    <div class="panel" id="p-igen">
+      <div class="igp">
+        <div class="card">
+          <div class="fg">
+            <label>Image Prompt Directive</label>
+            <textarea id="igPrompt" placeholder="Describe your image scene..." rows="3"></textarea>
+          </div>
+          <button class="bp" onclick="genRealImage()">Generate Artwork Assets →</button>
         </div>
-        <div class="sc-card">
-          <h3>🏷️ Symptoms</h3>
-          <div class="symg">
-            <div class="sym" onclick="this.classList.toggle('sel')">Thinning Hair</div>
-            <div class="sym" onclick="this.classList.toggle('sel')">Oily Scalp</div>
-            <div class="sym" onclick="this.classList.toggle('sel')">Itchy Scalp</div>
-            <div class="sym" onclick="this.classList.toggle('sel')">Split Ends</div>
-            <div class="sym" onclick="this.classList.toggle('sel')">Frizzy Hair</div>
-            <div class="sym" onclick="this.classList.toggle('sel')">Premature Graying</div>
-            <div class="sym" onclick="this.classList.toggle('sel')">Scalp Psoriasis</div>
-            <div class="sym" onclick="this.classList.toggle('sel')">Alopecia</div>
-            <div class="sym" onclick="this.classList.toggle('sel')">Dry & Dull</div>
-            <div class="sym" onclick="this.classList.toggle('sel')">Color Damaged</div>
-          </div>
-        </div>
-        <div class="sc-card">
-          <h3>💊 Details</h3>
-          <div class="fg"><label>Hair Type</label>
-            <select id="hairType" style="width:100%;padding:9px;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:var(--fb);font-size:13px;outline:none">
-              <option value="">Select</option><option>Straight</option><option>Wavy</option><option>Curly</option><option>Coily/Kinky</option>
-            </select>
-          </div>
-          <div class="fg" style="margin-top:10px"><label>Describe main concern</label>
-            <textarea id="hairConcern" placeholder="e.g. My hair has been falling out a lot after washing..." style="width:100%;padding:9px;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:var(--fb);font-size:13px;outline:none;resize:vertical;min-height:72px;line-height:1.5"></textarea>
-          </div>
-          <button class="bp" onclick="analyzeHair()" style="margin-top:10px">🔬 Analyze Hair</button>
-        </div>
-        <div class="hair-res" id="hairRes"><h4>🎯 Apex Mind AI Hair Analysis</h4><div id="hairResText"></div></div>
-      </div>
-    </div>
-
-    <!-- CAMERA PANEL -->
-    <div class="panel" id="pCam">
-      <div class="camp">
-        <div class="ph"><h2>📷 Visual AI Scanner</h2><p>Scan objects, text, or equations — AI identifies & analyzes them live</p></div>
-        <div style="max-width:560px">
-          <div class="cf" id="camFeed">
-            <div class="cph" id="camPH"><div style="font-size:40px">📸</div><p style="color:var(--dim);font-size:13px;margin-top:8px">Camera inactive</p></div>
-            <video id="camVid" style="display:none;width:100%;height:100%;object-fit:cover"></video>
-            <div class="cov" id="camOv"><div class="scanline"></div></div>
-          </div>
-          <div class="cc">
-            <button class="cbtn pr" id="startCam" onclick="startCam()">▶ Start Camera</button>
-            <button class="cbtn" id="stopCam" onclick="stopCam()" style="display:none">⏹ Stop</button>
-            <button class="cbtn" id="scanBtn" onclick="scanObj()" style="display:none">🔍 Scan</button>
-            <button class="cbtn" id="snapBtn" onclick="takeSnap()" style="display:none">📷 Snapshot</button>
-          </div>
-          <canvas id="snapCanvas" style="display:none"></canvas>
-          <div class="cam-r" id="camResult">
-            <h4>🧠 Visual Analysis</h4>
-            <p id="camResText"></p>
-          </div>
+        <div class="igenloading" id="igLoad">🌀 Processing generative image nodes...</div>
+        <div class="card img-result" id="igResultCard">
+          <img id="igOut" src="" alt="AI Output"/>
         </div>
       </div>
     </div>
-
-    <div class="credits">🧠 Apex Mind AI · Built & Owned by Satwik Chandra · CEO of Apex Mind AI · All Rights Reserved 2025</div>
+    <div class="credits">Apex Mind Workspace Infrastructure</div>
   </div>
 </div>
 
 <script>
-// ─────────── STATE ───────────
-let cu=null,chatMode='general',curMode='chat',camStream=null;
-let selStyle_='realistic',editImg=null,editFilter='none',genPrompt='',otpVal='',phData={};
-
-const DB={
-  users:()=>JSON.parse(localStorage.getItem('amx_users')||'[]'),
-  saveUsers:u=>localStorage.setItem('amx_users',JSON.stringify(u)),
-  me:()=>JSON.parse(localStorage.getItem('amx_me')||'null'),
-  setMe:u=>localStorage.setItem('amx_me',JSON.stringify(u)),
-  clearMe:()=>localStorage.removeItem('amx_me'),
-};
-
-// ─────────── BOOT ───────────
-window.onload=()=>{
-  setTimeout(()=>{
-    document.getElementById('loading').classList.add('off');
-    const saved=DB.me();
-    if(saved){cu=saved;launchApp();}else showP('loginPage');
-  },1800);
-};
-
-// ─────────── NAV ───────────
-function showP(id){
-  document.querySelectorAll('.page').forEach(p=>p.classList.add('off'));
-  document.getElementById(id)?.classList.remove('off');
-  document.querySelectorAll('.aerr,.asuc').forEach(e=>{e.style.display='none';e.textContent='';});
-}
-function showErr(el,msg){el.textContent=msg;el.style.display='block';}
-function showSuc(el,msg){el.textContent=msg;el.style.display='block';}
-function toast(msg,err=false){
-  const t=document.getElementById('toast');
-  t.textContent=msg;t.className='toast'+(err?' err':'');t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'),3000);
-}
-
-// ─────────── AUTH ───────────
-function handleLogin(){
-  const e=document.getElementById('lEmail').value.trim();
-  const p=document.getElementById('lPass').value;
-  const el=document.getElementById('loginErr');
-  if(!e||!p){showErr(el,'Please fill all fields.');return;}
-  const users=DB.users();
-  const u=users.find(x=>x.email===e&&x.pw===btoa(p));
-  if(!u){showErr(el,'Invalid email or password.');return;}
-  cu=u;DB.setMe(u);toast(`Welcome back, ${u.name}! 🎉`);launchApp();
-}
-
-function handleSignup(){
-  const n=document.getElementById('suName').value.trim();
-  const e=document.getElementById('suEmail').value.trim();
-  const p=document.getElementById('suPass').value;
-  const c=document.getElementById('suConf').value;
-  const err=document.getElementById('suErr'),suc=document.getElementById('suSuc');
-  if(!n||!e||!p||!c){showErr(err,'Please fill all fields.');return;}
-  if(p.length<6){showErr(err,'Password min 6 characters.');return;}
-  if(p!==c){showErr(err,'Passwords do not match.');return;}
-  const users=DB.users();
-  if(users.find(x=>x.email===e)){showErr(err,'Email already registered.');return;}
-  const u={id:Date.now()+'',name:n,email:e,pw:btoa(p),av:n[0].toUpperCase(),method:'email',joined:new Date().toISOString()};
-  users.push(u);DB.saveUsers(users);
-  showSuc(suc,'Account created! Signing you in...');
-  setTimeout(()=>{cu=u;DB.setMe(u);toast(`Welcome, ${n}! 🚀`);launchApp();},1100);
-}
-
-// Google
-function openGoogle(){
-  const users=DB.users().filter(u=>u.method==='google');
-  document.getElementById('gAccounts').innerHTML=users.map(u=>`
-    <div class="ga" onclick="loginG('${u.id}')">
-      <div class="gav">${u.av}</div>
-      <div class="gai"><h4>${u.name}</h4><p>${u.email}</p></div>
-    </div>`).join('');
-  document.getElementById('gModal').classList.add('show');
-}
-function closeGoogle(){document.getElementById('gModal').classList.remove('show');}
-function loginG(id){
-  const u=DB.users().find(x=>x.id===id);
-  if(u){cu=u;DB.setMe(u);closeGoogle();toast(`Signed in as ${u.name} 🎉`);launchApp();}
-}
-function addGoogle(){
-  const name=prompt('Enter your name:');if(!name)return;
-  const email=prompt('Enter Gmail address:');if(!email||!email.includes('@')){toast('Invalid email',true);return;}
-  const users=DB.users();
-  let u=users.find(x=>x.email===email);
-  if(!u){u={id:Date.now()+'',name,email,av:name[0].toUpperCase(),method:'google',joined:new Date().toISOString()};users.push(u);DB.saveUsers(users);}
-  cu=u;DB.setMe(u);closeGoogle();toast(`Signed in with Google as ${name} 🎉`);launchApp();
-}
-
-// Phone OTP
-function sendOTP(){
-  const ph=document.getElementById('phNum').value.trim();
-  const nm=document.getElementById('phName').value.trim();
-  const code=document.getElementById('phCode').value.split(' ')[1];
-  if(!ph||ph.length<7){showErr(document.getElementById('phErr'),'Enter valid phone number.');return;}
-  if(!nm){showErr(document.getElementById('phErr'),'Enter your name.');return;}
-  otpVal=Math.floor(100000+Math.random()*900000)+'';
-  phData={phone:code+ph,name:nm};
-  document.getElementById('phDisp').textContent=code+ph;
-  document.getElementById('demoOtp').textContent=otpVal;
-  document.getElementById('ph1').style.display='none';
-  document.getElementById('ph2').style.display='block';
-  toast('OTP sent! (Demo code shown above)');
-}
-function oi(el,i){
-  el.value=el.value.replace(/\D/,'');
-  if(el.value){const nx=document.querySelectorAll('#otpInputs input')[i+1];if(nx)nx.focus();}
-}
-function ok(e,i){if(e.key==='Backspace'){const pv=document.querySelectorAll('#otpInputs input')[i-1];if(pv&&!document.querySelectorAll('#otpInputs input')[i].value)pv.focus();}}
-function verifyOTP(){
-  const entered=[...document.querySelectorAll('#otpInputs input')].map(x=>x.value).join('');
-  if(entered!==otpVal){showErr(document.getElementById('otpErr'),'Incorrect OTP. Try again.');return;}
-  const users=DB.users();
-  let u=users.find(x=>x.phone===phData.phone);
-  if(!u){u={id:Date.now()+'',name:phData.name,phone:phData.phone,av:phData.name[0].toUpperCase(),method:'phone',joined:new Date().toISOString()};users.push(u);DB.saveUsers(users);}
-  cu=u;DB.setMe(u);toast(`Welcome, ${u.name}! 🎉`);launchApp();
-}
-function resendOTP(){
-  otpVal=Math.floor(100000+Math.random()*900000)+'';
-  document.getElementById('demoOtp').textContent=otpVal;
-  document.getElementById('otpInputs').querySelectorAll('input').forEach(x=>x.value='');
-  toast('New OTP generated!');
-}
-function logout(){
-  if(!confirm('Sign out of Apex Mind AI?'))return;
-  cu=null;DB.clearMe();
-  showP('loginPage');toast('Signed out successfully.');
-}
-
-// ─────────── LAUNCH APP ───────────
-function launchApp(){
-  showP('appPage');
-  document.getElementById('sbAv').textContent=cu.av||'U';
-  document.getElementById('sbName').textContent=cu.name||'User';
-  document.getElementById('wName').textContent=(cu.name||'there').split(' ')[0];
-}
-
-// ─────────── SIDEBAR ───────────
-function toggleSB(){
-  document.getElementById('sb').classList.toggle('open');
-  document.getElementById('sbov').classList.toggle('show');
-}
-function sw(mode){
-  curMode=mode;
-  document.querySelectorAll('.ni').forEach(x=>x.classList.remove('act'));
-  document.querySelectorAll('.panel').forEach(x=>x.classList.remove('act'));
-  const map={chat:['nChat','pChat','💬 AI Chat','General Mode'],igen:['nIgen','pIgen','🎨 Image Generator','Create Mode'],iedit:['nIedit','pIedit','✏️ Image Editor','Edit Mode'],search:['nSearch','pSearch','🔍 Web Search','Search Mode'],math:['nMath','pMath','🔢 Math & GK','Intelligence Mode'],hair:['nHair','pHair','💆 Hair Diagnostics','Health Mode'],cam:['nCam','pCam','📷 Visual Scanner','Vision Mode']};
-  const [nav,panel,title,badge]=map[mode]||map.chat;
-  document.getElementById(nav)?.classList.add('act');
-  document.getElementById(panel)?.classList.add('act');
-  document.getElementById('tbTitle').textContent=title;
-  document.getElementById('tbBadge').textContent=badge;
-  if(window.innerWidth<=768){document.getElementById('sb').classList.remove('open');document.getElementById('sbov').classList.remove('show');}
-}
-
-// ─────────── AI CHAT ───────────
-let chatMode2='general';
-function setCM(m,label){
-  chatMode2=m;
-  document.querySelectorAll('.tbtn').forEach(b=>b.classList.remove('act'));
-  document.getElementById('tm-'+m)?.classList.add('act');
-  document.getElementById('tbBadge').textContent=label;
-}
-function qs(q){document.getElementById('chatInput').value=q;sendMsg();}
-function qm(q){document.getElementById('mathInput').value=q;sendMath();}
-function handleKey(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMsg();}}
-function handleMK(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMath();}}
-function ar(el){el.style.height='auto';el.style.height=Math.min(el.scrollHeight,140)+'px';}
-
-function addMsg(areaId,role,text,imgSrc=null){
-  const area=document.getElementById(areaId);
-  const welcome=area.querySelector('.cwelcome');
-  if(welcome)welcome.style.display='none';
-  const now=new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
-  const isAI=role==='ai';
-  const name=isAI?'🧠 Apex Mind AI':(cu?.name||'You');
-  const div=document.createElement('div');
-  div.className=`msg ${isAI?'ai':'usr'}`;
-  div.innerHTML=`
-    <div class="mav">${isAI?'🧠':(cu?.av||'U')}</div>
-    <div class="mb">
-      <div class="mn">${name}</div>
-      <div class="mbu">${text.replace(/</g,'&lt;').replace(/\n/g,'<br>')}${imgSrc?`<img src="${imgSrc}" alt="img"/>`:''}</div>
-      <div class="mt">${now}</div>
-    </div>`;
-  area.appendChild(div);
-  area.scrollTop=area.scrollHeight;
-  return div;
-}
-
-function showTyping(areaId){
-  const area=document.getElementById(areaId);
-  const div=document.createElement('div');
-  div.className='msg ai';div.id='typing_'+areaId;
-  div.innerHTML=`<div class="mav">🧠</div><div class="mb"><div class="mn">🧠 Apex Mind AI</div><div class="typing"><div class="td"></div><div class="td"></div><div class="td"></div></div></div>`;
-  area.appendChild(div);area.scrollTop=area.scrollHeight;
-}
-function removeTyping(areaId){document.getElementById('typing_'+areaId)?.remove();}
-
-async function callAI(prompt,systemHint=''){
-  const sysMap={
-    general:'You are Apex Mind AI, a powerful general-purpose AI assistant built by Satwik Chandra, CEO of Apex Mind AI. Answer helpfully and clearly.',
-    math:'You are Apex Mind AI\'s Math & Science engine built by Satwik Chandra. Solve equations step-by-step, show workings clearly. Use proper notation.',
-    gk:'You are Apex Mind AI\'s General Knowledge engine by Satwik Chandra. Answer GK questions accurately, concisely, with interesting facts.',
-    code:'You are Apex Mind AI\'s Code assistant by Satwik Chandra. Write clean, well-commented code. Explain what it does.',
-    creative:'You are Apex Mind AI\'s Creative engine by Satwik Chandra. Write imaginatively, poetically, and with flair.',
-    hair:'You are Apex Mind AI\'s Hair Care specialist by Satwik Chandra. Give evidence-based, personalized hair care advice.',
-  };
-  const sys=(sysMap[systemHint]||sysMap.general)+' Always mention you are Apex Mind AI built by Satwik Chandra if asked who made you.';
-  const res=await fetch('https://api.anthropic.com/v1/messages',{
-    method:'POST',
-    headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({
-      model:'claude-sonnet-4-20250514',
-      max_tokens:1000,
-      system:sys,
-      messages:[{role:'user',content:prompt}]
-    })
+  // Loading screen clear
+  window.addEventListener('DOMContentLoaded', () => {
+    setTimeout(() => {
+      document.getElementById('loading').style.opacity = '0';
+      setTimeout(() => document.getElementById('loading').style.display = 'none', 350);
+    }, 1000);
   });
-  const d=await res.json();
-  return d.content?.[0]?.text||'Sorry, I could not process that request.';
-}
 
-async function sendMsg(){
-  const inp=document.getElementById('chatInput');
-  const txt=inp.value.trim();if(!txt)return;
-  inp.value='';inp.style.height='auto';
-  document.getElementById('sendBtn').disabled=true;
-  addMsg('chatArea','user',txt);
-  showTyping('chatArea');
-  try{
-    const reply=await callAI(txt,chatMode2);
-    removeTyping('chatArea');
-    addMsg('chatArea','ai',reply);
-  }catch(e){removeTyping('chatArea');addMsg('chatArea','ai','⚠️ Network error. Please check your connection.');}
-  document.getElementById('sendBtn').disabled=false;
-}
-
-async function sendMath(){
-  const inp=document.getElementById('mathInput');
-  const txt=inp.value.trim();if(!txt)return;
-  inp.value='';inp.style.height='auto';
-  addMsg('mathArea','user',txt);
-  showTyping('mathArea');
-  try{
-    const mode=txt.match(/\d|[+\-*/=^∫∑]/)?'math':'gk';
-    const reply=await callAI(txt,mode);
-    removeTyping('mathArea');
-    addMsg('mathArea','ai',reply);
-  }catch(e){removeTyping('mathArea');addMsg('mathArea','ai','⚠️ Error processing request.');}
-}
-
-// ─────────── IMAGE GENERATION ───────────
-function selStyle(el,s){
-  selStyle_=s;
-  document.querySelectorAll('.sg-item').forEach(x=>x.classList.remove('sel'));
-  el.classList.add('sel');
-}
-let lastPrompt='',lastSize='512x512';
-async function generateImage(){
-  const prompt=document.getElementById('igPrompt').value.trim();
-  if(!prompt){toast('Please describe the image you want',true);return;}
-  const size=document.getElementById('igSize').value;
-  lastPrompt=prompt;lastSize=size;
-  const fullPrompt=`${prompt}, ${selStyle_} style`;
-  const [w,h]=size.split('x');
-  document.getElementById('igenLoad').style.display='block';
-  document.getElementById('imgResult').style.display='none';
-  const seed=Math.floor(Math.random()*99999);
-  const url=`https://image.pollinations.ai/prompt/${encodeURIComponent(fullPrompt)}?width=${w}&height=${h}&seed=${seed}&nologo=true`;
-  const img=document.getElementById('genImg');
-  img.onload=()=>{document.getElementById('igenLoad').style.display='none';document.getElementById('imgResult').style.display='block';toast('Image generated! ✨');};
-  img.onerror=()=>{document.getElementById('igenLoad').style.display='none';toast('Image generation failed. Try again.',true);};
-  img.src=url;
-  genPrompt=url;
-}
-function dlGenImg(){
-  const a=document.createElement('a');a.href=document.getElementById('genImg').src;a.download='ApexMindAI_generated.jpg';a.target='_blank';a.click();
-}
-function editGenImg(){
-  const img=document.getElementById('genImg');
-  loadImgToCanvas(img.src);
-  sw('iedit');
-}
-function regenerate(){
-  const [w,h]=lastSize.split('x');
-  const seed=Math.floor(Math.random()*99999);
-  const fullPrompt=`${lastPrompt}, ${selStyle_} style`;
-  const url=`https://image.pollinations.ai/prompt/${encodeURIComponent(fullPrompt)}?width=${w}&height=${h}&seed=${seed}&nologo=true`;
-  document.getElementById('igenLoad').style.display='block';
-  document.getElementById('imgResult').style.display='none';
-  const img=document.getElementById('genImg');
-  img.onload=()=>{document.getElementById('igenLoad').style.display='none';document.getElementById('imgResult').style.display='block';};
-  img.src=url;
-}
-
-// ─────────── IMAGE EDITOR ───────────
-let origImgData=null,editCanvas=null,editCtx=null;
-function loadEditImg(e){
-  const file=e.target.files[0];if(!file)return;
-  const reader=new FileReader();
-  reader.onload=ev=>{
-    const img=new Image();
-    img.onload=()=>{loadImgToCanvas(img);};
-    img.src=ev.target.result;
-  };
-  reader.readAsDataURL(file);
-}
-function loadImgToCanvas(src){
-  editCanvas=document.getElementById('editCanvas');
-  editCtx=editCanvas.getContext('2d');
-  const img=typeof src==='string'?new Image():src;
-  const go=()=>{
-    const maxW=Math.min(img.naturalWidth||img.width,560);
-    const ratio=(img.naturalHeight||img.height)/(img.naturalWidth||img.width);
-    editCanvas.width=maxW;editCanvas.height=maxW*ratio;
-    editCtx.drawImage(img,0,0,editCanvas.width,editCanvas.height);
-    origImgData=editCtx.getImageData(0,0,editCanvas.width,editCanvas.height);
-    editCanvas.style.cssText='max-width:100%;border-radius:12px;display:block;margin-bottom:12px';
-    document.getElementById('editControls').style.display='block';
-    document.getElementById('uploadArea').style.display='none';
-    resetSliders();
-  };
-  if(typeof src==='string'){img.onload=go;img.crossOrigin='anonymous';img.src=src;}else go();
-}
-function applyFilter(el,filter){
-  editFilter=filter;
-  document.querySelectorAll('.fi').forEach(x=>x.classList.remove('sel'));
-  el.classList.add('sel');
-  applyAdj();
-}
-function applyAdj(){
-  if(!origImgData||!editCtx)return;
-  const b=parseInt(document.getElementById('brightness').value);
-  const c=parseInt(document.getElementById('contrast').value);
-  const s=parseInt(document.getElementById('saturation').value);
-  const bl=parseInt(document.getElementById('blurr').value);
-  document.getElementById('bv').textContent=b;
-  document.getElementById('cv').textContent=c;
-  document.getElementById('sv').textContent=s;
-  document.getElementById('blv').textContent=bl;
-  editCtx.filter=`brightness(${b}%) contrast(${c}%) saturate(${s}%) blur(${bl}px)`;
-  const img=new ImageData(new Uint8ClampedArray(origImgData.data),origImgData.width,origImgData.height);
-  const tmpC=document.createElement('canvas');tmpC.width=origImgData.width;tmpC.height=origImgData.height;
-  const tc=tmpC.getContext('2d');tc.putImageData(img,0,0);
-  const idata=tc.getImageData(0,0,tmpC.width,tmpC.height);
-  applyColorFilter(idata,editFilter);
-  tc.putImageData(idata,0,0);
-  editCtx.filter=`brightness(${b}%) contrast(${c}%) saturate(${s}%) blur(${bl}px)`;
-  editCtx.clearRect(0,0,editCanvas.width,editCanvas.height);
-  editCtx.drawImage(tmpC,0,0,editCanvas.width,editCanvas.height);
-  editCtx.filter='none';
-  if(editFilter==='pixelate')pixelateCanvas(editCanvas,editCtx,12);
-}
-function applyColorFilter(idata,filter){
-  const d=idata.data;
-  for(let i=0;i<d.length;i+=4){
-    let r=d[i],g=d[i+1],b=d[i+2];
-    if(filter==='grayscale'){const gr=(r+g+b)/3;d[i]=d[i+1]=d[i+2]=gr;}
-    else if(filter==='sepia'){d[i]=Math.min(255,r*.393+g*.769+b*.189);d[i+1]=Math.min(255,r*.349+g*.686+b*.168);d[i+2]=Math.min(255,r*.272+g*.534+b*.131);}
-    else if(filter==='invert'){d[i]=255-r;d[i+1]=255-g;d[i+2]=255-b;}
-    else if(filter==='warm'){d[i]=Math.min(255,r+30);d[i+1]=g;d[i+2]=Math.max(0,b-20);}
-    else if(filter==='cool'){d[i]=Math.max(0,r-20);d[i+1]=g;d[i+2]=Math.min(255,b+30);}
-    else if(filter==='vintage'){d[i]=Math.min(255,r*.9+30);d[i+1]=Math.min(255,g*.8+20);d[i+2]=Math.min(255,b*.7+10);}
-    else if(filter==='neon'){d[i]=r>100?255:0;d[i+1]=g>100?255:0;d[i+2]=b>100?255:0;}
+  // FIXED: Working Login Navigation Logic
+  function executeLogin() {
+    let email = document.getElementById('logEmail').value.trim();
+    let pass = document.getElementById('logPass').value.trim();
+    
+    if(!email || !pass) {
+      alert("Please fill in your login parameters.");
+      return;
+    }
+    
+    // Switch Views seamlessly
+    document.getElementById('loginPage').classList.add('off');
+    document.getElementById('appPage').classList.add('on');
   }
-}
-function pixelateCanvas(canvas,ctx,size){
-  const w=canvas.width,h=canvas.height;
-  ctx.imageSmoothingEnabled=false;
-  const tmp=document.createElement('canvas');tmp.width=Math.ceil(w/size);tmp.height=Math.ceil(h/size);
-  const tc=tmp.getContext('2d');tc.imageSmoothingEnabled=false;
-  tc.drawImage(canvas,0,0,tmp.width,tmp.height);
-  ctx.clearRect(0,0,w,h);ctx.drawImage(tmp,0,0,w,h);
-}
-function resetSliders(){['brightness','contrast','saturation'].forEach(id=>document.getElementById(id).value=100);document.getElementById('blurr').value=0;document.getElementById('bv').textContent=100;document.getElementById('cv').textContent=100;document.getElementById('sv').textContent=100;document.getElementById('blv').textContent=0;}
-function resetEdit(){if(origImgData&&editCtx){resetSliders();editFilter='none';document.querySelectorAll('.fi').forEach(x=>x.classList.remove('sel'));document.querySelector('.fi').classList.add('sel');editCtx.putImageData(origImgData,0,0);}}
-function downloadEdited(){if(!editCanvas)return;const a=document.createElement('a');a.download='ApexMindAI_edited.png';a.href=editCanvas.toDataURL();a.click();}
 
-// ─────────── WEB SEARCH ───────────
-let searchTab='all';
-function setTab(el,tab){searchTab=tab;document.querySelectorAll('.stab').forEach(x=>x.classList.remove('act'));el.classList.add('act');}
-function doSearch(){
-  const q=document.getElementById('searchInput').value.trim();
-  if(!q){toast('Enter a search query',true);return;}
-  const tabUrls={all:`https://www.google.com/search?q=${encodeURIComponent(q)}`,news:`https://news.google.com/search?q=${encodeURIComponent(q)}`,images:`https://www.google.com/search?q=${encodeURIComponent(q)}&tbm=isch`,videos:`https://www.youtube.com/results?search_query=${encodeURIComponent(q)}`,maps:`https://www.google.com/maps/search/${encodeURIComponent(q)}`};
-  const url=tabUrls[searchTab]||tabUrls.all;
-  const res=document.getElementById('searchResults');
-  res.innerHTML=`
-    <div class="sr-card" onclick="window.open('${url}','_blank')">
-      <h4>🌐 Open "${q}" in Google ${searchTab==='all'?'Search':searchTab.charAt(0).toUpperCase()+searchTab.slice(1)}</h4>
-      <p>Click to open full search results in a new tab with live Google data.</p>
-      <div class="src-url">${url.substring(0,60)}...</div>
-    </div>
-    <div style="text-align:center;padding:20px;color:var(--dim)">
-      <div style="font-size:13px;margin-bottom:12px">🧠 Or let Apex Mind AI answer this:</div>
-      <button class="bp" style="max-width:300px" onclick="askAISearch('${q.replace(/'/g,"\\'")}')">Ask Apex Mind AI Instead →</button>
-    </div>`;
-}
-async function askAISearch(q){
-  const res=document.getElementById('searchResults');
-  res.innerHTML=`<div style="text-align:center;padding:32px;color:var(--dim)"><div style="font-size:24px;animation:spin 1s linear infinite;display:inline-block">⚙️</div><p style="margin-top:10px;font-size:12px">Apex Mind AI is searching...</p></div>`;
-  try{
-    const reply=await callAI(`Search and answer: ${q}`,'general');
-    res.innerHTML=`<div class="sr-card"><h4>🧠 Apex Mind AI Answer</h4><p style="white-space:pre-wrap">${reply.replace(/</g,'&lt;')}</p></div>
-    <div class="sr-card" onclick="window.open('https://www.google.com/search?q=${encodeURIComponent(q)}','_blank')"><h4>🌐 Also see Google results</h4><p>Click to open live Google search in a new tab.</p></div>`;
-  }catch(e){res.innerHTML='<div style="color:var(--red);padding:20px">Error fetching AI answer.</div>';}
-}
+  function sw(pId) {
+    document.querySelectorAll('.ni').forEach(i => i.classList.remove('act'));
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('act'));
+    document.getElementById('p-' + pId).classList.add('act');
+    document.getElementById('n' + pId.charAt(0).toUpperCase() + pId.slice(1)).classList.add('act');
+  }
 
-// ─────────── HAIR ANALYSIS ───────────
-async function analyzeHair(){
-  const loss=document.getElementById('sv1').textContent;
-  const dry=document.getElementById('sv2').textContent;
-  const dandruff=document.getElementById('sv3').textContent;
-  const breakage=document.getElementById('sv4').textContent;
-  const syms=[...document.querySelectorAll('.sym.sel')].map(x=>x.textContent).join(', ')||'None selected';
-  const type=document.getElementById('hairType').value||'Not specified';
-  const concern=document.getElementById('hairConcern').value||'General hair care';
-  const res=document.getElementById('hairRes');
-  res.style.display='block';
-  document.getElementById('hairResText').innerHTML='<div style="color:var(--cyan);font-size:12px">🔬 Analyzing your hair profile...</div>';
-  const prompt=`Hair analysis for patient:
-- Hair loss severity: ${loss}/10
-- Scalp dryness: ${dry}/10
-- Dandruff severity: ${dandruff}/10
-- Hair breakage: ${breakage}/10
-- Symptoms: ${syms}
-- Hair type: ${type}
-- Main concern: ${concern}
+  // FIXED: Dynamic Generative LLM Interface
+  async function sendChat() {
+    let inp = document.getElementById('chatInput');
+    let val = inp.value.trim();
+    if (!val) return;
+    inp.value = '';
 
-Provide: 1) Diagnosis summary 2) Root causes 3) Top 5 specific product recommendations 4) Daily hair care routine 5) Dietary advice 6) Warning signs to watch for. Be specific and practical.`;
-  try{
-    const reply=await callAI(prompt,'hair');
-    document.getElementById('hairResText').innerHTML=reply.replace(/</g,'&lt;').replace(/\n/g,'<br>');
-  }catch(e){document.getElementById('hairResText').textContent='Error analyzing. Please try again.';}
-}
+    let ca = document.getElementById('chatArea');
+    ca.innerHTML += `
+      <div class="msg usr">
+        <div class="mav">SC</div>
+        <div class="mb"><div class="mbu">${val}</div></div>
+      </div>`;
+    ca.scrollTop = ca.scrollHeight;
 
-// ─────────── CAMERA ───────────
-async function startCam(){
-  try{
-    camStream=await navigator.mediaDevices.getUserMedia({video:{facingMode:'environment'},audio:false});
-    const vid=document.getElementById('camVid');
-    vid.srcObject=camStream;vid.play();
-    vid.style.display='block';
-    document.getElementById('camPH').style.display='none';
-    document.getElementById('camOv').classList.add('scanning');
-    document.getElementById('startCam').style.display='none';
-    document.getElementById('stopCam').style.display='inline-flex';
-    document.getElementById('scanBtn').style.display='inline-flex';
-    document.getElementById('snapBtn').style.display='inline-flex';
-    toast('Camera active! 📷');
-  }catch(e){toast('Camera access denied or unavailable',true);}
-}
-function stopCam(){
-  if(camStream)camStream.getTracks().forEach(t=>t.stop());camStream=null;
-  document.getElementById('camVid').style.display='none';
-  document.getElementById('camPH').style.display='block';
-  document.getElementById('camOv').classList.remove('scanning');
-  document.getElementById('startCam').style.display='inline-flex';
-  document.getElementById('stopCam').style.display='none';
-  document.getElementById('scanBtn').style.display='none';
-  document.getElementById('snapBtn').style.display='none';
-}
-async function scanObj(){
-  const res=document.getElementById('camResult');
-  res.style.display='block';
-  document.getElementById('camResText').innerHTML='<span style="color:var(--cyan)">🔍 Scanning visual field...</span>';
-  const snap=takeSnap(true);
-  const reply=await callAI('The user is using the Visual Scanner to scan an object or scene. Describe what a smart AI might notice in a live camera feed in a typical room setting, and provide useful information about common objects a student or professional might scan. Be helpful and informative.','general');
-  document.getElementById('camResText').innerHTML=reply.replace(/</g,'&lt;').replace(/\n/g,'<br>');
-}
-function takeSnap(returnOnly=false){
-  const vid=document.getElementById('camVid');
-  if(!vid.srcObject)return;
-  const c=document.getElementById('snapCanvas');
-  c.width=vid.videoWidth||640;c.height=vid.videoHeight||480;
-  c.getContext('2d').drawImage(vid,0,0);
-  if(!returnOnly){c.style.display='block';toast('Snapshot taken! 📸');}
-  return c.toDataURL();
-}
-function searchGoogle(){
-  const q=prompt('What would you like to search on Google?');
-  if(q)window.open(`https://www.google.com/search?q=${encodeURIComponent(q)}&tbm=isch`,'_blank');
-}
+    // Typing loader
+    let typId = 'typ-' + Date.now();
+    ca.innerHTML += `
+      <div class="msg ai" id="${typId}">
+        <div class="mav">🧠</div>
+        <div class="mb"><div class="typing"><div class="td"></div><div class="td"></div><div class="td"></div></div></div>
+      </div>`;
+    ca.scrollTop = ca.scrollHeight;
+
+    try {
+      // Connects to an un-cached live generative LLM model endpoint that processes actual prompt text
+      let res = await fetch(`https://text.pollinations.ai/${encodeURIComponent(val)}?json=true`);
+      let data = await res.json();
+      let reply = data.choices[0].message.content;
+
+      document.getElementById(typId).remove();
+      ca.innerHTML += `
+        <div class="msg ai">
+          <div class="mav">🧠</div>
+          <div class="mb"><div class="mbu">${reply}</div></div>
+        </div>`;
+    } catch (err) {
+      document.getElementById(typId).remove();
+      ca.innerHTML += `
+        <div class="msg ai">
+          <div class="mav">🧠</div>
+          <div class="mb"><div class="mbu">Connection timed out. Please check your internet connectivity matrix and try again.</div></div>
+        </div>`;
+    }
+    ca.scrollTop = ca.scrollHeight;
+  }
+
+  // Generative Image Network call
+  function genRealImage() {
+    let p = document.getElementById('igPrompt').value.trim();
+    if (!p) return;
+    document.getElementById('igLoad').style.display = 'block';
+    document.getElementById('igResultCard').style.display = 'none';
+
+    let url = `https://image.pollinations.ai/p/${encodeURIComponent(p)}?width=500&height=400&seed=${Math.floor(Math.random()*9999)}`;
+    let img = new Image();
+    img.onload = function() {
+      document.getElementById('igLoad').style.display = 'none';
+      document.getElementById('igOut').src = url;
+      document.getElementById('igResultCard').style.display = 'block';
+    };
+    img.src = url;
+  }
 </script>
 </body>
 </html>
-HTMLEOF
-echo "Website done: $(wc -c < /mnt/user-data/outputs/ApexMindAI_Website.html) bytes"
